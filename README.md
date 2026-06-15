@@ -18,6 +18,13 @@ assets/
   05_logarithms.md              # Understanding O(log n)
   06_asymptotic_analysis.md      # Big-O, Theta, Omega explained
   07_algorithm_analysis.md       # Step-by-step time and space analysis
+
+02_arrays/
+  01_arrays_basics.md            # Array basics, traversal, and patterns
+  02_sliding_window.md           # Sliding window technique (fixed and variable)
+  03_prefix_sum.md               # Prefix sum for fast range queries
+  04_kadanes_algorithm.md        # Kadane's algorithm — maximum subarray sum
+  05_two_pointers.md             # Two pointer technique (opposite ends + same direction)
 ```
 
 ---
@@ -47,6 +54,11 @@ Every file follows the same format:
 | 6                                         | Asymptotic Analysis (Big-O, Theta, Omega) | ✅     |
 | 7                                         | Algorithm Analysis — Step-by-Step         | ✅     |
 | **Section 2 — Arrays**                    |                                           |        |
+| 8                                         | Arrays — Basics, Traversal, Patterns      | ✅     |
+| 9                                         | Sliding Window Technique                  | ✅     |
+| 10                                        | Prefix Sum Technique                      | ✅     |
+| 11                                        | Kadane's Algorithm                        | ✅     |
+| 12                                        | Two Pointer Technique                     | ✅     |
 | **Section 3 — Strings**                   |                                           |        |
 | **Section 4 — Recursion & Backtracking**  |                                           |        |
 | **Section 5 — Sorting Algorithms**        |                                           |        |
