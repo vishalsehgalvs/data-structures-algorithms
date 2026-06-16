@@ -85,11 +85,13 @@ Use for: **removing duplicates**, partitioning, filtering.
 **Problem:** Given a sorted array, find if any two elements add up to the target.
 
 **Logic:**
+
 - `sum < target` → move `left` right (need bigger value)
 - `sum > target` → move `right` left (need smaller value)
 - `sum == target` → found it
 
 #### Python
+
 ```python
 def has_pair_with_sum(arr, target):
     left = 0
@@ -117,6 +119,7 @@ print(has_pair_with_sum(arr, 20))   # Output: False
 ```
 
 #### C++
+
 ```cpp
 #include <iostream>
 #include <vector>
@@ -150,10 +153,10 @@ int main() {
 
 **Trace for target = 10:**
 
-| Step | left | right | arr[left] | arr[right] | sum | Action |
-|---|---|---|---|---|---|---|
-| 1 | 0 | 5 | 1 | 11 | 12 | sum > 10 → right-- |
-| 2 | 0 | 4 | 1 | 9 | 10 | sum == 10 → **return True** |
+| Step | left | right | arr[left] | arr[right] | sum | Action                      |
+| ---- | ---- | ----- | --------- | ---------- | --- | --------------------------- |
+| 1    | 0    | 5     | 1         | 11         | 12  | sum > 10 → right--          |
+| 2    | 0    | 4     | 1         | 9          | 10  | sum == 10 → **return True** |
 
 ---
 
@@ -174,6 +177,7 @@ Result: [1, 2, 3, 4, 5, ...],  count = 5
 ```
 
 #### Python
+
 ```python
 def remove_duplicates(arr):
     if not arr:
@@ -198,6 +202,7 @@ print(arr[:count])    # Output: [1, 2, 3, 4, 5]
 ```
 
 #### C++
+
 ```cpp
 int removeDuplicates(vector<int>& arr) {
     if (arr.empty()) return 0;
@@ -231,6 +236,7 @@ int main() {
 Swap elements at opposite ends and move inward until pointers meet.
 
 #### Python
+
 ```python
 def reverse_array(arr):
     left = 0
@@ -249,6 +255,7 @@ print(reverse_array([1, 2, 3, 4, 5]))   # Output: [5, 4, 3, 2, 1]
 ```
 
 #### C++
+
 ```cpp
 void reverseArray(vector<int>& arr) {
     int left = 0;
@@ -271,6 +278,7 @@ n/2 swaps total. Stops when pointers meet or cross.
 Start from both ends. Compare elements moving inward. First mismatch → not a palindrome.
 
 #### Python
+
 ```python
 def is_palindrome(arr):
     left = 0
@@ -291,6 +299,7 @@ print(is_palindrome([1, 2, 3, 4, 5]))   # Output: False
 ```
 
 #### C++
+
 ```cpp
 bool isPalindrome(vector<int> arr) {
     int left = 0;
@@ -311,13 +320,14 @@ bool isPalindrome(vector<int> arr) {
 
 ## 8. Two Pointer vs Brute Force vs Sliding Window
 
-| Approach | Time | Space | Best For |
-|---|---|---|---|
-| **Brute Force** (nested loops) | O(n²) | O(1) | Small arrays, simple problems |
-| **Two Pointer** | O(n) | O(1) | Sorted arrays, pair/triplet problems |
-| **Sliding Window** | O(n) | O(1) | Contiguous subarray/window problems |
+| Approach                       | Time  | Space | Best For                             |
+| ------------------------------ | ----- | ----- | ------------------------------------ |
+| **Brute Force** (nested loops) | O(n²) | O(1)  | Small arrays, simple problems        |
+| **Two Pointer**                | O(n)  | O(1)  | Sorted arrays, pair/triplet problems |
+| **Sliding Window**             | O(n)  | O(1)  | Contiguous subarray/window problems  |
 
 Two pointer and sliding window are related but different:
+
 - **Two pointer** → two positions compared or moved based on logic (often opposite ends)
 - **Sliding window** → a contiguous window that expands/shrinks (always a range)
 
@@ -325,15 +335,15 @@ Two pointer and sliding window are related but different:
 
 ## 9. When to Use Two Pointers
 
-| Problem type | Pattern |
-|---|---|
-| Find a pair with given sum in sorted array | Opposite ends |
-| Find a triplet with given sum | Opposite ends (with outer loop) |
-| Remove duplicates from sorted array | Same direction (slow/fast) |
-| Reverse an array | Opposite ends |
-| Check palindrome | Opposite ends |
-| Partition array by condition | Same direction |
-| Merge two sorted arrays | Same direction (two separate arrays) |
+| Problem type                               | Pattern                              |
+| ------------------------------------------ | ------------------------------------ |
+| Find a pair with given sum in sorted array | Opposite ends                        |
+| Find a triplet with given sum              | Opposite ends (with outer loop)      |
+| Remove duplicates from sorted array        | Same direction (slow/fast)           |
+| Reverse an array                           | Opposite ends                        |
+| Check palindrome                           | Opposite ends                        |
+| Partition array by condition               | Same direction                       |
+| Merge two sorted arrays                    | Same direction (two separate arrays) |
 
 **Key signal:** You need **two positions** in the array to compare or make a decision, and moving them reduces the search space.
 
@@ -350,12 +360,12 @@ flowchart TD
 
 ## 10. Common Mistakes
 
-| Mistake | Why it breaks | Fix |
-|---|---|---|
-| Using on unsorted array for pair sum | Wrong or missed answers | Sort first (adds O(n log n)) |
-| Using `left <= right` instead of `left < right` | Compares element with itself | Always use `left < right` |
-| Not moving a pointer inside the loop | Infinite loop | Every iteration must advance at least one pointer |
-| Forgetting to sort before using opposite ends | Incorrect results | Always check if array needs to be sorted |
+| Mistake                                         | Why it breaks                | Fix                                               |
+| ----------------------------------------------- | ---------------------------- | ------------------------------------------------- |
+| Using on unsorted array for pair sum            | Wrong or missed answers      | Sort first (adds O(n log n))                      |
+| Using `left <= right` instead of `left < right` | Compares element with itself | Always use `left < right`                         |
+| Not moving a pointer inside the loop            | Infinite loop                | Every iteration must advance at least one pointer |
+| Forgetting to sort before using opposite ends   | Incorrect results            | Always check if array needs to be sorted          |
 
 ---
 

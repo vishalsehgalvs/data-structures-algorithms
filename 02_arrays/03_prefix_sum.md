@@ -41,6 +41,7 @@ Running:  [3, 4, 8, 9, 14, 23, 25, 31]
 ## 2. Building the Prefix Sum Array
 
 **Formula:**
+
 ```
 prefix[0] = arr[0]
 prefix[i] = prefix[i-1] + arr[i]   for i from 1 to n-1
@@ -48,16 +49,16 @@ prefix[i] = prefix[i-1] + arr[i]   for i from 1 to n-1
 
 **Step-by-step for `arr = [3, 1, 4, 1, 5, 9, 2, 6]`:**
 
-| i | arr[i] | prefix[i] = prefix[i-1] + arr[i] |
-|---|---|---|
-| 0 | 3 | 3 |
-| 1 | 1 | 3 + 1 = **4** |
-| 2 | 4 | 4 + 4 = **8** |
-| 3 | 1 | 8 + 1 = **9** |
-| 4 | 5 | 9 + 5 = **14** |
-| 5 | 9 | 14 + 9 = **23** |
-| 6 | 2 | 23 + 2 = **25** |
-| 7 | 6 | 25 + 6 = **31** |
+| i   | arr[i] | prefix[i] = prefix[i-1] + arr[i] |
+| --- | ------ | -------------------------------- |
+| 0   | 3      | 3                                |
+| 1   | 1      | 3 + 1 = **4**                    |
+| 2   | 4      | 4 + 4 = **8**                    |
+| 3   | 1      | 8 + 1 = **9**                    |
+| 4   | 5      | 9 + 5 = **14**                   |
+| 5   | 9      | 14 + 9 = **23**                  |
+| 6   | 2      | 23 + 2 = **25**                  |
+| 7   | 6      | 25 + 6 = **31**                  |
 
 `prefix = [3, 4, 8, 9, 14, 23, 25, 31]`
 
@@ -66,6 +67,7 @@ prefix[i] = prefix[i-1] + arr[i]   for i from 1 to n-1
 ## 3. Answering Range Queries in O(1)
 
 **Formula:**
+
 ```
 rangeSum(l, r) = prefix[r] - prefix[l - 1]
 
@@ -86,6 +88,7 @@ index:    0  1  2  3   4   5   6   7
 ```
 
 **Query 1 — Sum from index 2 to 5:**
+
 ```
 rangeSum(2, 5) = prefix[5] - prefix[1]
               = 23 - 4 = 19
@@ -93,6 +96,7 @@ Check: 4 + 1 + 5 + 9 = 19 ✓
 ```
 
 **Query 2 — Sum from index 0 to 4:**
+
 ```
 rangeSum(0, 4) = prefix[4]   (l=0, no subtraction)
               = 14
@@ -100,6 +104,7 @@ Check: 3 + 1 + 4 + 1 + 5 = 14 ✓
 ```
 
 **Query 3 — Sum from index 5 to 7:**
+
 ```
 rangeSum(5, 7) = prefix[7] - prefix[4]
               = 31 - 14 = 17
@@ -113,6 +118,7 @@ Each query = **one subtraction**. Whether the array has 10 elements or 10 millio
 ## 4. Code Implementation
 
 #### Python
+
 ```python
 def build_prefix(arr):
     n = len(arr)
@@ -141,6 +147,7 @@ print(range_sum(prefix, 5, 7))   # Output: 17
 ```
 
 #### C++
+
 ```cpp
 #include <iostream>
 #include <vector>
@@ -184,6 +191,7 @@ Build once in O(n), answer each query in O(1).
 Many competitive programmers use a `prefix` array of size `n+1` with `prefix[0] = 0`. This eliminates the special case when `l = 0`.
 
 #### Python
+
 ```python
 def build_prefix_clean(arr):
     n = len(arr)
@@ -208,6 +216,7 @@ print(range_sum_clean(prefix, 0, 4))   # Output: 14
 ```
 
 #### C++
+
 ```cpp
 vector<int> buildPrefixClean(vector<int> arr) {
     int n = arr.size();
@@ -231,14 +240,15 @@ int rangeSumClean(vector<int> prefix, int l, int r) {
 
 ## 6. Time and Space Complexity
 
-| Operation | Without Prefix Sum | With Prefix Sum |
-|---|---|---|
-| Build / preprocess | O(1) — no setup | O(n) |
-| Single range query | O(n) | O(1) |
-| Q queries total | O(n × Q) | O(n + Q) |
-| Extra space | O(1) | O(n) |
+| Operation          | Without Prefix Sum | With Prefix Sum |
+| ------------------ | ------------------ | --------------- |
+| Build / preprocess | O(1) — no setup    | O(n)            |
+| Single range query | O(n)               | O(1)            |
+| Q queries total    | O(n × Q)           | O(n + Q)        |
+| Extra space        | O(1)               | O(n)            |
 
 **Concrete example:** 10,000 queries on an array of 10,000 elements:
+
 - Brute force: 100,000,000 operations
 - Prefix sum: 10,000 + 10,000 = **20,000 operations** (5,000× faster)
 
@@ -253,6 +263,7 @@ Classic **space-time tradeoff** — a small amount of extra memory buys a massiv
 A very common interview problem. Uses prefix sum + a frequency map.
 
 #### Python
+
 ```python
 def subarray_sum(arr, k):
     count = 0
@@ -277,6 +288,7 @@ print(subarray_sum([1, 2, 3, -2, 5], 5)) # Output: 2  ([2,3] and [5])
 ```
 
 #### C++
+
 ```cpp
 #include <unordered_map>
 
@@ -306,6 +318,7 @@ int subarraySum(vector<int> arr, int k) {
 Find the index where left sum equals right sum.
 
 #### Python
+
 ```python
 def find_equilibrium(arr):
     total = sum(arr)
@@ -328,6 +341,7 @@ print(find_equilibrium(arr))   # Output: 3
 ```
 
 #### C++
+
 ```cpp
 int findEquilibrium(vector<int> arr) {
     int total = 0;
@@ -351,6 +365,7 @@ int findEquilibrium(vector<int> arr) {
 Prefix sum works for counts too — not just sums.
 
 #### Python
+
 ```python
 def build_even_prefix(arr):
     n = len(arr)
@@ -379,11 +394,11 @@ print(count_even_in_range(prefix, 1, 5))   # Output: 3  (4, 8, 10)
 
 Ask yourself these questions when reading a problem:
 
-| Question | If Yes → |
-|---|---|
-| Multiple range queries on the same static array? | Use prefix sum |
-| Need the sum of any subarray quickly? | Use prefix sum |
-| Count elements satisfying a condition in a range? | Use prefix sum |
+| Question                                            | If Yes →       |
+| --------------------------------------------------- | -------------- |
+| Multiple range queries on the same static array?    | Use prefix sum |
+| Need the sum of any subarray quickly?               | Use prefix sum |
+| Count elements satisfying a condition in a range?   | Use prefix sum |
 | Brute force has a nested loop with a running total? | Use prefix sum |
 
 ```mermaid
@@ -398,12 +413,12 @@ flowchart TD
 
 ## 9. Common Mistakes
 
-| Mistake | Fix |
-|---|---|
-| `prefix[-1]` when l=0 | Handle `l == 0` separately, or use the n+1 size version |
-| Mixing 0-indexed and 1-indexed styles | Pick one and stay consistent throughout |
-| Overwriting the original array | Keep `arr` and `prefix` as separate arrays |
-| Querying after array updates | Standard prefix sum is static — rebuild if array changes |
+| Mistake                               | Fix                                                      |
+| ------------------------------------- | -------------------------------------------------------- |
+| `prefix[-1]` when l=0                 | Handle `l == 0` separately, or use the n+1 size version  |
+| Mixing 0-indexed and 1-indexed styles | Pick one and stay consistent throughout                  |
+| Overwriting the original array        | Keep `arr` and `prefix` as separate arrays               |
+| Querying after array updates          | Standard prefix sum is static — rebuild if array changes |
 
 ---
 

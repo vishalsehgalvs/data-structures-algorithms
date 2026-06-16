@@ -53,6 +53,7 @@ Reason: subarray [4, -1, 2, 1] = 4 + (-1) + 2 + 1 = 6
 Check every possible subarray, sum it, track the max. Two nested loops.
 
 #### Python (Brute Force — don't use this)
+
 ```python
 def max_subarray_brute(arr):
     max_sum = arr[0]
@@ -72,6 +73,7 @@ print(max_subarray_brute([-2, 1, -3, 4, -1, 2, 1, -5, 4]))   # Output: 6
 ```
 
 #### C++ (Brute Force)
+
 ```cpp
 int maxSubarrayBrute(vector<int> arr) {
     int maxSum = arr[0];
@@ -96,6 +98,7 @@ Works correctly but is way too slow for large inputs. Kadane's does the same in 
 ## 4. The Core Idea
 
 At every position, you have **two choices**:
+
 1. **Extend** the current subarray — add `arr[i]` to the running sum
 2. **Start fresh** — begin a new subarray starting at `arr[i]`
 
@@ -123,12 +126,13 @@ At index 2 (value=-3):
 
 ## 5. The Two Key Variables
 
-| Variable | What it tracks |
-|---|---|
+| Variable      | What it tracks                                   |
+| ------------- | ------------------------------------------------ |
 | `current_sum` | Best sum of subarray **ending at current index** |
-| `max_sum` | Best sum found **anywhere so far** |
+| `max_sum`     | Best sum found **anywhere so far**               |
 
 At each step:
+
 ```
 current_sum = max(arr[i], current_sum + arr[i])
 max_sum     = max(max_sum, current_sum)
@@ -139,6 +143,7 @@ max_sum     = max(max_sum, current_sum)
 ## 6. Kadane's Algorithm Implementation
 
 #### Python
+
 ```python
 def max_subarray(arr):
     # Initialize both with first element, NOT zero
@@ -162,6 +167,7 @@ print(max_subarray([5]))                                  # Output: 5
 ```
 
 #### C++
+
 ```cpp
 #include <iostream>
 #include <vector>
@@ -201,17 +207,17 @@ int main() {
 
 **Input:** `[-2, 1, -3, 4, -1, 2, 1, -5, 4]`
 
-| i | arr[i] | current_sum | max_sum | Decision |
-|---|---|---|---|---|
-| 0 | -2 | -2 | -2 | Start here |
-| 1 | 1 | max(1, -2+1) = **1** | 1 | Start fresh (1 > -1) |
-| 2 | -3 | max(-3, 1-3) = **-2** | 1 | Extend (-2 > -3) |
-| 3 | 4 | max(4, -2+4) = **4** | 4 | Start fresh (4 > 2) |
-| 4 | -1 | max(-1, 4-1) = **3** | 4 | Extend (3 > -1) |
-| 5 | 2 | max(2, 3+2) = **5** | 5 | Extend (5 > 2) |
-| 6 | 1 | max(1, 5+1) = **6** | 6 | Extend (6 > 1) |
-| 7 | -5 | max(-5, 6-5) = **1** | 6 | Extend (1 > -5) |
-| 8 | 4 | max(4, 1+4) = **5** | 6 | Extend (5 > 4) |
+| i   | arr[i] | current_sum           | max_sum | Decision             |
+| --- | ------ | --------------------- | ------- | -------------------- |
+| 0   | -2     | -2                    | -2      | Start here           |
+| 1   | 1      | max(1, -2+1) = **1**  | 1       | Start fresh (1 > -1) |
+| 2   | -3     | max(-3, 1-3) = **-2** | 1       | Extend (-2 > -3)     |
+| 3   | 4      | max(4, -2+4) = **4**  | 4       | Start fresh (4 > 2)  |
+| 4   | -1     | max(-1, 4-1) = **3**  | 4       | Extend (3 > -1)      |
+| 5   | 2      | max(2, 3+2) = **5**   | 5       | Extend (5 > 2)       |
+| 6   | 1      | max(1, 5+1) = **6**   | 6       | Extend (6 > 1)       |
+| 7   | -5     | max(-5, 6-5) = **1**  | 6       | Extend (1 > -5)      |
+| 8   | 4      | max(4, 1+4) = **5**   | 6       | Extend (5 > 4)       |
 
 **Answer: 6** — the subarray `[4, -1, 2, 1]` starting at index 3.
 
@@ -231,6 +237,7 @@ Output: -1   ← the best we can do
 This works correctly **only because** we initialize `max_sum = arr[0]` (not 0). Initializing with 0 would wrongly return 0 for all-negative arrays.
 
 #### Python
+
 ```python
 print(max_subarray([-3, -1, -4, -2]))   # Output: -1  ✓
 # If you had initialized max_sum = 0, you'd get 0 — WRONG
@@ -243,6 +250,7 @@ print(max_subarray([-3, -1, -4, -2]))   # Output: -1  ✓
 Sometimes the interview asks for the subarray itself, not just the sum. Track start and end indices.
 
 #### Python
+
 ```python
 def max_subarray_with_indices(arr):
     max_sum = arr[0]
@@ -274,6 +282,7 @@ print(subarray)  # Output: [4, -1, 2, 1]
 ```
 
 #### C++
+
 ```cpp
 pair<int, vector<int>> maxSubarrayWithIndices(vector<int> arr) {
     int maxSum = arr[0], currentSum = arr[0];
@@ -303,10 +312,10 @@ pair<int, vector<int>> maxSubarrayWithIndices(vector<int> arr) {
 
 ## 10. Brute Force vs Kadane's
 
-| Approach | Time | Space | n = 10,000 |
-|---|---|---|---|
-| Brute Force | O(n²) | O(1) | ~100 million ops |
-| **Kadane's** | **O(n)** | **O(1)** | **~10,000 ops** |
+| Approach     | Time     | Space    | n = 10,000       |
+| ------------ | -------- | -------- | ---------------- |
+| Brute Force  | O(n²)    | O(1)     | ~100 million ops |
+| **Kadane's** | **O(n)** | **O(1)** | **~10,000 ops**  |
 
 Same space, 10,000× faster at n=10,000. This gap grows with input size.
 
@@ -314,12 +323,12 @@ Same space, 10,000× faster at n=10,000. This gap grows with input size.
 
 ## 11. Common Mistakes
 
-| Mistake | Why it breaks | Fix |
-|---|---|---|
-| Initializing `max_sum = 0` | Returns 0 for all-negative arrays | Always init with `arr[0]` |
-| Starting loop from index 0 | Double-counts the first element | Start loop from index **1** |
-| Not updating `max_sum` inside the loop | Misses the actual global max | Update `max_sum` every iteration |
-| Forgetting to handle empty array | `arr[0]` crashes on empty input | Validate input before calling |
+| Mistake                                | Why it breaks                     | Fix                              |
+| -------------------------------------- | --------------------------------- | -------------------------------- |
+| Initializing `max_sum = 0`             | Returns 0 for all-negative arrays | Always init with `arr[0]`        |
+| Starting loop from index 0             | Double-counts the first element   | Start loop from index **1**      |
+| Not updating `max_sum` inside the loop | Misses the actual global max      | Update `max_sum` every iteration |
+| Forgetting to handle empty array       | `arr[0]` crashes on empty input   | Validate input before calling    |
 
 ---
 
@@ -327,12 +336,12 @@ Same space, 10,000× faster at n=10,000. This gap grows with input size.
 
 Once you can write Kadane's from memory, try these:
 
-| Variation | Key twist |
-|---|---|
-| Maximum product subarray | Track both max and min (negatives flip sign) |
-| Maximum sum circular subarray | Answer is either normal max or total_sum - min_subarray |
-| Count subarrays with max sum | Track how many times `max_sum` is matched |
-| Maximum sum subarray of size at least k | Combine prefix sum + Kadane's |
+| Variation                               | Key twist                                               |
+| --------------------------------------- | ------------------------------------------------------- |
+| Maximum product subarray                | Track both max and min (negatives flip sign)            |
+| Maximum sum circular subarray           | Answer is either normal max or total_sum - min_subarray |
+| Count subarrays with max sum            | Track how many times `max_sum` is matched               |
+| Maximum sum subarray of size at least k | Combine prefix sum + Kadane's                           |
 
 Start with the basic version until you can write it without looking. Then tackle the variations one at a time.
 
