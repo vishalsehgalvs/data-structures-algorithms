@@ -28,6 +28,7 @@ assets/
 
 03_strings/
   01_string_basics.md            # String basics, operations, immutability, iteration
+  02_string_pattern_matching.md  # Naive search and KMP algorithm
 ```
 
 ---
@@ -64,6 +65,7 @@ Every file follows the same format:
 | 12                                        | Two Pointer Technique                     | ✅     |
 | **Section 3 — Strings**                   |                                           |        |
 | 13                                        | String Basics — Common Operations         | ✅     |
+| 14                                        | String Pattern Matching — Naive and KMP   | ✅     |
 | **Section 4 — Recursion & Backtracking**  |                                           |        |
 | **Section 5 — Sorting Algorithms**        |                                           |        |
 | **Section 6 — Searching Techniques**      |                                           |        |
