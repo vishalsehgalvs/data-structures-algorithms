@@ -129,10 +129,10 @@ std::cout << s.at(1) << std::endl;  // Output: e  (.at() does bounds checking)
 
 **Index reference for `"Hello"`:**
 
-| Index (positive) | 0 | 1 | 2 | 3 | 4 |
-|---|---|---|---|---|---|
-| Character | H | e | l | l | o |
-| Index (negative) | -5 | -4 | -3 | -2 | -1 |
+| Index (positive) | 0   | 1   | 2   | 3   | 4   |
+| ---------------- | --- | --- | --- | --- | --- |
+| Character        | H   | e   | l   | l   | o   |
+| Index (negative) | -5  | -4  | -3  | -2  | -1  |
 
 > **Time complexity:** O(1) — direct index lookup, same as arrays.
 
@@ -415,6 +415,7 @@ std::cout << s << std::endl;   // Output: I love dogs. Cats are great.
 ## 13. String Immutability
 
 In Python (and Java), **strings are immutable** — once created, you cannot change an individual character. Every modification creates a brand new string.
+In **C++, strings are mutable** — you can change individual characters directly.
 
 > **Analogy:** A string is like a printed book page. You can't change one letter on it. To make a change, you must print an entirely new page.
 
@@ -443,11 +444,11 @@ std::cout << s << std::endl;   // Output: hello
 
 **Immutability impact on complexity:**
 
-| Operation | Python | C++ |
-|---|---|---|
-| Change one character | O(n) — new string created | O(1) — direct modification |
-| Concatenate in a loop | O(n²) total — avoid! | O(n) total — efficient |
-| Build string from parts | Use `"".join(list)` → O(n) | Use `+=` → O(n) |
+| Operation               | Python                     | C++                        |
+| ----------------------- | -------------------------- | -------------------------- |
+| Change one character    | O(n) — new string created  | O(1) — direct modification |
+| Concatenate in a loop   | O(n²) total — avoid!       | O(n) total — efficient     |
+| Build string from parts | Use `"".join(list)` → O(n) | Use `+=` → O(n)            |
 
 ---
 
@@ -543,30 +544,30 @@ std::cout << a.compare(b) << std::endl;   // Output: negative number
 **ASCII values you should know:**
 
 | Character range | ASCII range |
-|---|---|
-| `'0'` to `'9'` | 48 to 57 |
-| `'A'` to `'Z'` | 65 to 90 |
-| `'a'` to `'z'` | 97 to 122 |
+| --------------- | ----------- |
+| `'0'` to `'9'`  | 48 to 57    |
+| `'A'` to `'Z'`  | 65 to 90    |
+| `'a'` to `'z'`  | 97 to 122   |
 
-> Key insight: lowercase letters have *higher* ASCII values than uppercase. `'a'` (97) > `'Z'` (90).
+> Key insight: lowercase letters have _higher_ ASCII values than uppercase. `'a'` (97) > `'Z'` (90).
 
 ---
 
 ## 16. Quick Reference Table
 
-| Operation | Python | C++ | Time Complexity |
-|---|---|---|---|
-| Length | `len(s)` | `s.length()` | O(1) |
-| Access by index | `s[i]` | `s[i]` or `s.at(i)` | O(1) |
-| Concatenation | `s1 + s2` | `s1 + s2` | O(n) |
-| Substring / Slice | `s[start:end]` | `s.substr(start, len)` | O(n) |
-| Find substring | `s.find(sub)` | `s.find(sub)` | O(n×m) |
-| Replace | `s.replace(a, b)` | loop + `s.replace()` | O(n) |
-| Split | `s.split(sep)` | `istringstream` | O(n) |
-| Trim | `s.strip()` | manual / `erase` | O(n) |
-| Upper / Lower | `s.upper()` / `s.lower()` | `transform` + `toupper/tolower` | O(n) |
-| Compare | `==`, `<`, `>` | `==`, `<`, `.compare()` | O(n) |
-| Iterate | `for char in s` | `for (char c : s)` | O(n) |
+| Operation         | Python                    | C++                             | Time Complexity |
+| ----------------- | ------------------------- | ------------------------------- | --------------- |
+| Length            | `len(s)`                  | `s.length()`                    | O(1)            |
+| Access by index   | `s[i]`                    | `s[i]` or `s.at(i)`             | O(1)            |
+| Concatenation     | `s1 + s2`                 | `s1 + s2`                       | O(n)            |
+| Substring / Slice | `s[start:end]`            | `s.substr(start, len)`          | O(n)            |
+| Find substring    | `s.find(sub)`             | `s.find(sub)`                   | O(n×m)          |
+| Replace           | `s.replace(a, b)`         | loop + `s.replace()`            | O(n)            |
+| Split             | `s.split(sep)`            | `istringstream`                 | O(n)            |
+| Trim              | `s.strip()`               | manual / `erase`                | O(n)            |
+| Upper / Lower     | `s.upper()` / `s.lower()` | `transform` + `toupper/tolower` | O(n)            |
+| Compare           | `==`, `<`, `>`            | `==`, `<`, `.compare()`         | O(n)            |
+| Iterate           | `for char in s`           | `for (char c : s)`              | O(n)            |
 
 ---
 
@@ -603,12 +604,12 @@ print("".join(chars))   # Output: olleH
 
 **Two-pointer trace for `"Hello"`:**
 
-| Step | left | right | chars | Action |
-|---|---|---|---|---|
-| Start | 0 | 4 | `['H','e','l','l','o']` | swap `H` and `o` |
-| 1 | 1 | 3 | `['o','e','l','l','H']` | swap `e` and `l` |
-| 2 | 2 | 2 | `['o','l','l','e','H']` | left == right, stop |
-| Done | — | — | `['o','l','l','e','H']` | `"olleH"` |
+| Step  | left | right | chars                   | Action              |
+| ----- | ---- | ----- | ----------------------- | ------------------- |
+| Start | 0    | 4     | `['H','e','l','l','o']` | swap `H` and `o`    |
+| 1     | 1    | 3     | `['o','e','l','l','H']` | swap `e` and `l`    |
+| 2     | 2    | 2     | `['o','l','l','e','H']` | left == right, stop |
+| Done  | —    | —     | `['o','l','l','e','H']` | `"olleH"`           |
 
 ```cpp
 // C++ — Method 1: built-in reverse
