@@ -25,6 +25,9 @@ assets/
   03_prefix_sum.md               # Prefix sum for fast range queries
   04_kadanes_algorithm.md        # Kadane's algorithm — maximum subarray sum
   05_two_pointers.md             # Two pointer technique (opposite ends + same direction)
+
+03_strings/
+  01_string_basics.md            # String basics, operations, immutability, iteration
 ```
 
 ---
@@ -60,6 +63,7 @@ Every file follows the same format:
 | 11                                        | Kadane's Algorithm                        | ✅     |
 | 12                                        | Two Pointer Technique                     | ✅     |
 | **Section 3 — Strings**                   |                                           |        |
+| 13                                        | String Basics — Common Operations         | ✅     |
 | **Section 4 — Recursion & Backtracking**  |                                           |        |
 | **Section 5 — Sorting Algorithms**        |                                           |        |
 | **Section 6 — Searching Techniques**      |                                           |        |
