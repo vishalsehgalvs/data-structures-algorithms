@@ -20,8 +20,9 @@
 11. [Time Complexity of KMP](#11-time-complexity-of-kmp)
 12. [Naive vs KMP — Quick Comparison](#12-naive-vs-kmp--quick-comparison)
 13. [Common Problem Types](#13-common-problem-types)
-14. [Key Takeaways](#14-key-takeaways)
-15. [FAQs](#15-faqs)
+14. [Tips for Beginners Practicing Pattern Matching](#14-tips-for-beginners-practicing-pattern-matching)
+15. [Key Takeaways](#15-key-takeaways)
+16. [FAQs](#16-faqs)
 
 ---
 
@@ -482,7 +483,17 @@ print(find_all("AABABAB", "AB"))   # Output: [1, 3, 5]
 
 ---
 
-## 14. Key Takeaways
+## 14. Tips for Beginners Practicing Pattern Matching
+
+1. **Start with naive search** — implement the double loop from scratch before touching KMP. Make sure you understand `range(n - m + 1)` and why the window stops there.
+2. **Build the LPS array manually on paper** — take a pattern like `"AABAABAAB"` and fill in the LPS values by hand before coding the function. This makes the logic click faster than reading code.
+3. **Trace KMP step by step** — use a short text like `"AABAABAAB"` and pattern `"AABA"`. Write out `i`, `j`, `text[i]`, `pattern[j]`, and `lps` at each step so you can see the jumps happen.
+4. **Add print statements** — inside the KMP loop, print `i` and `j` every iteration. Watching the values change shows exactly when LPS kicks in and why `i` never goes backward.
+5. **Practice on LeetCode problem 28** — "Find the Index of the First Occurrence in a String" is the canonical pattern matching problem. Once you can solve it with KMP, you have truly internalized the algorithm.
+
+---
+
+## 15. Key Takeaways
 
 - **Pattern matching** finds where a pattern occurs inside a text — used everywhere from Ctrl+F to DNA sequencing.
 - **Naive search** slides the pattern one step at a time and compares character by character — O(n × m), simple but slow for large inputs.
@@ -493,7 +504,7 @@ print(find_all("AABABAB", "AB"))   # Output: [1, 3, 5]
 
 ---
 
-## 15. FAQs
+## 16. FAQs
 
 **Q: What is the difference between naive search and KMP?**  
 Naive search checks every position from scratch — O(n × m). KMP uses the LPS array to skip unnecessary comparisons — O(n + m). KMP is significantly faster for large inputs.
