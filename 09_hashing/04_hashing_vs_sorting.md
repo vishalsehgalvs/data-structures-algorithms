@@ -28,8 +28,9 @@
 ## 1. Hashing or Sorting: Which One to Pick?
 
 Imagine a bag of coloured marbles and two questions:
-1. *"Do you have any red marbles?"*
-2. *"List all the marbles from lightest to darkest colour."*
+
+1. _"Do you have any red marbles?"_
+2. _"List all the marbles from lightest to darkest colour."_
 
 Would you use the same method for both? Probably not. That is exactly how hashing and sorting work — they solve different shapes of problem.
 
@@ -50,15 +51,15 @@ Sorting:  bag → arranged sequence       →  ordered view of all items
 
 ## 3. Time Complexity Comparison
 
-| Operation | Hashing (HashMap/Set) | Sorting |
-|---|---|---|
-| Search an element | $O(1)$ average | $O(\log n)$ after $O(n \log n)$ sort |
-| Insert an element | $O(1)$ average | $O(n \log n)$ to re-sort |
-| Count frequency | $O(n)$ | $O(n \log n)$ |
-| Find duplicates | $O(n)$ | $O(n \log n)$ |
-| K-th smallest | Not straightforward | $O(n \log n)$ then index |
-| Range queries | Not natural | $O(\log n)$ with binary search |
-| Space used | $O(n)$ extra | $O(1)$ to $O(n)$ depending on algorithm |
+| Operation         | Hashing (HashMap/Set) | Sorting                                 |
+| ----------------- | --------------------- | --------------------------------------- |
+| Search an element | $O(1)$ average        | $O(\log n)$ after $O(n \log n)$ sort    |
+| Insert an element | $O(1)$ average        | $O(n \log n)$ to re-sort                |
+| Count frequency   | $O(n)$                | $O(n \log n)$                           |
+| Find duplicates   | $O(n)$                | $O(n \log n)$                           |
+| K-th smallest     | Not straightforward   | $O(n \log n)$ then index                |
+| Range queries     | Not natural           | $O(\log n)$ with binary search          |
+| Space used        | $O(n)$ extra          | $O(1)$ to $O(n)$ depending on algorithm |
 
 In most **lookup and counting** tasks, hashing wins on speed. Sorting unlocks capabilities hashing cannot provide: order, rank, and range.
 
@@ -377,17 +378,17 @@ Hashing could remove duplicates too, but it would not give you the results in so
 
 ## 6. Side-by-Side Decision Guide
 
-| Problem Type | Use Hashing | Use Sorting |
-|---|---|---|
-| Count element frequency | ✓ $O(n)$ | Possible but $O(n \log n)$ |
-| Check if element exists | ✓ $O(1)$ | $O(\log n)$ after sorting |
-| Find duplicates | ✓ $O(n)$ | $O(n \log n)$ |
-| Two Sum / Pair Sum | ✓ $O(n)$ | Two pointers $O(n \log n)$ |
-| K-th smallest or largest | Not direct | ✓ Sort then index |
-| Range queries | Not efficient | ✓ Binary search |
-| Anagram detection | ✓ Frequency map | ✓ Sort characters |
-| Order matters in output | ✗ | ✓ |
-| Space is very tight | Uses $O(n)$ extra | In-place $O(1)$ extra |
+| Problem Type             | Use Hashing       | Use Sorting                |
+| ------------------------ | ----------------- | -------------------------- |
+| Count element frequency  | ✓ $O(n)$          | Possible but $O(n \log n)$ |
+| Check if element exists  | ✓ $O(1)$          | $O(\log n)$ after sorting  |
+| Find duplicates          | ✓ $O(n)$          | $O(n \log n)$              |
+| Two Sum / Pair Sum       | ✓ $O(n)$          | Two pointers $O(n \log n)$ |
+| K-th smallest or largest | Not direct        | ✓ Sort then index          |
+| Range queries            | Not efficient     | ✓ Binary search            |
+| Anagram detection        | ✓ Frequency map   | ✓ Sort characters          |
+| Order matters in output  | ✗                 | ✓                          |
+| Space is very tight      | Uses $O(n)$ extra | In-place $O(1)$ extra      |
 
 > **Rule of thumb:** hashing = speed tool; sorting = order tool.
 
