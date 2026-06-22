@@ -27,6 +27,7 @@
 Imagine two runners on a circular track. One runs fast and one runs slow. If the track is circular, the fast runner will eventually lap the slow runner — they end up at the same spot. This simple idea powers one of the most elegant techniques in linked list problem solving.
 
 The **fast and slow pointer technique** uses two pointers that move through a linked list at different speeds:
+
 - **Slow pointer** — moves **one step** at a time
 - **Fast pointer** — moves **two steps** at a time
 
@@ -47,11 +48,11 @@ Step 3:  slow = 4,  fast = null  ← no cycle, list is finite
 
 Before this technique, developers stored visited nodes in a hash map to detect cycles. That works, but costs $O(n)$ extra memory. The fast and slow pointer approach solves the same problems in **$O(1)$ extra space** — no auxiliary data structure needed.
 
-| Approach                    | Cycle Detection Time | Extra Space | Find Middle    |
-| --------------------------- | -------------------- | ----------- | -------------- |
-| Hash map (store visited)    | $O(n)$               | $O(n)$      | Not directly   |
-| Count length, then traverse | N/A                  | $O(1)$      | $O(n)$ 2-pass  |
-| Fast and slow pointer       | $O(n)$               | $O(1)$      | $O(n)$ 1-pass  |
+| Approach                    | Cycle Detection Time | Extra Space | Find Middle   |
+| --------------------------- | -------------------- | ----------- | ------------- |
+| Hash map (store visited)    | $O(n)$               | $O(n)$      | Not directly  |
+| Count length, then traverse | N/A                  | $O(1)$      | $O(n)$ 2-pass |
+| Fast and slow pointer       | $O(n)$               | $O(1)$      | $O(n)$ 1-pass |
 
 Linked lists do not support direct index access — you must traverse from the head. The fast and slow pointer technique extracts useful information in a **single pass**.
 
@@ -67,6 +68,7 @@ fast = fast.next.next     # advance 2 nodes
 ```
 
 Two outcomes:
+
 1. **No cycle** — `fast` reaches `null` before the pointers meet → list is finite.
 2. **Cycle exists** — the pointers will eventually land on the same node inside the cycle.
 
@@ -263,11 +265,11 @@ List structure: `1 → 2 → 3 → 4 → 5`, where node 5 points back to node 3.
         └─────────┘  (cycle: 5.next = 3)
 ```
 
-| Step | slow (node) | fast (node) | Action                                      |
-| ---- | ----------- | ----------- | ------------------------------------------- |
-| 0    | 1           | 1           | Initial position                            |
-| 1    | 2           | 3           | slow→2, fast→1.next.next=3                  |
-| 2    | 3           | 5           | slow→3, fast→3.next.next=5                  |
+| Step | slow (node) | fast (node) | Action                                       |
+| ---- | ----------- | ----------- | -------------------------------------------- |
+| 0    | 1           | 1           | Initial position                             |
+| 1    | 2           | 3           | slow→2, fast→1.next.next=3                   |
+| 2    | 3           | 5           | slow→3, fast→3.next.next=5                   |
 | 3    | 4           | 4           | slow→4, fast→5.next.next=3.next=4 ← **MEET** |
 
 Both pointers land on node `4`. Cycle detected in 3 steps. ✓
@@ -278,22 +280,22 @@ Both pointers land on node `4`. Cycle detected in 3 steps. ✓
 
 List: `10 → 20 → 30 → 40 → 50` (5 nodes)
 
-| Step | slow (value) | fast (value) | Condition check                        |
-| ---- | ------------ | ------------ | -------------------------------------- |
+| Step | slow (value) | fast (value) | Condition check                                                                 |
+| ---- | ------------ | ------------ | ------------------------------------------------------------------------------- |
 | 0    | 10           | 10           | fast=50≠null, fast.next=null? No (50 has next=null, but 10's fast.next.next=30) |
-| 1    | 20           | 30           | fast=30≠null, fast.next=40≠null → continue |
-| 2    | 30           | 50           | fast=50≠null, fast.next=null → loop exits |
+| 1    | 20           | 30           | fast=30≠null, fast.next=40≠null → continue                                      |
+| 2    | 30           | 50           | fast=50≠null, fast.next=null → loop exits                                       |
 
 Loop exits with `slow = 30`. Middle node returned: **30** ✓
 
 For a 6-node list `10 → 20 → 30 → 40 → 50 → 60`:
 
-| Step | slow (value) | fast (value) | Condition check                    |
-| ---- | ------------ | ------------ | ---------------------------------- |
+| Step | slow (value) | fast (value) | Condition check                      |
+| ---- | ------------ | ------------ | ------------------------------------ |
 | 0    | 10           | 10           | fast≠null, fast.next≠null → continue |
 | 1    | 20           | 30           | fast≠null, fast.next≠null → continue |
 | 2    | 30           | 50           | fast≠null, fast.next≠null → continue |
-| 3    | 40           | null         | fast=null → loop exits             |
+| 3    | 40           | null         | fast=null → loop exits               |
 
 Middle node returned: **40** (second middle for even length) ✓
 
@@ -301,11 +303,11 @@ Middle node returned: **40** (second middle for even length) ✓
 
 ## 9. Comparing Approaches
 
-| Approach                 | Cycle Detection | Time     | Space  | Find Middle | Time     | Space  |
-| ------------------------ | --------------- | -------- | ------ | ----------- | -------- | ------ |
-| Hash map (store visited) | ✅ Yes          | $O(n)$   | $O(n)$ | ❌ No       | —        | —      |
-| Count length, then walk  | ❌ No           | —        | —      | ✅ Yes      | $O(n)$   | $O(1)$ |
-| Fast and slow pointer    | ✅ Yes          | $O(n)$   | $O(1)$ | ✅ Yes      | $O(n)$   | $O(1)$ |
+| Approach                 | Cycle Detection | Time   | Space  | Find Middle | Time   | Space  |
+| ------------------------ | --------------- | ------ | ------ | ----------- | ------ | ------ |
+| Hash map (store visited) | ✅ Yes          | $O(n)$ | $O(n)$ | ❌ No       | —      | —      |
+| Count length, then walk  | ❌ No           | —      | —      | ✅ Yes      | $O(n)$ | $O(1)$ |
+| Fast and slow pointer    | ✅ Yes          | $O(n)$ | $O(1)$ | ✅ Yes      | $O(n)$ | $O(1)$ |
 
 The fast and slow pointer technique wins on **space efficiency** for cycle detection and on **simplicity** for middle-node finding (single pass vs two passes).
 

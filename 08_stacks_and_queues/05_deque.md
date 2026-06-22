@@ -27,7 +27,7 @@
 
 Imagine a line of people at a buffet where new guests can join from **either end**, and people can also leave from **either end**. That is exactly how a deque works in programming.
 
-A **deque** (pronounced *"deck"*, short for **Double-Ended Queue**) is a data structure that lets you add and remove elements from both the front and the rear. Unlike a regular queue — add at back, remove from front only — a deque gives you full control over both ends.
+A **deque** (pronounced _"deck"_, short for **Double-Ended Queue**) is a data structure that lets you add and remove elements from both the front and the rear. Unlike a regular queue — add at back, remove from front only — a deque gives you full control over both ends.
 
 ```
       push_front ──→ [ A | B | C | D ] ──→ push_back
@@ -41,13 +41,13 @@ This flexibility makes the deque one of the most powerful and versatile tools in
 
 ## 2. Deque vs Queue vs Stack
 
-| Feature | Stack | Queue | Deque |
-|---|---|---|---|
-| Insert at front | No | No | **Yes** |
-| Insert at rear | Yes (`push`) | Yes (`enqueue`) | **Yes** |
-| Remove from front | No | Yes (`dequeue`) | **Yes** |
-| Remove from rear | Yes (`pop`) | No | **Yes** |
-| Access pattern | LIFO | FIFO | **Both** |
+| Feature           | Stack        | Queue           | Deque    |
+| ----------------- | ------------ | --------------- | -------- |
+| Insert at front   | No           | No              | **Yes**  |
+| Insert at rear    | Yes (`push`) | Yes (`enqueue`) | **Yes**  |
+| Remove from front | No           | Yes (`dequeue`) | **Yes**  |
+| Remove from rear  | Yes (`pop`)  | No              | **Yes**  |
+| Access pattern    | LIFO         | FIFO            | **Both** |
 
 A deque is a **superset** of both stack and queue. You can simulate either one using a deque by restricting which end you use.
 
@@ -72,11 +72,11 @@ Think of it as a one-way entry but two-way exit.
 Deletion is allowed **only from the front**, but insertion can happen from **both ends**.  
 Think of it as a two-way entry but one-way exit.
 
-| Type | Insert Front | Insert Rear | Remove Front | Remove Rear |
-|---|---|---|---|---|
-| Input-Restricted | ✗ | ✓ | ✓ | ✓ |
-| Output-Restricted | ✓ | ✓ | ✓ | ✗ |
-| Fully Flexible | ✓ | ✓ | ✓ | ✓ |
+| Type              | Insert Front | Insert Rear | Remove Front | Remove Rear |
+| ----------------- | ------------ | ----------- | ------------ | ----------- |
+| Input-Restricted  | ✗            | ✓           | ✓            | ✓           |
+| Output-Restricted | ✓            | ✓           | ✓            | ✗           |
+| Fully Flexible    | ✓            | ✓           | ✓            | ✓           |
 
 In most coding problems and interview questions, you use the **fully flexible** deque.
 
@@ -84,16 +84,16 @@ In most coding problems and interview questions, you use the **fully flexible** 
 
 ## 4. Core Deque Operations
 
-| Operation | Description | Time |
-|---|---|---|
-| `push_front(x)` | Add element to the front | $O(1)$ |
-| `push_back(x)` | Add element to the rear | $O(1)$ |
-| `pop_front()` | Remove element from the front | $O(1)$ |
-| `pop_back()` | Remove element from the rear | $O(1)$ |
-| `front()` | Peek at front element (no removal) | $O(1)$ |
-| `back()` | Peek at rear element (no removal) | $O(1)$ |
-| `isEmpty()` | Check if deque has no elements | $O(1)$ |
-| `size()` | Number of elements in deque | $O(1)$ |
+| Operation       | Description                        | Time   |
+| --------------- | ---------------------------------- | ------ |
+| `push_front(x)` | Add element to the front           | $O(1)$ |
+| `push_back(x)`  | Add element to the rear            | $O(1)$ |
+| `pop_front()`   | Remove element from the front      | $O(1)$ |
+| `pop_back()`    | Remove element from the rear       | $O(1)$ |
+| `front()`       | Peek at front element (no removal) | $O(1)$ |
+| `back()`        | Peek at rear element (no removal)  | $O(1)$ |
+| `isEmpty()`     | Check if deque has no elements     | $O(1)$ |
+| `size()`        | Number of elements in deque        | $O(1)$ |
 
 All critical operations run in $O(1)$ — this is the key advantage over a regular list.
 
@@ -408,13 +408,13 @@ int main() {
 
 ## 7. Time and Space Complexity
 
-| Operation | Time Complexity | Notes |
-|---|---|---|
-| `push_front` / `push_back` | $O(1)$ | Constant time insertion |
-| `pop_front` / `pop_back` | $O(1)$ | Constant time removal |
-| `front` / `back` (peek) | $O(1)$ | No element is removed |
-| Search (by value) | $O(n)$ | Linear scan required |
-| Space | $O(n)$ | $n$ elements stored |
+| Operation                  | Time Complexity | Notes                   |
+| -------------------------- | --------------- | ----------------------- |
+| `push_front` / `push_back` | $O(1)$          | Constant time insertion |
+| `pop_front` / `pop_back`   | $O(1)$          | Constant time removal   |
+| `front` / `back` (peek)    | $O(1)$          | No element is removed   |
+| Search (by value)          | $O(n)$          | Linear scan required    |
+| Space                      | $O(n)$          | $n$ elements stored     |
 
 > Compare with Python `list`: `list.pop(0)` and `list.insert(0, x)` are both $O(n)$ because they shift every element. `deque.popleft()` and `deque.appendleft()` are always $O(1)$.
 
@@ -422,7 +422,7 @@ int main() {
 
 ## 8. Common Mistakes
 
-1. **Confusing `append` with `appendleft` in Python** — `append` adds to the *rear*; `appendleft` adds to the *front*. Getting these swapped produces mirror-image results.
+1. **Confusing `append` with `appendleft` in Python** — `append` adds to the _rear_; `appendleft` adds to the _front_. Getting these swapped produces mirror-image results.
 2. **Not checking for empty before pop** — calling `pop()` or `popleft()` on an empty deque raises `IndexError` in Python and undefined behaviour in C++. Always guard with `if dq:` / `if (!dq.empty())`.
 3. **Using `list.pop(0)` instead of `deque.popleft()`** — `list.pop(0)` is $O(n)$ because it shifts every element. Use `collections.deque` whenever you need fast front removal.
 4. **Forgetting to evict outdated indices in sliding window** — if you skip the `dq[0] < i - k + 1` check, indices from old windows pollute the result.

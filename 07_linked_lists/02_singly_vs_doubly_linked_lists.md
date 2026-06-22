@@ -287,15 +287,15 @@ Notice how we can walk in both directions — something a singly linked list can
 
 ## 8. Key Differences at a Glance
 
-| Feature                     | Singly Linked List             | Doubly Linked List                  |
-| --------------------------- | ------------------------------ | ----------------------------------- |
-| Pointers per node           | 1 (`next` only)                | 2 (`next` and `prev`)               |
-| Traversal direction         | Forward only                   | Forward and backward                |
-| Memory per node             | Less                           | More (extra pointer ~8 bytes)       |
-| Delete a known node         | Need previous node reference   | $O(1)$ — `prev` is already stored   |
-| Insert / delete at tail     | $O(n)$ without tail pointer    | $O(1)$ with tail pointer            |
-| Implementation complexity   | Simpler                        | Slightly more complex               |
-| Common use cases            | Stacks, simple queues, chains  | Browser history, undo-redo, deque   |
+| Feature                   | Singly Linked List            | Doubly Linked List                |
+| ------------------------- | ----------------------------- | --------------------------------- |
+| Pointers per node         | 1 (`next` only)               | 2 (`next` and `prev`)             |
+| Traversal direction       | Forward only                  | Forward and backward              |
+| Memory per node           | Less                          | More (extra pointer ~8 bytes)     |
+| Delete a known node       | Need previous node reference  | $O(1)$ — `prev` is already stored |
+| Insert / delete at tail   | $O(n)$ without tail pointer   | $O(1)$ with tail pointer          |
+| Implementation complexity | Simpler                       | Slightly more complex             |
+| Common use cases          | Stacks, simple queues, chains | Browser history, undo-redo, deque |
 
 The extra `prev` pointer in a doubly linked list is very helpful in practice. But if you do not need backward traversal, a singly linked list saves memory and keeps things simple.
 
@@ -473,14 +473,14 @@ This $O(1)$ deletion of a known node is the standout advantage of a doubly linke
 
 Assumes access to both `head` and `tail` pointers.
 
-| Operation               | Singly Linked List                    | Doubly Linked List            |
-| ----------------------- | ------------------------------------- | ----------------------------- |
-| Access by index         | $O(n)$                                | $O(n)$                        |
-| Insert at head          | $O(1)$                                | $O(1)$                        |
-| Insert at tail          | $O(n)$ or $O(1)$ with tail pointer    | $O(1)$ with tail pointer      |
-| Delete at head          | $O(1)$                                | $O(1)$                        |
-| Delete a **known** node | $O(n)$ — need to find previous first  | $O(1)$ — `prev` is stored     |
-| Backward traversal      | Not possible without reversal         | $O(n)$                        |
+| Operation               | Singly Linked List                   | Doubly Linked List        |
+| ----------------------- | ------------------------------------ | ------------------------- |
+| Access by index         | $O(n)$                               | $O(n)$                    |
+| Insert at head          | $O(1)$                               | $O(1)$                    |
+| Insert at tail          | $O(n)$ or $O(1)$ with tail pointer   | $O(1)$ with tail pointer  |
+| Delete at head          | $O(1)$                               | $O(1)$                    |
+| Delete a **known** node | $O(n)$ — need to find previous first | $O(1)$ — `prev` is stored |
+| Backward traversal      | Not possible without reversal        | $O(n)$                    |
 
 The $O(1)$ deletion of a known node is the headline advantage. In most other operations the two types perform identically.
 

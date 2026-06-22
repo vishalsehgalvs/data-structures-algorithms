@@ -24,7 +24,7 @@
 
 ## 1. What is a Monotonic Stack?
 
-A **monotonic stack** is a stack where elements are always maintained in either increasing or decreasing order from bottom to top. The word *monotonic* simply means "always going in one direction."
+A **monotonic stack** is a stack where elements are always maintained in either increasing or decreasing order from bottom to top. The word _monotonic_ simply means "always going in one direction."
 
 A regular stack follows the Last In First Out (LIFO) rule with no constraint on element order. A monotonic stack adds one rule: **before pushing a new element, pop all elements that would violate the order**. Every popped element gets its answer (next/previous greater or smaller) resolved at that moment.
 
@@ -56,10 +56,10 @@ When pushing a new element $X$, pop all elements **smaller than** $X$ first.
 
 > Used to find the **Next Greater Element** or **Previous Greater Element**.
 
-| Type | Order (Bottom → Top) | Pop condition when pushing X | Common use case |
-|---|---|---|---|
-| Increasing Stack | Small → Large | Pop if top **>** X | Next / Previous Smaller Element |
-| Decreasing Stack | Large → Small | Pop if top **<** X | Next / Previous Greater Element |
+| Type             | Order (Bottom → Top) | Pop condition when pushing X | Common use case                 |
+| ---------------- | -------------------- | ---------------------------- | ------------------------------- |
+| Increasing Stack | Small → Large        | Pop if top **>** X           | Next / Previous Smaller Element |
+| Decreasing Stack | Large → Small        | Pop if top **<** X           | Next / Previous Greater Element |
 
 ---
 
@@ -82,18 +82,18 @@ flowchart LR
 
 **Dry run trace:**
 
-| Step | i | val | Action | Stack (indices) | result |
-|---|---|---|---|---|---|
-| 1 | 0 | 3 | push 0 | [0] | [-1,-1,-1,-1,-1] |
-| 2 | 1 | 1 | 1 < 3 → push 1 | [0, 1] | [-1,-1,-1,-1,-1] |
-| 3 | 2 | 4 | 4 > arr[1]=1 → pop 1, NGE[1]=4 | [0] | [-1,4,-1,-1,-1] |
-| 4 | 2 | 4 | 4 > arr[0]=3 → pop 0, NGE[0]=4 | [] | [4,4,-1,-1,-1] |
-| 5 | 2 | 4 | push 2 | [2] | [4,4,-1,-1,-1] |
-| 6 | 3 | 2 | 2 < 4 → push 3 | [2, 3] | [4,4,-1,-1,-1] |
-| 7 | 4 | 5 | 5 > arr[3]=2 → pop 3, NGE[3]=5 | [2] | [4,4,-1,5,-1] |
-| 8 | 4 | 5 | 5 > arr[2]=4 → pop 2, NGE[2]=5 | [] | [4,4,5,5,-1] |
-| 9 | 4 | 5 | push 4 | [4] | [4,4,5,5,-1] |
-| 10 | — | — | end: index 4 unresolved → -1 | [] | [4,4,5,5,-1] |
+| Step | i   | val | Action                         | Stack (indices) | result           |
+| ---- | --- | --- | ------------------------------ | --------------- | ---------------- |
+| 1    | 0   | 3   | push 0                         | [0]             | [-1,-1,-1,-1,-1] |
+| 2    | 1   | 1   | 1 < 3 → push 1                 | [0, 1]          | [-1,-1,-1,-1,-1] |
+| 3    | 2   | 4   | 4 > arr[1]=1 → pop 1, NGE[1]=4 | [0]             | [-1,4,-1,-1,-1]  |
+| 4    | 2   | 4   | 4 > arr[0]=3 → pop 0, NGE[0]=4 | []              | [4,4,-1,-1,-1]   |
+| 5    | 2   | 4   | push 2                         | [2]             | [4,4,-1,-1,-1]   |
+| 6    | 3   | 2   | 2 < 4 → push 3                 | [2, 3]          | [4,4,-1,-1,-1]   |
+| 7    | 4   | 5   | 5 > arr[3]=2 → pop 3, NGE[3]=5 | [2]             | [4,4,-1,5,-1]    |
+| 8    | 4   | 5   | 5 > arr[2]=4 → pop 2, NGE[2]=5 | []              | [4,4,5,5,-1]     |
+| 9    | 4   | 5   | push 4                         | [4]             | [4,4,5,5,-1]     |
+| 10   | —   | —   | end: index 4 unresolved → -1   | []              | [4,4,5,5,-1]     |
 
 **Final answer:** `[4, 4, 5, 5, -1]`
 
@@ -231,6 +231,7 @@ int main() {
 ```
 
 For `[4, 2, 7, 1, 3]`:
+
 - NSE of 4 is **2** (first smaller to the right)
 - NSE of 2 is **1**
 - NSE of 7 is **1**
@@ -242,7 +243,7 @@ The **only difference** from NGE is the `<` vs `>` comparison in the while loop.
 
 ## 6. Real-Life Analogy
 
-Imagine walking through a city skyline from left to right. For each building you pass, you want to know: *"What is the first taller building ahead of me?"*
+Imagine walking through a city skyline from left to right. For each building you pass, you want to know: _"What is the first taller building ahead of me?"_
 
 As you walk, you keep a mental list of buildings whose answer is still unknown. The moment you see a taller building, you immediately resolve **all shorter buildings** in your list — their answer is now found. The taller building then joins the waiting list.
 
@@ -265,16 +266,16 @@ The "waiting list" is the stack. Each resolved building is a pop. This is why ev
 
 Once you master NGE and NSE, these problems all follow the same core pattern with minor variations:
 
-| Problem | Stack type | Direction |
-|---|---|---|
-| Next Greater Element | Decreasing | Left → Right |
-| Next Smaller Element | Increasing | Left → Right |
-| Previous Greater Element | Decreasing | Left → Right (check before push) |
-| Previous Smaller Element | Increasing | Left → Right (check before push) |
-| Largest Rectangle in Histogram | Increasing | Left → Right |
-| Stock Span Problem | Decreasing | Left → Right |
-| Daily Temperatures | Decreasing | Left → Right |
-| Sum of Subarray Minimums | Increasing | Left → Right |
+| Problem                        | Stack type | Direction                        |
+| ------------------------------ | ---------- | -------------------------------- |
+| Next Greater Element           | Decreasing | Left → Right                     |
+| Next Smaller Element           | Increasing | Left → Right                     |
+| Previous Greater Element       | Decreasing | Left → Right (check before push) |
+| Previous Smaller Element       | Increasing | Left → Right (check before push) |
+| Largest Rectangle in Histogram | Increasing | Left → Right                     |
+| Stock Span Problem             | Decreasing | Left → Right                     |
+| Daily Temperatures             | Decreasing | Left → Right                     |
+| Sum of Subarray Minimums       | Increasing | Left → Right                     |
 
 All share the insight: **use a stack to track elements whose relationship with nearby elements is still unresolved, and resolve them in bulk when a new element triggers a pop.**
 
@@ -352,21 +353,21 @@ int main() {
 }
 ```
 
-**Key difference from NGE:** We store **values** (not indices) and read the top *before* pushing, instead of resolving on pop.
+**Key difference from NGE:** We store **values** (not indices) and read the top _before_ pushing, instead of resolving on pop.
 
-| Element | PGE | Reason |
-|---|---|---|
-| 10 | -1 | Nothing before it |
-| 4 | 10 | 10 is first greater to its left |
-| 6 | 10 | 4 was popped (≤ 6), 10 remains |
-| 3 | 6 | 6 > 3 |
-| 8 | 10 | 6 and 4 popped (≤ 8), 10 remains |
+| Element | PGE | Reason                           |
+| ------- | --- | -------------------------------- |
+| 10      | -1  | Nothing before it                |
+| 4       | 10  | 10 is first greater to its left  |
+| 6       | 10  | 4 was popped (≤ 6), 10 remains   |
+| 3       | 6   | 6 > 3                            |
+| 8       | 10  | 6 and 4 popped (≤ 8), 10 remains |
 
 ---
 
 ## 9. Key Tips for Using Monotonic Stack
 
-1. **Direction:** For NEXT element (right side) → process left to right. For PREVIOUS element (left side) → process left to right but *read the stack before pushing*.
+1. **Direction:** For NEXT element (right side) → process left to right. For PREVIOUS element (left side) → process left to right but _read the stack before pushing_.
 2. **Stack type:** Decreasing stack for GREATER problems; Increasing stack for SMALLER problems.
 3. **Indices vs values:** Store **indices** when you need to fill a result array by position or measure distances. Store **values** when you only need to compare magnitudes.
 4. **Pop condition decides the type:** `while stack and arr[i] > arr[stack[-1]]` → decreasing. `while stack and arr[i] < arr[stack[-1]]` → increasing.
@@ -376,26 +377,26 @@ int main() {
 
 ## 10. Monotonic Stack vs Regular Stack
 
-| Feature | Regular Stack | Monotonic Stack |
-|---|---|---|
-| Element order | No constraint | Always increasing or decreasing |
-| Push behaviour | Always push directly | Pop first if order would break, then push |
-| Pop trigger | Manual / explicit | Triggered by incoming element |
-| Use case | General LIFO tasks | Next/Previous Greater or Smaller problems |
-| Time complexity | $O(1)$ per push/pop | $O(n)$ total for the entire array |
-| Space complexity | $O(n)$ worst case | $O(n)$ worst case |
+| Feature          | Regular Stack        | Monotonic Stack                           |
+| ---------------- | -------------------- | ----------------------------------------- |
+| Element order    | No constraint        | Always increasing or decreasing           |
+| Push behaviour   | Always push directly | Pop first if order would break, then push |
+| Pop trigger      | Manual / explicit    | Triggered by incoming element             |
+| Use case         | General LIFO tasks   | Next/Previous Greater or Smaller problems |
+| Time complexity  | $O(1)$ per push/pop  | $O(n)$ total for the entire array         |
+| Space complexity | $O(n)$ worst case    | $O(n)$ worst case                         |
 
 ---
 
 ## 11. Complexity Summary
 
-| Operation / Variant | Time | Space |
-|---|---|---|
-| Next Greater Element | $O(n)$ | $O(n)$ |
-| Next Smaller Element | $O(n)$ | $O(n)$ |
-| Previous Greater Element | $O(n)$ | $O(n)$ |
-| Previous Smaller Element | $O(n)$ | $O(n)$ |
-| Brute-force (all pairs) | $O(n^2)$ | $O(1)$ |
+| Operation / Variant      | Time     | Space  |
+| ------------------------ | -------- | ------ |
+| Next Greater Element     | $O(n)$   | $O(n)$ |
+| Next Smaller Element     | $O(n)$   | $O(n)$ |
+| Previous Greater Element | $O(n)$   | $O(n)$ |
+| Previous Smaller Element | $O(n)$   | $O(n)$ |
+| Brute-force (all pairs)  | $O(n^2)$ | $O(1)$ |
 
 Every element is pushed at most once and popped at most once, so the total work across all loop iterations is $O(n)$ regardless of how many pops happen at a given step.
 
@@ -417,7 +418,7 @@ Every element is pushed at most once and popped at most once, so the total work 
 ## 13. FAQs
 
 **When should I use a monotonic stack instead of brute force?**  
-Whenever you need the next or previous greater/smaller element for *every* element in an array. Brute force checks all pairs in $O(n^2)$; a monotonic stack does it in $O(n)$. For arrays of size $10^5$ or more, this difference is critical.
+Whenever you need the next or previous greater/smaller element for _every_ element in an array. Brute force checks all pairs in $O(n^2)$; a monotonic stack does it in $O(n)$. For arrays of size $10^5$ or more, this difference is critical.
 
 **How do I decide between an increasing and a decreasing stack?**  
 Ask what you are looking for. GREATER element → decreasing stack (pop when new element is larger). SMALLER element → increasing stack (pop when new element is smaller). The pop condition mirrors the type.

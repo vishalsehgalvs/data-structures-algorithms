@@ -22,9 +22,10 @@
 
 ## 1. What Is This About and Why Does It Matter?
 
-Have you ever tried to open a door by pushing it when it clearly says *pull*? You used the wrong tool on purpose. That is exactly what we do here — and it teaches us something powerful about how stacks and queues work under the hood.
+Have you ever tried to open a door by pushing it when it clearly says _pull_? You used the wrong tool on purpose. That is exactly what we do here — and it teaches us something powerful about how stacks and queues work under the hood.
 
 We will:
+
 - Implement a **stack (LIFO)** using only queue operations.
 - Implement a **queue (FIFO)** using only stack operations.
 
@@ -34,13 +35,13 @@ These are classic DSA interview questions at top tech companies. They test wheth
 
 ## 2. Quick Recap: Stack vs Queue
 
-| Feature | Stack | Queue |
-|---|---|---|
-| Order | LIFO — Last In First Out | FIFO — First In First Out |
-| Insert | `push()` — adds to top | `enqueue()` — adds to back |
-| Remove | `pop()` — removes from top | `dequeue()` — removes from front |
-| Peek | top element | front element |
-| Analogy | Stack of plates | Movie ticket line |
+| Feature | Stack                      | Queue                            |
+| ------- | -------------------------- | -------------------------------- |
+| Order   | LIFO — Last In First Out   | FIFO — First In First Out        |
+| Insert  | `push()` — adds to top     | `enqueue()` — adds to back       |
+| Remove  | `pop()` — removes from top | `dequeue()` — removes from front |
+| Peek    | top element                | front element                    |
+| Analogy | Stack of plates            | Movie ticket line                |
 
 ```
 Stack                   Queue
@@ -50,7 +51,7 @@ Stack                   Queue
 push/pop from top      enqueue at back, dequeue from front
 ```
 
-The core challenge: a queue's dequeue gives the *oldest* element, but a stack's pop needs the *newest*. These are opposites — bridging them requires deliberate rearrangement.
+The core challenge: a queue's dequeue gives the _oldest_ element, but a stack's pop needs the _newest_. These are opposites — bridging them requires deliberate rearrangement.
 
 ---
 
@@ -291,7 +292,7 @@ int main() {
 
 **Goal:** Build a queue that supports `enqueue`, `dequeue`, `front`, and `empty` using only stack operations (`push` to top, `pop` from top).
 
-The challenge: a stack gives the *newest* element first, but a queue needs the *oldest* first.
+The challenge: a stack gives the _newest_ element first, but a queue needs the _oldest_ first.
 
 ### Approach 1 — Make Enqueue Costly
 
@@ -524,16 +525,16 @@ Each element moves from `inbox` to `outbox` exactly once. Over $n$ operations th
 
 ## 5. Complexity Comparison
 
-| Implementation | Operation | Time Complexity |
-|---|---|---|
-| Stack using Queue (push costly) | `push` | $O(n)$ |
-| Stack using Queue (push costly) | `pop` / `top` | $O(1)$ |
-| Stack using Two Queues (pop costly) | `push` | $O(1)$ |
-| Stack using Two Queues (pop costly) | `pop` / `top` | $O(n)$ |
-| Queue using Stack (enqueue costly) | `enqueue` | $O(n)$ |
-| Queue using Stack (enqueue costly) | `dequeue` / `front` | $O(1)$ |
-| Queue using Stack (amortized) | `enqueue` | $O(1)$ |
-| Queue using Stack (amortized) | `dequeue` / `front` | $O(1)$ amortized |
+| Implementation                      | Operation           | Time Complexity  |
+| ----------------------------------- | ------------------- | ---------------- |
+| Stack using Queue (push costly)     | `push`              | $O(n)$           |
+| Stack using Queue (push costly)     | `pop` / `top`       | $O(1)$           |
+| Stack using Two Queues (pop costly) | `push`              | $O(1)$           |
+| Stack using Two Queues (pop costly) | `pop` / `top`       | $O(n)$           |
+| Queue using Stack (enqueue costly)  | `enqueue`           | $O(n)$           |
+| Queue using Stack (enqueue costly)  | `dequeue` / `front` | $O(1)$           |
+| Queue using Stack (amortized)       | `enqueue`           | $O(1)$           |
+| Queue using Stack (amortized)       | `dequeue` / `front` | $O(1)$ amortized |
 
 > For interviews, the **amortized two-stack queue** is the preferred answer — it demonstrates understanding of efficiency beyond just correctness.
 

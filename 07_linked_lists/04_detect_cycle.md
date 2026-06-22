@@ -250,29 +250,29 @@ List: `1 → 2 → 3 → 4 → (back to 2)`
     └───────────┘
 ```
 
-| Step  | slow (node value) | fast (node value) | Met? |
-| ----- | ----------------- | ----------------- | ---- |
-| Start | 1                 | 1                 | No   |
-| 1     | 2                 | 3                 | No   |
-| 2     | 3                 | 2 (via 4→2)       | No   |
+| Step  | slow (node value) | fast (node value)                      | Met? |
+| ----- | ----------------- | -------------------------------------- | ---- |
+| Start | 1                 | 1                                      | No   |
+| 1     | 2                 | 3                                      | No   |
+| 2     | 3                 | 2 (via 4→2)                            | No   |
 | 3     | 4                 | 4 (via 2→3→4→... wait, 3→4 then 4→2→3) |      |
 
 Let us trace more carefully:
 
 - **Start:** slow=node1(1), fast=node1(1)
 - **Step 1:** slow=node2(2), fast=node3(3)
-- **Step 2:** slow=node3(3), fast=node3.next.next=node4.next=node2(2) → fast=node2(2)... 
+- **Step 2:** slow=node3(3), fast=node3.next.next=node4.next=node2(2) → fast=node2(2)...
 
 Wait, `fast = fast.next.next` from node3 means `node3.next=node4`, `node4.next=node2` → fast lands on node2(2).
 
 - **Step 3:** slow=node4(4), fast=node2.next.next=node3.next=node4(4) → **slow == fast = node4** ✓
 
-| Step  | slow | fast | fast path                        | Met?       |
-| ----- | ---- | ---- | -------------------------------- | ---------- |
-| Start | 1    | 1    | —                                | No         |
-| 1     | 2    | 3    | 1→2→3                            | No         |
-| 2     | 3    | 2    | 3→4→2 (cycle wraps)              | No         |
-| 3     | 4    | 4    | 2→3→4                            | **Yes ✓**  |
+| Step  | slow | fast | fast path           | Met?      |
+| ----- | ---- | ---- | ------------------- | --------- |
+| Start | 1    | 1    | —                   | No        |
+| 1     | 2    | 3    | 1→2→3               | No        |
+| 2     | 3    | 2    | 3→4→2 (cycle wraps) | No        |
+| 3     | 4    | 4    | 2→3→4               | **Yes ✓** |
 
 Cycle detected at node4 in **3 steps**.
 
@@ -280,13 +280,13 @@ Cycle detected at node4 in **3 steps**.
 
 ## 7. Edge Cases to Consider
 
-| Case                             | Expected Result | How the algorithm handles it                              |
-| -------------------------------- | --------------- | --------------------------------------------------------- |
-| Empty list (`head = null`)       | `False`         | While condition `fast != null` fails immediately          |
-| Single node, `next = null`       | `False`         | `fast.next` is null → while condition fails               |
-| Single node pointing to itself   | `True`          | After step 1: slow=node, fast=node → they meet            |
-| Two nodes, `node2.next = node1`  | `True`          | After step 1: slow=node2, fast=node2 → they meet          |
-| Long list, no cycle              | `False`         | fast reaches null and loop exits cleanly                  |
+| Case                            | Expected Result | How the algorithm handles it                     |
+| ------------------------------- | --------------- | ------------------------------------------------ |
+| Empty list (`head = null`)      | `False`         | While condition `fast != null` fails immediately |
+| Single node, `next = null`      | `False`         | `fast.next` is null → while condition fails      |
+| Single node pointing to itself  | `True`          | After step 1: slow=node, fast=node → they meet   |
+| Two nodes, `node2.next = node1` | `True`          | After step 1: slow=node2, fast=node2 → they meet |
+| Long list, no cycle             | `False`         | fast reaches null and loop exits cleanly         |
 
 The guard `fast is not None and fast.next is not None` handles all these safely — no special casing needed.
 
@@ -294,14 +294,14 @@ The guard `fast is not None and fast.next is not None` handles all these safely 
 
 ## 8. Comparison of Both Approaches
 
-| Feature                 | Hash Set Approach     | Floyd's Algorithm      |
-| ----------------------- | --------------------- | ---------------------- |
-| Time complexity         | $O(n)$                | $O(n)$                 |
-| Space complexity        | $O(n)$                | $O(1)$                 |
-| Extra memory required   | Yes — stores all nodes | No — only 2 pointers  |
-| Ease of understanding   | Very simple           | Slightly more involved |
-| Interview preference    | Acceptable            | **Preferred**          |
-| Finds cycle start       | Yes (first duplicate) | Needs extra step       |
+| Feature               | Hash Set Approach      | Floyd's Algorithm      |
+| --------------------- | ---------------------- | ---------------------- |
+| Time complexity       | $O(n)$                 | $O(n)$                 |
+| Space complexity      | $O(n)$                 | $O(1)$                 |
+| Extra memory required | Yes — stores all nodes | No — only 2 pointers   |
+| Ease of understanding | Very simple            | Slightly more involved |
+| Interview preference  | Acceptable             | **Preferred**          |
+| Finds cycle start     | Yes (first duplicate)  | Needs extra step       |
 
 Floyd's algorithm is always preferred in interviews because it solves the problem in constant space. The hash set method is easier to think of first but costs $O(n)$ extra memory.
 

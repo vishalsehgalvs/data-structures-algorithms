@@ -38,20 +38,20 @@ rear                              front
 [ 30 | 20 | 10 ]   →   dequeue   →  10 leaves first
 ```
 
-A stack removes the *most recent* element; a queue removes the *oldest* element — the two are opposite ideas.
+A stack removes the _most recent_ element; a queue removes the _oldest_ element — the two are opposite ideas.
 
 ---
 
 ## 2. Queue Terminology
 
-| Term          | Meaning                                                      |
-| ------------- | ------------------------------------------------------------ |
-| **Enqueue**   | Add an element to the **rear** (back) of the queue           |
-| **Dequeue**   | Remove an element from the **front** of the queue            |
-| **Front**     | Pointer/index to the first element                           |
-| **Rear**      | Pointer/index to the last element                            |
-| **Overflow**  | Attempting to enqueue when the queue is full                 |
-| **Underflow** | Attempting to dequeue when the queue is empty                |
+| Term          | Meaning                                            |
+| ------------- | -------------------------------------------------- |
+| **Enqueue**   | Add an element to the **rear** (back) of the queue |
+| **Dequeue**   | Remove an element from the **front** of the queue  |
+| **Front**     | Pointer/index to the first element                 |
+| **Rear**      | Pointer/index to the last element                  |
+| **Overflow**  | Attempting to enqueue when the queue is full       |
+| **Underflow** | Attempting to dequeue when the queue is empty      |
 
 Think of `front` as the **exit door** and `rear` as the **entrance door**. Elements always enter through the rear and leave through the front.
 
@@ -263,6 +263,7 @@ rear wraps: (rear + 1) % size
 ```
 
 Key formulas:
+
 - Advance rear: `rear = (rear + 1) % size`
 - Advance front: `front = (front + 1) % size`
 - Full condition: `(rear + 1) % size == front`
@@ -405,14 +406,14 @@ Notice how after dequeuing `10` and `20`, enqueueing `50` and `60` reuses those 
 
 ## 8. Simple Queue vs Circular Queue
 
-| Feature              | Simple Queue               | Circular Queue                     |
-| -------------------- | -------------------------- | ---------------------------------- |
-| Memory usage         | Wastes freed slots         | Reuses all slots                   |
-| Rear wraps around    | No                         | Yes — using `% size`               |
-| Full condition       | `rear == size - 1`         | `(rear + 1) % size == front`       |
-| Empty condition      | `front == -1`              | `front == -1`                      |
-| Best for             | Simple, short-lived queues | Buffers, schedulers, ring buffers  |
-| Space efficiency     | Lower                      | Higher                             |
+| Feature           | Simple Queue               | Circular Queue                    |
+| ----------------- | -------------------------- | --------------------------------- |
+| Memory usage      | Wastes freed slots         | Reuses all slots                  |
+| Rear wraps around | No                         | Yes — using `% size`              |
+| Full condition    | `rear == size - 1`         | `(rear + 1) % size == front`      |
+| Empty condition   | `front == -1`              | `front == -1`                     |
+| Best for          | Simple, short-lived queues | Buffers, schedulers, ring buffers |
+| Space efficiency  | Lower                      | Higher                            |
 
 ---
 
@@ -477,14 +478,14 @@ Use `collections.deque` / `std::queue` for all production code. Roll your own im
 
 ## 10. Real-World Applications
 
-| Use Case                 | Why a Queue?                                                   |
-| ------------------------ | -------------------------------------------------------------- |
-| Print spooler            | Documents printed in the order they were submitted             |
-| CPU task scheduling      | Processes wait in a queue for CPU time                         |
-| BFS graph traversal      | Nodes are processed level by level (covered in the Graphs section) |
-| Keyboard input buffer    | Keystrokes stored and processed in arrival order               |
-| Network packet handling  | Packets queued and forwarded in sequence                       |
-| Audio / video streaming  | Ring buffer (circular queue) feeds the playback engine         |
+| Use Case                | Why a Queue?                                                       |
+| ----------------------- | ------------------------------------------------------------------ |
+| Print spooler           | Documents printed in the order they were submitted                 |
+| CPU task scheduling     | Processes wait in a queue for CPU time                             |
+| BFS graph traversal     | Nodes are processed level by level (covered in the Graphs section) |
+| Keyboard input buffer   | Keystrokes stored and processed in arrival order                   |
+| Network packet handling | Packets queued and forwarded in sequence                           |
+| Audio / video streaming | Ring buffer (circular queue) feeds the playback engine             |
 
 Every time **order matters** and you need **fair processing**, a queue is likely the right tool.
 

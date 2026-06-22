@@ -84,13 +84,13 @@ flowchart TD
 
 List: `1 → 2 → 3 → null`
 
-| Step | prev | current | next | Action                        | State after               |
-| ---- | ---- | ------- | ---- | ----------------------------- | ------------------------- |
-| Init | null | 1       | —    | —                             | 1→2→3→null                |
-| 1    | null | 1       | 2    | 1.next = null, prev=1, cur=2  | null←1  2→3→null          |
-| 2    | 1    | 2       | 3    | 2.next = 1, prev=2, cur=3     | null←1←2  3→null          |
-| 3    | 2    | 3       | null | 3.next = 2, prev=3, cur=null  | null←1←2←3                |
-| Done | 3    | null    | —    | Return prev=3 as new head     | **3→2→1→null** ✓         |
+| Step | prev | current | next | Action                       | State after      |
+| ---- | ---- | ------- | ---- | ---------------------------- | ---------------- |
+| Init | null | 1       | —    | —                            | 1→2→3→null       |
+| 1    | null | 1       | 2    | 1.next = null, prev=1, cur=2 | null←1 2→3→null  |
+| 2    | 1    | 2       | 3    | 2.next = 1, prev=2, cur=3    | null←1←2 3→null  |
+| 3    | 2    | 3       | null | 3.next = 2, prev=3, cur=null | null←1←2←3       |
+| Done | 3    | null    | —    | Return prev=3 as new head    | **3→2→1→null** ✓ |
 
 ---
 
@@ -220,13 +220,13 @@ Final: 3 → 2 → 1 → null
 
 List: `1 → 2 → 3 → null`
 
-| Call frame    | Action                                   | Links after action                |
-| ------------- | ---------------------------------------- | --------------------------------- |
-| `reverse(1)`  | calls `reverse(2)`                       | waiting…                          |
-| `reverse(2)`  | calls `reverse(3)`                       | waiting…                          |
-| `reverse(3)`  | base case: `3.next = null` → return 3    | new_head = 3                      |
-| back in `(2)` | `3.next = 2`, `2.next = null`            | null←2←3, new_head = 3            |
-| back in `(1)` | `2.next = 1`, `1.next = null`            | **null←1←2←3** = 3→2→1→null ✓    |
+| Call frame    | Action                                | Links after action            |
+| ------------- | ------------------------------------- | ----------------------------- |
+| `reverse(1)`  | calls `reverse(2)`                    | waiting…                      |
+| `reverse(2)`  | calls `reverse(3)`                    | waiting…                      |
+| `reverse(3)`  | base case: `3.next = null` → return 3 | new_head = 3                  |
+| back in `(2)` | `3.next = 2`, `2.next = null`         | null←2←3, new_head = 3        |
+| back in `(1)` | `2.next = 1`, `1.next = null`         | **null←1←2←3** = 3→2→1→null ✓ |
 
 ---
 
@@ -331,14 +331,14 @@ int main() {
 
 ## 9. Iterative vs Recursive — Comparison
 
-| Feature                 | Iterative                  | Recursive                       |
-| ----------------------- | -------------------------- | ------------------------------- |
-| Space complexity        | $O(1)$ — no extra memory   | $O(n)$ — call stack per node    |
-| Time complexity         | $O(n)$                     | $O(n)$                          |
-| Risk of stack overflow  | No                         | Yes — for very large lists      |
-| Readability             | Slightly longer, very clear | Short and elegant               |
-| Beginner friendly       | Yes                        | Moderate                        |
-| Preferred in production | ✅ Yes                     | Only for small lists            |
+| Feature                 | Iterative                      | Recursive                    |
+| ----------------------- | ------------------------------ | ---------------------------- |
+| Space complexity        | $O(1)$ — no extra memory       | $O(n)$ — call stack per node |
+| Time complexity         | $O(n)$                         | $O(n)$                       |
+| Risk of stack overflow  | No                             | Yes — for very large lists   |
+| Readability             | Slightly longer, very clear    | Short and elegant            |
+| Beginner friendly       | Yes                            | Moderate                     |
+| Preferred in production | ✅ Yes                         | Only for small lists         |
 | Preferred in interviews | ✅ Both — show iterative first | Then offer recursive as well |
 
 For production code or very large lists, always prefer the iterative approach. The recursive version is great for interview clarity, but mention the stack-overflow risk.
@@ -347,12 +347,12 @@ For production code or very large lists, always prefer the iterative approach. T
 
 ## 10. Edge Cases to Watch Out For
 
-| Case              | Expected result           | Handled by…                                      |
-| ----------------- | ------------------------- | ------------------------------------------------ |
-| `head = null`     | Return `null`             | Base case: `if head is None return head`         |
-| Single node       | Return same node          | Base case: `if head.next is None return head`    |
-| Two nodes `1→2`   | `2→1→null`                | Both approaches handle this correctly            |
-| Already reversed  | Returns correctly         | Algorithm is direction-agnostic                  |
+| Case             | Expected result   | Handled by…                                   |
+| ---------------- | ----------------- | --------------------------------------------- |
+| `head = null`    | Return `null`     | Base case: `if head is None return head`      |
+| Single node      | Return same node  | Base case: `if head.next is None return head` |
+| Two nodes `1→2`  | `2→1→null`        | Both approaches handle this correctly         |
+| Already reversed | Returns correctly | Algorithm is direction-agnostic               |
 
 Both implementations handle all edge cases through the single base-case check:
 

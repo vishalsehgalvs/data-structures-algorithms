@@ -44,14 +44,14 @@ Stacks appear everywhere in software: browser back buttons, undo in text editors
 
 ## 2. Stack Terminology
 
-| Term          | Meaning                                                        |
-| ------------- | -------------------------------------------------------------- |
-| **Push**      | Add an element to the top of the stack                         |
-| **Pop**       | Remove and return the top element                              |
-| **Peek / Top**| View the top element without removing it                       |
-| **isEmpty**   | Check if the stack has no elements                             |
-| **Overflow**  | Attempting to push onto a full stack (array-based only)        |
-| **Underflow** | Attempting to pop from an empty stack                          |
+| Term           | Meaning                                                 |
+| -------------- | ------------------------------------------------------- |
+| **Push**       | Add an element to the top of the stack                  |
+| **Pop**        | Remove and return the top element                       |
+| **Peek / Top** | View the top element without removing it                |
+| **isEmpty**    | Check if the stack has no elements                      |
+| **Overflow**   | Attempting to push onto a full stack (array-based only) |
+| **Underflow**  | Attempting to pop from an empty stack                   |
 
 Think of `push` and `pop` as the two main actions. Everything else supports them.
 
@@ -61,13 +61,13 @@ Think of `push` and `pop` as the two main actions. Everything else supports them
 
 Starting with an empty stack: push 10, push 20, push 30, pop, peek.
 
-| Operation | Stack state (top on right) | Result         |
-| --------- | -------------------------- | -------------- |
-| Push 10   | `[10]`                     | 10 added       |
-| Push 20   | `[10, 20]`                 | 20 added       |
-| Push 30   | `[10, 20, 30]`             | 30 added       |
-| Pop       | `[10, 20]`                 | 30 removed     |
-| Peek      | `[10, 20]`                 | Returns 20     |
+| Operation | Stack state (top on right) | Result     |
+| --------- | -------------------------- | ---------- |
+| Push 10   | `[10]`                     | 10 added   |
+| Push 20   | `[10, 20]`                 | 20 added   |
+| Push 30   | `[10, 20, 30]`             | 30 added   |
+| Pop       | `[10, 20]`                 | 30 removed |
+| Peek      | `[10, 20]`                 | Returns 20 |
 
 Notice how the last element pushed (30) was the first one popped — LIFO in action.
 
@@ -293,14 +293,14 @@ int main() {
 
 ## 6. Array vs Linked List Stack
 
-| Feature              | Array-Based Stack               | Linked List Stack                    |
-| -------------------- | ------------------------------- | ------------------------------------ |
-| Memory allocation    | Fixed or dynamic (Python grows) | Dynamic — grows as needed            |
-| Push / Pop speed     | $O(1)$                          | $O(1)$                               |
-| Memory overhead      | Low                             | Higher — each node stores a pointer  |
-| Overflow risk        | Only with fixed-size arrays     | None (until system memory runs out)  |
-| Implementation       | Simpler                         | Slightly more complex                |
-| Cache performance    | Better (contiguous memory)      | Worse (scattered memory)             |
+| Feature           | Array-Based Stack               | Linked List Stack                   |
+| ----------------- | ------------------------------- | ----------------------------------- |
+| Memory allocation | Fixed or dynamic (Python grows) | Dynamic — grows as needed           |
+| Push / Pop speed  | $O(1)$                          | $O(1)$                              |
+| Memory overhead   | Low                             | Higher — each node stores a pointer |
+| Overflow risk     | Only with fixed-size arrays     | None (until system memory runs out) |
+| Implementation    | Simpler                         | Slightly more complex               |
+| Cache performance | Better (contiguous memory)      | Worse (scattered memory)            |
 
 For most competitive programming and beginner problems, the array-based approach (Python list / C++ `vector`) is the go-to choice.
 
@@ -308,13 +308,13 @@ For most competitive programming and beginner problems, the array-based approach
 
 ## 7. Time and Space Complexity
 
-| Operation | Time Complexity | Notes                                        |
-| --------- | --------------- | -------------------------------------------- |
-| Push      | $O(1)$          | Always operates on the top                  |
-| Pop       | $O(1)$          | Always operates on the top                  |
-| Peek      | $O(1)$          | Just reads the top                           |
-| Search    | $O(n)$          | Must scan all elements in the worst case     |
-| Space     | $O(n)$          | Proportional to number of elements stored    |
+| Operation | Time Complexity | Notes                                     |
+| --------- | --------------- | ----------------------------------------- |
+| Push      | $O(1)$          | Always operates on the top                |
+| Pop       | $O(1)$          | Always operates on the top                |
+| Peek      | $O(1)$          | Just reads the top                        |
+| Search    | $O(n)$          | Must scan all elements in the worst case  |
+| Space     | $O(n)$          | Proportional to number of elements stored |
 
 Push, pop, and peek are constant time because you always work with the top — no traversal needed.
 
@@ -576,7 +576,7 @@ A stack follows LIFO — the most recently added element is removed first (like 
 
 **When should I use a stack?**
 
-Use a stack when the problem involves reversing something, matching nested pairs (brackets, tags), tracking the most recent state (undo), or managing nested function calls. Keywords: *last*, *recent*, *previous*, *nested*, *undo*.
+Use a stack when the problem involves reversing something, matching nested pairs (brackets, tags), tracking the most recent state (undo), or managing nested function calls. Keywords: _last_, _recent_, _previous_, _nested_, _undo_.
 
 **What does stack overflow mean in programming?**
 
