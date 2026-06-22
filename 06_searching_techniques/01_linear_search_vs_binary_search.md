@@ -67,23 +67,6 @@ print(f"Target found at index: {result}" if result != -1 else "Target not found"
 # Output: Target found at index: 2
 ```
 
-```java
-// Java — Linear Search
-public class LinearSearch {
-    public static int linearSearch(int[] arr, int target) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] == target) return i;
-        }
-        return -1;
-    }
-
-    public static void main(String[] args) {
-        int[] numbers = {3, 1, 7, 9, 4};
-        System.out.println(linearSearch(numbers, 7));  // Output: 2
-    }
-}
-```
-
 ```cpp
 // C++ — Linear Search
 #include <vector>
@@ -164,29 +147,6 @@ sorted_numbers = [1, 3, 4, 7, 9]
 result = binary_search(sorted_numbers, 7)
 print(f"Target found at index: {result}" if result != -1 else "Target not found")
 # Output: Target found at index: 3
-```
-
-```java
-// Java — Binary Search (iterative)
-public class BinarySearch {
-    public static int binarySearch(int[] arr, int target) {
-        int low = 0, high = arr.length - 1;
-
-        while (low <= high) {
-            int mid = low + (high - low) / 2;   // Avoids integer overflow
-
-            if (arr[mid] == target)      return mid;
-            else if (arr[mid] < target)  low = mid + 1;
-            else                         high = mid - 1;
-        }
-        return -1;
-    }
-
-    public static void main(String[] args) {
-        int[] sorted = {1, 3, 4, 7, 9};
-        System.out.println(binarySearch(sorted, 7));  // Output: 3
-    }
-}
 ```
 
 ```cpp

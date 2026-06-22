@@ -108,44 +108,6 @@ print(result)
 # Output: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
 ```
 
-```java
-// Java — Generate all subsets using backtracking
-import java.util.ArrayList;
-import java.util.List;
-
-public class SubsetGenerator {
-
-    public static List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        List<Integer> current = new ArrayList<>();
-        backtrack(nums, 0, current, result);
-        return result;
-    }
-
-    static void backtrack(int[] nums, int start,
-                          List<Integer> current,
-                          List<List<Integer>> result) {
-
-        // Every state of 'current' is a valid subset
-        result.add(new ArrayList<>(current));
-
-        for (int i = start; i < nums.length; i++) {
-            current.add(nums[i]);                    // Step 1: Choose
-            backtrack(nums, i + 1, current, result); // Step 2: Explore
-            current.remove(current.size() - 1);      // Step 3: Unchoose
-        }
-    }
-
-    public static void main(String[] args) {
-        int[] nums = {1, 2, 3};
-        List<List<Integer>> output = subsets(nums);
-        for (List<Integer> subset : output) {
-            System.out.println(subset);
-        }
-    }
-}
-```
-
 ```cpp
 // C++ — Generate all subsets using backtracking
 #include <iostream>
@@ -275,54 +237,6 @@ print(result)
 # Output: [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
 ```
 
-```java
-// Java — Generate all permutations using backtracking
-import java.util.ArrayList;
-import java.util.List;
-
-public class PermutationGenerator {
-
-    public static List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        List<Integer> current = new ArrayList<>();
-        boolean[] used = new boolean[nums.length];
-        backtrack(nums, used, current, result);
-        return result;
-    }
-
-    static void backtrack(int[] nums, boolean[] used,
-                          List<Integer> current,
-                          List<List<Integer>> result) {
-
-        // Base case: all elements are placed
-        if (current.size() == nums.length) {
-            result.add(new ArrayList<>(current));
-            return;
-        }
-
-        for (int i = 0; i < nums.length; i++) {
-            if (used[i]) continue;               // Skip already-placed elements
-
-            used[i] = true;
-            current.add(nums[i]);                // Step 1: Choose
-
-            backtrack(nums, used, current, result); // Step 2: Explore
-
-            current.remove(current.size() - 1);  // Step 3: Unchoose
-            used[i] = false;
-        }
-    }
-
-    public static void main(String[] args) {
-        int[] nums = {1, 2, 3};
-        List<List<Integer>> output = permute(nums);
-        for (List<Integer> perm : output) {
-            System.out.println(perm);
-        }
-    }
-}
-```
-
 ```cpp
 // C++ — Generate all permutations using backtracking
 #include <iostream>
@@ -441,14 +355,19 @@ These are inherently expensive operations because the number of results grows ve
 
 **1. Forgetting to copy the list before adding it to results**
 
-In Java and C++, lists are passed by reference. If you add the same list object to your result, all stored entries will reflect the final (empty) state of the list.
+In Python and C++, you must store a copy — not the live list object — when adding to results.
 
-```java
-// Wrong — adds a reference, not a snapshot
-result.add(current);
+```python
+# Python — Wrong: stores a reference
+result.append(current)
 
-// Correct — adds a copy of the current state
-result.add(new ArrayList<>(current));
+# Python — Correct: stores a snapshot copy
+result.append(list(current))
+```
+
+```cpp
+// C++ — Correct: push_back copies the vector by value
+result.push_back(current);
 ```
 
 **2. Not resetting `used[i]` after the recursive call**

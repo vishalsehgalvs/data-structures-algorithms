@@ -114,35 +114,6 @@ print(counting_sort(arr))
 # Output: [1, 2, 2, 3, 3, 4, 8]
 ```
 
-### Java
-
-```java
-// Java — Counting Sort
-import java.util.Arrays;
-
-public class CountingSort {
-
-    public static int[] countingSort(int[] arr) {
-        int maxVal = Arrays.stream(arr).max().getAsInt();
-        int[] count = new int[maxVal + 1];
-
-        for (int num : arr) count[num]++;
-
-        int idx = 0;
-        for (int val = 0; val <= maxVal; val++)
-            while (count[val]-- > 0) arr[idx++] = val;
-
-        return arr;
-    }
-
-    public static void main(String[] args) {
-        int[] arr = {4, 2, 2, 8, 3, 3, 1};
-        System.out.println(Arrays.toString(countingSort(arr)));
-        // Output: [1, 2, 2, 3, 3, 4, 8]
-    }
-}
-```
-
 ```cpp
 // C++ — Counting Sort
 #include <vector>
@@ -260,43 +231,6 @@ def radix_sort(arr):
 arr = [170, 45, 75, 90, 802, 24, 2, 66]
 print(radix_sort(arr))
 # Output: [2, 24, 45, 66, 75, 90, 170, 802]
-```
-
-### Java
-
-```java
-// Java — Radix Sort
-import java.util.Arrays;
-
-public class RadixSort {
-
-    static int[] countByDigit(int[] arr, int place) {
-        int n = arr.length;
-        int[] output = new int[n];
-        int[] count = new int[10];
-
-        for (int num : arr) count[(num / place) % 10]++;
-        for (int i = 1; i < 10; i++) count[i] += count[i - 1];
-        for (int i = n - 1; i >= 0; i--) {
-            int digit = (arr[i] / place) % 10;
-            output[--count[digit]] = arr[i];
-        }
-        return output;
-    }
-
-    public static int[] radixSort(int[] arr) {
-        int maxVal = Arrays.stream(arr).max().getAsInt();
-        for (int place = 1; maxVal / place > 0; place *= 10)
-            arr = countByDigit(arr, place);
-        return arr;
-    }
-
-    public static void main(String[] args) {
-        int[] arr = {170, 45, 75, 90, 802, 24, 2, 66};
-        System.out.println(Arrays.toString(radixSort(arr)));
-        // Output: [2, 24, 45, 66, 75, 90, 170, 802]
-    }
-}
 ```
 
 ---

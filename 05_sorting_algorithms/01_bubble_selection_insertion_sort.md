@@ -108,34 +108,6 @@ print(bubble_sort(arr))
 # Output: [1, 3, 4, 5, 8]
 ```
 
-```java
-// Java — Bubble Sort with early-exit optimisation
-public class BubbleSort {
-    public static int[] bubbleSort(int[] arr) {
-        int n = arr.length;
-        for (int i = 0; i < n; i++) {
-            boolean swapped = false;
-            for (int j = 0; j < n - i - 1; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    int temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                    swapped = true;
-                }
-            }
-            if (!swapped) break;    // No swap → already sorted
-        }
-        return arr;
-    }
-
-    public static void main(String[] args) {
-        int[] arr = {5, 3, 8, 1, 4};
-        bubbleSort(arr);
-        // Output: [1, 3, 4, 5, 8]
-    }
-}
-```
-
 ```cpp
 // C++ — Bubble Sort with early-exit optimisation
 #include <vector>
@@ -230,31 +202,6 @@ def selection_sort(arr):
 arr = [5, 3, 8, 1, 4]
 print(selection_sort(arr))
 # Output: [1, 3, 4, 5, 8]
-```
-
-```java
-// Java — Selection Sort
-public class SelectionSort {
-    public static int[] selectionSort(int[] arr) {
-        int n = arr.length;
-        for (int i = 0; i < n; i++) {
-            int minIndex = i;
-            for (int j = i + 1; j < n; j++) {
-                if (arr[j] < arr[minIndex]) minIndex = j;
-            }
-            int temp = arr[i];
-            arr[i] = arr[minIndex];
-            arr[minIndex] = temp;
-        }
-        return arr;
-    }
-
-    public static void main(String[] args) {
-        int[] arr = {5, 3, 8, 1, 4};
-        selectionSort(arr);
-        // Output: [1, 3, 4, 5, 8]
-    }
-}
 ```
 
 ```cpp
@@ -357,31 +304,6 @@ def insertion_sort(arr):
 arr = [5, 3, 8, 1, 4]
 print(insertion_sort(arr))
 # Output: [1, 3, 4, 5, 8]
-```
-
-```java
-// Java — Insertion Sort
-public class InsertionSort {
-    public static int[] insertionSort(int[] arr) {
-        int n = arr.length;
-        for (int i = 1; i < n; i++) {
-            int key = arr[i];
-            int j = i - 1;
-            while (j >= 0 && arr[j] > key) {
-                arr[j + 1] = arr[j];    // Shift right
-                j--;
-            }
-            arr[j + 1] = key;           // Insert
-        }
-        return arr;
-    }
-
-    public static void main(String[] args) {
-        int[] arr = {5, 3, 8, 1, 4};
-        insertionSort(arr);
-        // Output: [1, 3, 4, 5, 8]
-    }
-}
 ```
 
 ```cpp
