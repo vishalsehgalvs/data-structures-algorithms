@@ -48,14 +48,14 @@ This is one of the most fundamental data structures in DSA, and understanding it
 
 Think of an array like seats in a movie theater — all numbered and fixed next to each other. A linked list is like a scavenger hunt — each stop only knows where the next stop is.
 
-| Feature               | Array                      | Linked List                    |
-| --------------------- | -------------------------- | ------------------------------ |
-| Memory layout         | Contiguous                 | Non-contiguous                 |
-| Size                  | Fixed (static)             | Dynamic (grows / shrinks)      |
-| Access by index       | $O(1)$ — direct            | $O(n)$ — traverse              |
-| Insertion at start    | $O(n)$ — shift elements    | $O(1)$ — update pointer        |
-| Deletion at start     | $O(n)$ — shift elements    | $O(1)$ — update pointer        |
-| Memory overhead       | Low                        | Extra for pointers             |
+| Feature            | Array                   | Linked List               |
+| ------------------ | ----------------------- | ------------------------- |
+| Memory layout      | Contiguous              | Non-contiguous            |
+| Size               | Fixed (static)          | Dynamic (grows / shrinks) |
+| Access by index    | $O(1)$ — direct         | $O(n)$ — traverse         |
+| Insertion at start | $O(n)$ — shift elements | $O(1)$ — update pointer   |
+| Deletion at start  | $O(n)$ — shift elements | $O(1)$ — update pointer   |
+| Memory overhead    | Low                     | Extra for pointers        |
 
 Neither is better in every situation. Choosing between them depends on what operations you need most.
 
@@ -472,16 +472,16 @@ std::cout << "Found at position: " << search(head, 30) << "\n";
 
 ## 9. Time and Space Complexity
 
-| Operation              | Time Complexity | Notes                            |
-| ---------------------- | --------------- | -------------------------------- |
-| Access by index        | $O(n)$          | Must traverse from head          |
-| Search by value        | $O(n)$          | Linear scan required             |
-| Insert at beginning    | $O(1)$          | Just update head pointer         |
-| Insert at end          | $O(n)$          | Must reach last node first       |
-| Insert at position $k$ | $O(k)$          | Traverse to position $k-1$       |
-| Delete at beginning    | $O(1)$          | Just move head forward           |
-| Delete at end          | $O(n)$          | Must reach second-to-last node   |
-| Delete by value        | $O(n)$          | Linear scan to find the node     |
+| Operation              | Time Complexity | Notes                          |
+| ---------------------- | --------------- | ------------------------------ |
+| Access by index        | $O(n)$          | Must traverse from head        |
+| Search by value        | $O(n)$          | Linear scan required           |
+| Insert at beginning    | $O(1)$          | Just update head pointer       |
+| Insert at end          | $O(n)$          | Must reach last node first     |
+| Insert at position $k$ | $O(k)$          | Traverse to position $k-1$     |
+| Delete at beginning    | $O(1)$          | Just move head forward         |
+| Delete at end          | $O(n)$          | Must reach second-to-last node |
+| Delete by value        | $O(n)$          | Linear scan to find the node   |
 
 **Space complexity:** $O(n)$ — one node per element, each carrying an extra pointer field (4–8 bytes in C++). Slightly more overhead than a plain array of the same size.
 
@@ -490,11 +490,13 @@ std::cout << "Found at position: " << search(head, 30) << "\n";
 ## 10. When to Use a Linked List
 
 **Prefer a linked list when:**
+
 - You need frequent insertions or deletions at the **beginning** (or known positions) of the list.
 - The data size is unknown upfront and grows / shrinks dynamically.
 - You are building higher-level structures like stacks, queues, or adjacency lists.
 
 **Prefer an array when:**
+
 - You need **fast random access** by index ($O(1)$).
 - Memory is tight and you want to avoid pointer overhead.
 - Cache performance matters — arrays are cache-friendly, linked lists are not.

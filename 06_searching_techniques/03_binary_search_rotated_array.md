@@ -47,12 +47,12 @@ The values are still sorted, but split into two sorted halves joined together at
 
 You could scan every element one by one. That works, but it takes $O(n)$ time — slow for large arrays.
 
-Since the array is *partially* sorted, we can do better. A modified binary search runs in $O(\log n)$ time by exploiting the one property that always holds: **at least one half of the array is always fully sorted**, no matter where the rotation happened.
+Since the array is _partially_ sorted, we can do better. A modified binary search runs in $O(\log n)$ time by exploiting the one property that always holds: **at least one half of the array is always fully sorted**, no matter where the rotation happened.
 
-| Approach              | Time Complexity | Space Complexity |
-| --------------------- | --------------- | ---------------- |
-| Linear Search         | $O(n)$          | $O(1)$           |
-| Modified Binary Search | $O(\log n)$    | $O(1)$           |
+| Approach               | Time Complexity | Space Complexity |
+| ---------------------- | --------------- | ---------------- |
+| Linear Search          | $O(n)$          | $O(1)$           |
+| Modified Binary Search | $O(\log n)$     | $O(1)$           |
 
 ---
 
@@ -119,22 +119,22 @@ Here is the plan we follow at every step of the binary search loop:
 
 ## 6. Dry Run Example
 
-**Array:** `[4, 5, 6, 7, 1, 2, 3]`  **Target:** `2`  (indices 0–6)
+**Array:** `[4, 5, 6, 7, 1, 2, 3]` **Target:** `2` (indices 0–6)
 
-| Step | left | right | mid | nums[mid] | Decision |
-| ---- | ---- | ----- | --- | --------- | -------- |
+| Step | left | right | mid | nums[mid] | Decision                                                              |
+| ---- | ---- | ----- | --- | --------- | --------------------------------------------------------------------- |
 | 1    | 0    | 6     | 3   | 7         | Left half `[4,5,6,7]` sorted. 2 not in `[4,7)`. Go right → `left = 4` |
-| 2    | 4    | 6     | 5   | 2         | `nums[mid] == target`. Return **5** ✓ |
+| 2    | 4    | 6     | 5   | 2         | `nums[mid] == target`. Return **5** ✓                                 |
 
 Found at index 5 in just 2 steps instead of scanning all 7 elements.
 
 **Trace for target `6`:**
 
-| Step | left | right | mid | nums[mid] | Decision |
-| ---- | ---- | ----- | --- | --------- | -------- |
+| Step | left | right | mid | nums[mid] | Decision                                                             |
+| ---- | ---- | ----- | --- | --------- | -------------------------------------------------------------------- |
 | 1    | 0    | 6     | 3   | 7         | Left half `[4,5,6,7]` sorted. 6 is in `[4,7)`. Go left → `right = 2` |
-| 2    | 0    | 2     | 1   | 5         | Left half `[4,5]` sorted. 6 not in `[4,5)`. Go right → `left = 2` |
-| 3    | 2    | 2     | 2   | 6         | `nums[mid] == target`. Return **2** ✓ |
+| 2    | 0    | 2     | 1   | 5         | Left half `[4,5]` sorted. 6 not in `[4,5)`. Go right → `left = 2`    |
+| 3    | 2    | 2     | 2   | 6         | `nums[mid] == target`. Return **2** ✓                                |
 
 ---
 
@@ -232,6 +232,7 @@ int main() {
 ```
 
 **Output explanation:**
+
 - `target = 2` → returns `5` because `nums[5] = 2`
 - `target = 6` → returns `2` because `nums[2] = 6`
 - `target = 9` → returns `-1` because `9` is not in the array
@@ -279,6 +280,7 @@ If the array is not rotated (`[1, 2, 3, 4, 5]`), `nums[left] <= nums[mid]` alway
 ### Target at Boundary
 
 Always be careful with the inequalities:
+
 - Left half check: `nums[left] <= target < nums[mid]` (strict upper bound at `mid`)
 - Right half check: `nums[mid] < target <= nums[right]` (strict lower bound at `mid`)
 
@@ -304,12 +306,12 @@ Step 3: mid = 0, nums[mid] = 4  →  Direct hit, return 0 ✓
 
 ## 10. Time and Space Complexity
 
-| Metric           | Modified Binary Search | Linear Search |
-| ---------------- | ---------------------- | ------------- |
-| Time — Best      | $O(1)$                 | $O(1)$        |
-| Time — Average   | $O(\log n)$            | $O(n)$        |
-| Time — Worst     | $O(\log n)$            | $O(n)$        |
-| Space            | $O(1)$                 | $O(1)$        |
+| Metric         | Modified Binary Search | Linear Search |
+| -------------- | ---------------------- | ------------- |
+| Time — Best    | $O(1)$                 | $O(1)$        |
+| Time — Average | $O(\log n)$            | $O(n)$        |
+| Time — Worst   | $O(\log n)$            | $O(n)$        |
+| Space          | $O(1)$                 | $O(1)$        |
 
 The extra condition checks for rotation do not add any extra iterations — we still eliminate exactly half the array each step. Overall time complexity stays at $O(\log n)$.
 

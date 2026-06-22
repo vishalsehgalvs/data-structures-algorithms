@@ -257,15 +257,15 @@ def strict_upper_bound(arr, target):
 
 ## 9. Comparison Table of All Variations
 
-| Variation           | Condition when `arr[mid]` matches / qualifies | Direction after saving | Use case                             |
-| ------------------- | --------------------------------------------- | ---------------------- | ------------------------------------ |
-| Standard            | `arr[mid] == target`                          | Return immediately     | Check if element exists              |
-| First occurrence    | `arr[mid] == target`                          | Move `right` left      | Find first index of duplicate        |
-| Last occurrence     | `arr[mid] == target`                          | Move `left` right      | Find last index of duplicate         |
-| Count occurrences   | Combine first + last                          | —                      | Count duplicates in $O(\log n)$     |
-| Floor               | `arr[mid] <= target`                          | Move `left` right      | Largest value not exceeding target   |
-| Ceiling             | `arr[mid] >= target`                          | Move `right` left      | Smallest value at least target       |
-| Strict upper bound  | `arr[mid] > target`                           | Move `right` left      | Smallest value strictly above target |
+| Variation          | Condition when `arr[mid]` matches / qualifies | Direction after saving | Use case                             |
+| ------------------ | --------------------------------------------- | ---------------------- | ------------------------------------ |
+| Standard           | `arr[mid] == target`                          | Return immediately     | Check if element exists              |
+| First occurrence   | `arr[mid] == target`                          | Move `right` left      | Find first index of duplicate        |
+| Last occurrence    | `arr[mid] == target`                          | Move `left` right      | Find last index of duplicate         |
+| Count occurrences  | Combine first + last                          | —                      | Count duplicates in $O(\log n)$      |
+| Floor              | `arr[mid] <= target`                          | Move `left` right      | Largest value not exceeding target   |
+| Ceiling            | `arr[mid] >= target`                          | Move `right` left      | Smallest value at least target       |
+| Strict upper bound | `arr[mid] > target`                           | Move `right` left      | Smallest value strictly above target |
 
 ---
 
@@ -297,13 +297,13 @@ Ceiling includes the target itself (`>=`). Strict upper bound excludes it (`>`).
 
 Try these on paper first, then code them up:
 
-| Problem | Array | Target | Expected Answer |
-| ------- | ----- | ------ | --------------- |
-| Count occurrences | `[1, 1, 2, 2, 3, 4, 4, 4, 5]` | `4` | `3` |
-| Floor | `[10, 20, 30, 40, 50]` | `35` | `30` |
-| Ceiling | `[10, 20, 30, 40, 50]` | `35` | `40` |
-| First + Last | `[2, 2, 2, 2, 2]` | `2` | first=`0`, last=`4` |
-| Strict upper bound | `[1, 3, 5, 7]` | `7` | `-1` (no element greater) |
+| Problem            | Array                         | Target | Expected Answer           |
+| ------------------ | ----------------------------- | ------ | ------------------------- |
+| Count occurrences  | `[1, 1, 2, 2, 3, 4, 4, 4, 5]` | `4`    | `3`                       |
+| Floor              | `[10, 20, 30, 40, 50]`        | `35`   | `30`                      |
+| Ceiling            | `[10, 20, 30, 40, 50]`        | `35`   | `40`                      |
+| First + Last       | `[2, 2, 2, 2, 2]`             | `2`    | first=`0`, last=`4`       |
+| Strict upper bound | `[1, 3, 5, 7]`                | `7`    | `-1` (no element greater) |
 
 ---
 

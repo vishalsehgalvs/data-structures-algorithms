@@ -100,11 +100,11 @@ Found in **one step** — the two midpoints let us cover three regions at once.
 
 **Dry run for target `3`:**
 
-| Step | low | high | mid1 | arr[mid1] | mid2 | arr[mid2] | Decision |
-| ---- | --- | ---- | ---- | --------- | ---- | --------- | -------- |
+| Step | low | high | mid1 | arr[mid1] | mid2 | arr[mid2] | Decision                                    |
+| ---- | --- | ---- | ---- | --------- | ---- | --------- | ------------------------------------------- |
 | 1    | 0   | 9    | 3    | 4         | 6    | 7         | `3 < arr[mid1]=4` → search left: `high = 2` |
 | 2    | 0   | 2    | 0    | 1         | 1    | 2         | `3 > arr[mid2]=2` → search right: `low = 2` |
-| 3    | 2   | 2    | 2    | 3         | 2    | 3         | `arr[mid1] == 3` → Return **2** ✓ |
+| 3    | 2   | 2    | 2    | 3         | 2    | 3         | `arr[mid1] == 3` → Return **2** ✓           |
 
 ---
 
@@ -194,7 +194,7 @@ Ternary search is **especially powerful** when finding the maximum or minimum of
 
 ```
 Unimodal (peak):          Unimodal (valley):
-    *                             
+    *
    * *                     *   *
   *   *                   * * * *
  *     *                 *       *
@@ -203,6 +203,7 @@ Unimodal (peak):          Unimodal (valley):
 Think of throwing a ball in the air. Its height increases until it reaches the peak, then decreases. The height over time is a unimodal function. Ternary search finds that peak efficiently without evaluating every point.
 
 **Why ternary search works here:** At any two interior points `mid1` and `mid2`:
+
 - If `f(mid1) < f(mid2)`, the peak is in the right portion — discard the left third.
 - If `f(mid1) >= f(mid2)`, the peak is in the left portion — discard the right third.
 
@@ -349,14 +350,14 @@ Output is `5` since `arr[5] = 12`. Each recursive call reduces the search space 
 
 You might wonder: if ternary search eliminates more per step, is it faster than binary search?
 
-| Feature                      | Binary Search        | Ternary Search                     |
-| ---------------------------- | -------------------- | ---------------------------------- |
-| Divisions per step           | 2 parts              | 3 parts                            |
-| Comparisons per step         | 1 to 2               | 2 to 3                             |
-| Time complexity              | $O(\log_2 n)$        | $O(\log_3 n)$                      |
-| Best use case                | Sorted array lookup  | Unimodal functions, sorted arrays  |
-| Simpler to implement         | Yes                  | Slightly more complex              |
-| Fewer total comparisons      | **Yes**              | No — more comparisons per step     |
+| Feature                 | Binary Search       | Ternary Search                    |
+| ----------------------- | ------------------- | --------------------------------- |
+| Divisions per step      | 2 parts             | 3 parts                           |
+| Comparisons per step    | 1 to 2              | 2 to 3                            |
+| Time complexity         | $O(\log_2 n)$       | $O(\log_3 n)$                     |
+| Best use case           | Sorted array lookup | Unimodal functions, sorted arrays |
+| Simpler to implement    | Yes                 | Slightly more complex             |
+| Fewer total comparisons | **Yes**             | No — more comparisons per step    |
 
 Even though ternary search eliminates one-third per step (vs one-half), **binary search uses fewer total comparisons** because it does only 1–2 comparisons per step instead of 2–3.
 
@@ -372,32 +373,32 @@ Ternary search makes roughly 1.585× more comparison operations than binary sear
 
 ### Time Complexity
 
-| Case         | Ternary Search    | Notes                                          |
-| ------------ | ----------------- | ---------------------------------------------- |
-| Best         | $O(1)$            | Target is at `mid1` or `mid2` on the first step |
-| Average      | $O(\log_3 n)$     | Divide by 3 each step                          |
-| Worst        | $O(\log_3 n)$     | Target at edge or not present                  |
+| Case    | Ternary Search | Notes                                           |
+| ------- | -------------- | ----------------------------------------------- |
+| Best    | $O(1)$         | Target is at `mid1` or `mid2` on the first step |
+| Average | $O(\log_3 n)$  | Divide by 3 each step                           |
+| Worst   | $O(\log_3 n)$  | Target at edge or not present                   |
 
-Since $\log_3 n = \log_2 n / \log_2 3 \approx 0.63 \cdot \log_2 n$, ternary search has fewer *iterations* but more comparisons per iteration — the net effect is more total comparisons.
+Since $\log_3 n = \log_2 n / \log_2 3 \approx 0.63 \cdot \log_2 n$, ternary search has fewer _iterations_ but more comparisons per iteration — the net effect is more total comparisons.
 
 ### Space Complexity
 
-| Version   | Space Complexity  | Reason                                     |
-| --------- | ----------------- | ------------------------------------------ |
-| Iterative | $O(1)$            | Only a few pointer variables               |
-| Recursive | $O(\log_3 n)$     | Call stack depth equals number of steps    |
+| Version   | Space Complexity | Reason                                  |
+| --------- | ---------------- | --------------------------------------- |
+| Iterative | $O(1)$           | Only a few pointer variables            |
+| Recursive | $O(\log_3 n)$    | Call stack depth equals number of steps |
 
 ---
 
 ## 11. When to Use Ternary Search
 
-| Situation                                                   | Use Ternary Search? |
-| ----------------------------------------------------------- | ------------------- |
-| Find the maximum/minimum of a unimodal function             | ✅ Yes              |
-| Optimization problems with a single peak or valley          | ✅ Yes              |
-| Continuous search space (e.g., floating-point range)        | ✅ Yes              |
-| Simple element lookup in a sorted array                     | ❌ Prefer binary search |
-| Array with duplicates or non-unimodal structure             | ❌ No               |
+| Situation                                            | Use Ternary Search?     |
+| ---------------------------------------------------- | ----------------------- |
+| Find the maximum/minimum of a unimodal function      | ✅ Yes                  |
+| Optimization problems with a single peak or valley   | ✅ Yes                  |
+| Continuous search space (e.g., floating-point range) | ✅ Yes                  |
+| Simple element lookup in a sorted array              | ❌ Prefer binary search |
+| Array with duplicates or non-unimodal structure      | ❌ No                   |
 
 Ternary search is a **specialized tool for optimization problems** on unimodal data. For element lookup, binary search always wins because it makes fewer comparisons.
 
@@ -426,6 +427,7 @@ Ternary search **requires** either a sorted array (for element lookup) or a stri
 **4. Confusing the three regions**
 
 Always check in this order:
+
 1. `target < arr[mid1]` → left third
 2. `target > arr[mid2]` → right third
 3. Otherwise → middle third
