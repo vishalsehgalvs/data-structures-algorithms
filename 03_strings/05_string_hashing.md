@@ -51,11 +51,11 @@ Comparing two strings of length `n` takes **O(n)** time. If you need to do this 
 
 String hashing reduces each comparison to **O(1)** after an O(n) preprocessing step.
 
-| Scenario | Without Hashing | With Hashing |
-|---|---|---|
-| One comparison | O(n) | O(n) preprocessing + O(1) compare |
-| 1000 comparisons on the same string | O(1000n) | O(n) + O(1000) |
-| Find duplicate substrings | O(n³) naive | O(n) with prefix hash |
+| Scenario                            | Without Hashing | With Hashing                      |
+| ----------------------------------- | --------------- | --------------------------------- |
+| One comparison                      | O(n)            | O(n) preprocessing + O(1) compare |
+| 1000 comparisons on the same string | O(1000n)        | O(n) + O(1000)                    |
+| Find duplicate substrings           | O(n³) naive     | O(n) with prefix hash             |
 
 This is especially useful in pattern matching (Rabin-Karp), anagram variants, and substring equality checks.
 
@@ -87,10 +87,10 @@ $$\text{hash}(s) = \sum_{i=0}^{n-1} \text{val}(s[i]) \cdot p^{i} \pmod{M}$$
 
 **Common choices:**
 
-| Parameter | Value | Why |
-|---|---|---|
-| `p` | `31` | Prime that fits 26 lowercase letters well |
-| `M` | `10⁹ + 9` | Large prime — keeps numbers in safe integer range |
+| Parameter | Value     | Why                                               |
+| --------- | --------- | ------------------------------------------------- |
+| `p`       | `31`      | Prime that fits 26 lowercase letters well         |
+| `M`       | `10⁹ + 9` | Large prime — keeps numbers in safe integer range |
 
 Using a **prime base** means each character maps to a unique weighted contribution. The **modulo** keeps the hash value from overflowing integer limits.
 
@@ -119,12 +119,12 @@ int char_value = ch - 'a' + 1;
 
 $$\text{hash} = 1 \cdot 31^0 + 2 \cdot 31^1 + 3 \cdot 31^2 = 1 + 62 + 961 = 1024$$
 
-| Character | Value | Power | Contribution |
-|---|---|---|---|
-| `'a'` | 1 | 31⁰ = 1 | 1 |
-| `'b'` | 2 | 31¹ = 31 | 62 |
-| `'c'` | 3 | 31² = 961 | 2883 |
-| **Total** | | | **2946** |
+| Character | Value | Power     | Contribution |
+| --------- | ----- | --------- | ------------ |
+| `'a'`     | 1     | 31⁰ = 1   | 1            |
+| `'b'`     | 2     | 31¹ = 31  | 62           |
+| `'c'`     | 3     | 31² = 961 | 2883         |
+| **Total** |       |           | **2946**     |
 
 ```python
 # Python — Simple hash computation
@@ -335,13 +335,13 @@ std::pair<long long, long long> compute_double_hash(const std::string& s) {
 
 ## 10. Hashing vs Direct Comparison
 
-| Criteria | Direct Comparison | String Hashing |
-|---|---|---|
-| Time per comparison | O(n) | O(1) after preprocessing |
-| Preprocessing time | None | O(n) |
-| Risk of error | None | Rare collision possible |
-| Best use case | One-time comparison | Many comparisons on same string |
-| Memory needed | O(1) | O(n) for prefix hash array |
+| Criteria            | Direct Comparison   | String Hashing                  |
+| ------------------- | ------------------- | ------------------------------- |
+| Time per comparison | O(n)                | O(1) after preprocessing        |
+| Preprocessing time  | None                | O(n)                            |
+| Risk of error       | None                | Rare collision possible         |
+| Best use case       | One-time comparison | Many comparisons on same string |
+| Memory needed       | O(1)                | O(n) for prefix hash array      |
 
 Use **direct comparison** when you only compare strings once. Use **hashing** when you need many substring comparisons on the same string efficiently.
 
@@ -351,13 +351,13 @@ Use **direct comparison** when you only compare strings once. Use **hashing** wh
 
 String hashing shows up in many real-world and competitive programming scenarios:
 
-| Application | How Hashing Helps |
-|---|---|
-| **Rabin-Karp pattern search** | Hash the pattern, slide a hash window across text — O(n+m) average |
-| **Finding duplicate substrings** | Hash every substring, check for matching hashes |
-| **Checking string rotations** | A rotation of `s` is a substring of `s + s` — compare hashes |
-| **Plagiarism detection** | Compare document segments as hash values |
-| **Longest common substring** | Binary search on length + hashing to check existence |
+| Application                      | How Hashing Helps                                                  |
+| -------------------------------- | ------------------------------------------------------------------ |
+| **Rabin-Karp pattern search**    | Hash the pattern, slide a hash window across text — O(n+m) average |
+| **Finding duplicate substrings** | Hash every substring, check for matching hashes                    |
+| **Checking string rotations**    | A rotation of `s` is a substring of `s + s` — compare hashes       |
+| **Plagiarism detection**         | Compare document segments as hash values                           |
+| **Longest common substring**     | Binary search on length + hashing to check existence               |
 
 In all these cases, hashing avoids repeated O(n) comparisons and brings overall complexity down significantly.
 

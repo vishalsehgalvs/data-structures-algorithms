@@ -167,10 +167,10 @@ int main() {
 
 ## 5. Comparison of Methods
 
-| Approach | Time Complexity | Space Complexity | Best For |
-|---|---|---|---|
-| Reverse and Compare | O(n) | O(n) | Quick scripts, readability |
-| Two Pointer | O(n) | O(1) | Interviews, memory efficiency |
+| Approach            | Time Complexity | Space Complexity | Best For                      |
+| ------------------- | --------------- | ---------------- | ----------------------------- |
+| Reverse and Compare | O(n)            | O(n)             | Quick scripts, readability    |
+| Two Pointer         | O(n)            | O(1)             | Interviews, memory efficiency |
 
 Both have the same time complexity. The two-pointer method wins on space because it avoids creating a new string in memory. **In interviews, always use two pointers** and explain why.
 
@@ -252,6 +252,7 @@ Output: "bb"
 Every palindrome has a center. Treat each character (and each gap between characters) as a potential center, then expand outward as long as characters match.
 
 Two cases at every index `i`:
+
 - **Odd length** — center is a single character at `i`
 - **Even length** — center is between `i` and `i+1`
 
@@ -355,6 +356,7 @@ Check if a string can become a palindrome by removing **at most one** character.
 ```
 
 **The idea:** Use two pointers. When a mismatch is found, try two options:
+
 - Skip the **left** character and check if the rest is a palindrome
 - Skip the **right** character and check if the rest is a palindrome
 
@@ -436,11 +438,11 @@ print(is_number_palindrome(123))    # Output: False
 
 Two-pointer palindrome check on `"abcba"`:
 
-| Step | left | right | s[left] | s[right] | Match? | Action |
-|---|---|---|---|---|---|---|
-| 1 | 0 | 4 | `a` | `a` | Yes | left++, right-- |
-| 2 | 1 | 3 | `b` | `b` | Yes | left++, right-- |
-| 3 | 2 | 2 | `c` | `c` | left == right | stop |
+| Step | left | right | s[left] | s[right] | Match?        | Action          |
+| ---- | ---- | ----- | ------- | -------- | ------------- | --------------- |
+| 1    | 0    | 4     | `a`     | `a`      | Yes           | left++, right-- |
+| 2    | 1    | 3     | `b`     | `b`      | Yes           | left++, right-- |
+| 3    | 2    | 2     | `c`     | `c`      | left == right | stop            |
 
 All pairs matched → `"abcba"` is a **palindrome**.
 

@@ -31,6 +31,7 @@
 Have you ever pressed **Ctrl+F** to find a word in a document? That is pattern matching. You give the computer a piece of text (the **pattern**) and ask it to find where that text appears inside a bigger block of text (the **text**).
 
 Pattern matching shows up everywhere:
+
 - Search engines finding keywords in pages
 - Text editors highlighting all occurrences of a word
 - DNA analysis searching for gene sequences
@@ -49,12 +50,12 @@ In this topic, we cover two approaches: **Naive search** (simple, brute force) a
 
 ## 2. Key Terms
 
-| Term | Meaning | Example |
-|---|---|---|
-| **Text (T)** | The main string we search inside | `"hello world"` |
-| **Pattern (P)** | The smaller string we look for | `"world"` |
-| **Match** | Pattern found starting at some index | index 6 |
-| **Index** | Zero-based position in the text | `T[0]` = `'h'` |
+| Term            | Meaning                              | Example         |
+| --------------- | ------------------------------------ | --------------- |
+| **Text (T)**    | The main string we search inside     | `"hello world"` |
+| **Pattern (P)** | The smaller string we look for       | `"world"`       |
+| **Match**       | Pattern found starting at some index | index 6         |
+| **Index**       | Zero-based position in the text      | `T[0]` = `'h'`  |
 
 > **Analogy:** Think of it like searching for a name in a long list. You scan each entry and check if it matches the name you are looking for.
 
@@ -84,14 +85,14 @@ This works, but it may repeat a lot of comparisons for large inputs.
 ## 4. Naive Search — Step-by-Step Dry Run
 
 **Text:** `ABCABCABD`  
-**Pattern:** `ABCABD`  (length 6)
+**Pattern:** `ABCABD` (length 6)
 
-| Step | Text window (i to i+5) | Pattern | First mismatch | Result |
-|---|---|---|---|---|
-| i=0 | `A B C A B C` | `A B C A B D` | pos 5: `C` ≠ `D` | skip |
-| i=1 | `B C A B C A` | `A B C A B D` | pos 0: `B` ≠ `A` | skip |
-| i=2 | `C A B C A B` | `A B C A B D` | pos 0: `C` ≠ `A` | skip |
-| i=3 | `A B C A B D` | `A B C A B D` | no mismatch | **MATCH at index 3** |
+| Step | Text window (i to i+5) | Pattern       | First mismatch   | Result               |
+| ---- | ---------------------- | ------------- | ---------------- | -------------------- |
+| i=0  | `A B C A B C`          | `A B C A B D` | pos 5: `C` ≠ `D` | skip                 |
+| i=1  | `B C A B C A`          | `A B C A B D` | pos 0: `B` ≠ `A` | skip                 |
+| i=2  | `C A B C A B`          | `A B C A B D` | pos 0: `C` ≠ `A` | skip                 |
+| i=3  | `A B C A B D`          | `A B C A B D` | no mismatch      | **MATCH at index 3** |
 
 The outer loop runs `n - m + 1` times (9 - 6 + 1 = 4 here). The inner loop compares up to `m` characters each time.
 
@@ -171,11 +172,11 @@ int main() {
 
 ## 6. Time Complexity of Naive Search
 
-| Case | Time | When it happens |
-|---|---|---|
-| Best | O(n) | Pattern mismatch at first char every time |
-| Worst | O(n × m) | Pattern almost matches at every position |
-| Space | O(1) | No extra data structures used |
+| Case  | Time     | When it happens                           |
+| ----- | -------- | ----------------------------------------- |
+| Best  | O(n)     | Pattern mismatch at first char every time |
+| Worst | O(n × m) | Pattern almost matches at every position  |
+| Space | O(1)     | No extra data structures used             |
 
 **Worst-case example:** Text = `"AAAAAAB"`, Pattern = `"AAAB"` — nearly every position compares all `m` characters before finding a mismatch.
 
@@ -214,21 +215,21 @@ KMP uses a helper called the **LPS array** (Longest Proper Prefix which is also 
 
 For a string `S`, a proper prefix is any prefix that is NOT the full string itself.
 
-| Pattern | Proper prefix also a suffix | LPS value |
-|---|---|---|
-| `"A"` | none | 0 |
-| `"AB"` | none | 0 |
-| `"ABA"` | `"A"` | 1 |
-| `"ABAB"` | `"AB"` | 2 |
-| `"ABCABC"` | `"ABC"` | 3 |
-| `"ABCABD"` | none at end | 0 |
+| Pattern    | Proper prefix also a suffix | LPS value |
+| ---------- | --------------------------- | --------- |
+| `"A"`      | none                        | 0         |
+| `"AB"`     | none                        | 0         |
+| `"ABA"`    | `"A"`                       | 1         |
+| `"ABAB"`   | `"AB"`                      | 2         |
+| `"ABCABC"` | `"ABC"`                     | 3         |
+| `"ABCABD"` | none at end                 | 0         |
 
 **LPS array for `"ABCABD"`:**
 
-| Index | 0 | 1 | 2 | 3 | 4 | 5 |
-|---|---|---|---|---|---|---|
-| Char | A | B | C | A | B | D |
-| LPS | 0 | 0 | 0 | 1 | 2 | 0 |
+| Index | 0   | 1   | 2   | 3   | 4   | 5   |
+| ----- | --- | --- | --- | --- | --- | --- |
+| Char  | A   | B   | C   | A   | B   | D   |
+| LPS   | 0   | 0   | 0   | 1   | 2   | 0   |
 
 - `lps[3] = 1` → prefix `"A"` matches suffix `"A"` in substring `"ABCA"`
 - `lps[4] = 2` → prefix `"AB"` matches suffix `"AB"` in substring `"ABCAB"`
@@ -272,14 +273,14 @@ print(build_lps(pattern))   # Output: [0, 0, 0, 1, 2, 0]
 
 **Step-by-step LPS build for `"ABCABD"`:**
 
-| i | pattern[i] | length | Comparison | LPS[i] |
-|---|---|---|---|---|
-| 1 | B | 0 | B ≠ A → length stays 0, i++ | 0 |
-| 2 | C | 0 | C ≠ A → length stays 0, i++ | 0 |
-| 3 | A | 0 | A == A → length=1, i++ | 1 |
-| 4 | B | 1 | B == B → length=2, i++ | 2 |
-| 5 | D | 2 | D ≠ C → fall back: length=lps[1]=0 | — |
-| 5 | D | 0 | D ≠ A → length stays 0, i++ | 0 |
+| i   | pattern[i] | length | Comparison                         | LPS[i] |
+| --- | ---------- | ------ | ---------------------------------- | ------ |
+| 1   | B          | 0      | B ≠ A → length stays 0, i++        | 0      |
+| 2   | C          | 0      | C ≠ A → length stays 0, i++        | 0      |
+| 3   | A          | 0      | A == A → length=1, i++             | 1      |
+| 4   | B          | 1      | B == B → length=2, i++             | 2      |
+| 5   | D          | 2      | D ≠ C → fall back: length=lps[1]=0 | —      |
+| 5   | D          | 0      | D ≠ A → length stays 0, i++        | 0      |
 
 ```cpp
 // C++
@@ -353,19 +354,19 @@ print(kmp_search(text, pattern))   # Output: [3]
 
 **KMP search trace for `text="ABCABCABD"`, `pattern="ABCABD"`, `lps=[0,0,0,1,2,0]`:**
 
-| Step | i | j | text[i] | pattern[j] | Action |
-|---|---|---|---|---|---|
-| 1 | 0 | 0 | A | A | match → i=1, j=1 |
-| 2 | 1 | 1 | B | B | match → i=2, j=2 |
-| 3 | 2 | 2 | C | C | match → i=3, j=3 |
-| 4 | 3 | 3 | A | A | match → i=4, j=4 |
-| 5 | 4 | 4 | B | B | match → i=5, j=5 |
-| 6 | 5 | 5 | C | D | mismatch, j≠0 → j=lps[4]=2 |
-| 7 | 5 | 2 | C | C | match → i=6, j=3 |
-| 8 | 6 | 3 | A | A | match → i=7, j=4 |
-| 9 | 7 | 4 | B | B | match → i=8, j=5 |
-| 10 | 8 | 5 | D | D | match → i=9, j=6 |
-| 11 | — | 6 | j==m | MATCH at i-j = 9-6 = **3** | record 3, j=lps[5]=0 |
+| Step | i   | j   | text[i] | pattern[j]                 | Action                     |
+| ---- | --- | --- | ------- | -------------------------- | -------------------------- |
+| 1    | 0   | 0   | A       | A                          | match → i=1, j=1           |
+| 2    | 1   | 1   | B       | B                          | match → i=2, j=2           |
+| 3    | 2   | 2   | C       | C                          | match → i=3, j=3           |
+| 4    | 3   | 3   | A       | A                          | match → i=4, j=4           |
+| 5    | 4   | 4   | B       | B                          | match → i=5, j=5           |
+| 6    | 5   | 5   | C       | D                          | mismatch, j≠0 → j=lps[4]=2 |
+| 7    | 5   | 2   | C       | C                          | match → i=6, j=3           |
+| 8    | 6   | 3   | A       | A                          | match → i=7, j=4           |
+| 9    | 7   | 4   | B       | B                          | match → i=8, j=5           |
+| 10   | 8   | 5   | D       | D                          | match → i=9, j=6           |
+| 11   | —   | 6   | j==m    | MATCH at i-j = 9-6 = **3** | record 3, j=lps[5]=0       |
 
 Notice step 6: instead of resetting `i` back to 4, we only reset `j` to 2 — we reused the `"AB"` we already matched.
 
@@ -409,12 +410,12 @@ std::vector<int> kmp_search(const std::string& text, const std::string& pattern)
 
 ## 11. Time Complexity of KMP
 
-| Phase | Time | Why |
-|---|---|---|
-| Build LPS | O(m) | Single pass through the pattern |
-| Search | O(n) | `i` never goes backward — moves forward at most n times |
-| **Total** | **O(n + m)** | LPS build + search combined |
-| Space | O(m) | The LPS array of size m |
+| Phase     | Time         | Why                                                     |
+| --------- | ------------ | ------------------------------------------------------- |
+| Build LPS | O(m)         | Single pass through the pattern                         |
+| Search    | O(n)         | `i` never goes backward — moves forward at most n times |
+| **Total** | **O(n + m)** | LPS build + search combined                             |
+| Space     | O(m)         | The LPS array of size m                                 |
 
 Compare to naive: O(n × m). For `n = 1,000,000` and `m = 1000`, naive does up to **1 billion** comparisons; KMP does at most **1,001,000**.
 
@@ -422,15 +423,15 @@ Compare to naive: O(n × m). For `n = 1,000,000` and `m = 1000`, naive does up t
 
 ## 12. Naive vs KMP — Quick Comparison
 
-| Feature | Naive Search | KMP Algorithm |
-|---|---|---|
-| Time Complexity | O(n × m) | O(n + m) |
-| Space Complexity | O(1) | O(m) for LPS array |
-| Preprocessing | None | Builds LPS array |
-| Best for | Small inputs, quick prototype | Large texts and patterns |
-| Skips positions? | No — restarts from scratch | Yes — uses LPS to jump |
-| Ease of understanding | Very easy | Moderate |
-| Interview relevance | Good to know | Preferred for performance questions |
+| Feature               | Naive Search                  | KMP Algorithm                       |
+| --------------------- | ----------------------------- | ----------------------------------- |
+| Time Complexity       | O(n × m)                      | O(n + m)                            |
+| Space Complexity      | O(1)                          | O(m) for LPS array                  |
+| Preprocessing         | None                          | Builds LPS array                    |
+| Best for              | Small inputs, quick prototype | Large texts and patterns            |
+| Skips positions?      | No — restarts from scratch    | Yes — uses LPS to jump              |
+| Ease of understanding | Very easy                     | Moderate                            |
+| Interview relevance   | Good to know                  | Preferred for performance questions |
 
 ---
 
