@@ -44,12 +44,12 @@ A hash function takes an input (like a string or a number) and returns a fixed-s
 
 A good hash function has these properties:
 
-| Property | Description |
-|---|---|
-| Deterministic | Same input always produces the same output |
+| Property             | Description                                         |
+| -------------------- | --------------------------------------------------- |
+| Deterministic        | Same input always produces the same output          |
 | Uniform distribution | Values spread evenly to avoid overcrowding one slot |
-| Fast to compute | $O(1)$ calculation regardless of input size |
-| Minimises collisions | Different keys should rarely map to the same index |
+| Fast to compute      | $O(1)$ calculation regardless of input size         |
+| Minimises collisions | Different keys should rarely map to the same index  |
 
 ```mermaid
 flowchart LR
@@ -116,14 +116,14 @@ Imagine a cabinet with numbered drawers — the hash function tells you exactly 
 
 **Visualisation:**
 
-| Index | Key | Value |
-|---|---|---|
-| 0 | — | — |
-| 1 | `"alice"` | 90 |
-| 2 | — | — |
-| 3 | `"bob"` | 75 |
-| 4 | `"carol"` | 88 |
-| 5 | — | — |
+| Index | Key       | Value |
+| ----- | --------- | ----- |
+| 0     | —         | —     |
+| 1     | `"alice"` | 90    |
+| 2     | —         | —     |
+| 3     | `"bob"`   | 75    |
+| 4     | `"carol"` | 88    |
+| 5     | —         | —     |
 
 Each name is hashed to produce an index. The score is stored at that index. **Retrieval is instant** because you always know which index to check.
 
@@ -133,11 +133,11 @@ Each name is hashed to produce an index. The score is stored at that index. **Re
 
 One of the biggest reasons developers love hashing is its speed.
 
-| Operation | Array / Linked List | Hash Table (Average) | Hash Table (Worst) |
-|---|---|---|---|
-| Search by key | $O(n)$ | $O(1)$ | $O(n)$ |
-| Insert | $O(1)$ or $O(n)$ | $O(1)$ | $O(n)$ |
-| Delete by key | $O(n)$ | $O(1)$ | $O(n)$ |
+| Operation     | Array / Linked List | Hash Table (Average) | Hash Table (Worst) |
+| ------------- | ------------------- | -------------------- | ------------------ |
+| Search by key | $O(n)$              | $O(1)$               | $O(n)$             |
+| Insert        | $O(1)$ or $O(n)$    | $O(1)$               | $O(n)$             |
+| Delete by key | $O(n)$              | $O(1)$               | $O(n)$             |
 
 On **average**, all three core operations run in constant time $O(1)$. The worst case $O(n)$ occurs only when many collisions cluster into the same bucket — rare with a good hash function and an appropriately sized table.
 
@@ -220,14 +220,14 @@ int main() {
 
 ## 7. Real-World Use Cases
 
-| Use Case | Key | Value |
-|---|---|---|
-| Word frequency counter | word (string) | count (int) |
-| Browser cache | URL (string) | page content |
-| User sessions | session ID (string) | user object |
-| Two-Sum problem | complement value | index |
-| Phone book | person name | phone number |
-| DNS lookup | domain name | IP address |
+| Use Case               | Key                 | Value        |
+| ---------------------- | ------------------- | ------------ |
+| Word frequency counter | word (string)       | count (int)  |
+| Browser cache          | URL (string)        | page content |
+| User sessions          | session ID (string) | user object  |
+| Two-Sum problem        | complement value    | index        |
+| Phone book             | person name         | phone number |
+| DNS lookup             | domain name         | IP address   |
 
 Hashing is not just a classroom concept — it is fundamental to databases, compilers, caches, and networking.
 
@@ -316,16 +316,17 @@ Both are covered in detail in the next post. The built-in `dict` in Python and `
 
 ## 10. HashMap vs Array vs Linked List
 
-| Feature | Array | Linked List | HashMap |
-|---|---|---|---|
-| Access by index | $O(1)$ | $O(n)$ | N/A |
-| Search by value | $O(n)$ | $O(n)$ | $O(1)$ avg |
-| Insert at end | $O(1)$ amortised | $O(1)$ | $O(1)$ avg |
-| Delete by key | $O(n)$ | $O(n)$ | $O(1)$ avg |
-| Key-value storage | No | No | **Yes** |
-| Order preserved | Yes | Yes | No (default) |
+| Feature           | Array            | Linked List | HashMap      |
+| ----------------- | ---------------- | ----------- | ------------ |
+| Access by index   | $O(1)$           | $O(n)$      | N/A          |
+| Search by value   | $O(n)$           | $O(n)$      | $O(1)$ avg   |
+| Insert at end     | $O(1)$ amortised | $O(1)$      | $O(1)$ avg   |
+| Delete by key     | $O(n)$           | $O(n)$      | $O(1)$ avg   |
+| Key-value storage | No               | No          | **Yes**      |
+| Order preserved   | Yes              | Yes         | No (default) |
 
 **When to use which:**
+
 - **Array** — ordered data, index-based access
 - **Linked List** — frequent insertions/deletions in the middle
 - **HashMap** — fast lookup/insert/delete by an arbitrary key
