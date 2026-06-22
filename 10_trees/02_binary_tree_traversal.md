@@ -27,10 +27,10 @@ Imagine visiting every family member in a family tree. Do you go generation by g
 
 **Tree traversal** means visiting every node in a tree **exactly once** in a specific order. There are two broad strategies:
 
-| Strategy | Idea | Data Structure |
-|---|---|---|
-| **DFS** (Depth First Search) | Go as deep as possible down one branch before backtracking | Stack / Recursion |
-| **BFS** (Breadth First Search) | Visit all nodes at the current level before going deeper | Queue |
+| Strategy                       | Idea                                                       | Data Structure    |
+| ------------------------------ | ---------------------------------------------------------- | ----------------- |
+| **DFS** (Depth First Search)   | Go as deep as possible down one branch before backtracking | Stack / Recursion |
+| **BFS** (Breadth First Search) | Visit all nodes at the current level before going deeper   | Queue             |
 
 DFS has three variants based on **when you visit the root** relative to its children: Preorder, Inorder, Postorder.
 
@@ -274,12 +274,12 @@ The queue ensures nodes at the same level are processed left to right before des
 
 Using the same tree `[1, 2, 3, 4, 5]`:
 
-| Traversal | Strategy | Output |
-|---|---|---|
-| Preorder (DFS) | Root → Left → Right | `1, 2, 4, 5, 3` |
-| Inorder (DFS) | Left → Root → Right | `4, 2, 5, 1, 3` |
-| Postorder (DFS) | Left → Right → Root | `4, 5, 2, 3, 1` |
-| Level Order (BFS) | Level by level | `1, 2, 3, 4, 5` |
+| Traversal         | Strategy            | Output          |
+| ----------------- | ------------------- | --------------- |
+| Preorder (DFS)    | Root → Left → Right | `1, 2, 4, 5, 3` |
+| Inorder (DFS)     | Left → Root → Right | `4, 2, 5, 1, 3` |
+| Postorder (DFS)   | Left → Right → Root | `4, 5, 2, 3, 1` |
+| Level Order (BFS) | Level by level      | `1, 2, 3, 4, 5` |
 
 Each traversal visits all five nodes exactly once — the **order** is what differs.
 
@@ -336,19 +336,21 @@ print("Level Order: ", end=""); level_order(root);  print()  # 1 2 3 4 5
 
 ## 6. DFS vs BFS: When to Use Which
 
-| Criteria | DFS | BFS |
-|---|---|---|
-| Data structure | Stack (or recursion) | Queue |
-| Memory usage | $O(h)$ — height of tree | $O(w)$ — max width of tree |
-| Best for | Path finding, subtree checks, inorder sorting | Shortest path, level problems, min depth |
-| Visits | One branch at a time | One level at a time |
-| Implementation | Recursive (simple) | Iterative with queue |
+| Criteria       | DFS                                           | BFS                                      |
+| -------------- | --------------------------------------------- | ---------------------------------------- |
+| Data structure | Stack (or recursion)                          | Queue                                    |
+| Memory usage   | $O(h)$ — height of tree                       | $O(w)$ — max width of tree               |
+| Best for       | Path finding, subtree checks, inorder sorting | Shortest path, level problems, min depth |
+| Visits         | One branch at a time                          | One level at a time                      |
+| Implementation | Recursive (simple)                            | Iterative with queue                     |
 
 **Choose BFS when:**
+
 - You need level-by-level information (print nodes by level, min depth)
 - The answer is close to the root (shortest path)
 
 **Choose DFS when:**
+
 - You need to explore full paths or subtrees
 - You need inorder output (sorted BST values)
 - You are deleting/cloning a tree (postorder)

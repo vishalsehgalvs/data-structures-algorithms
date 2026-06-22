@@ -50,23 +50,23 @@ Trees are also the foundation for more advanced structures: Binary Search Trees 
 
 ## 3. Key Tree Terminologies
 
-| Term | Definition |
-|---|---|
-| **Root** | The topmost node; has no parent. Every tree has exactly one root. |
-| **Node** | A single unit storing a value and references to child nodes. |
-| **Edge** | The connection between a parent and a child. A tree with $N$ nodes has exactly $N-1$ edges. |
-| **Parent** | A node that has one or more nodes directly below it. |
-| **Child** | A node directly connected below a parent. |
-| **Leaf** | A node with no children (also called an external node). |
-| **Internal node** | Any node with at least one child (includes the root unless the tree has one node). |
-| **Subtree** | Any node together with all of its descendants — useful for recursive solutions. |
-| **Depth** | Number of edges from the root down to a node. Root depth = 0. |
-| **Height** | Number of edges on the longest path from a node down to a leaf. Leaf height = 0. |
-| **Level** | Depth + 1. Root is at level 1; some books start at level 0 (making level = depth). |
-| **Degree** | Number of children a node has. The degree of the tree = max degree of any node. |
-| **Siblings** | Nodes that share the same parent. |
-| **Ancestor** | Any node on the path from the root to a given node. |
-| **Descendant** | Any node in the subtree rooted at a given node. |
+| Term              | Definition                                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------------- |
+| **Root**          | The topmost node; has no parent. Every tree has exactly one root.                           |
+| **Node**          | A single unit storing a value and references to child nodes.                                |
+| **Edge**          | The connection between a parent and a child. A tree with $N$ nodes has exactly $N-1$ edges. |
+| **Parent**        | A node that has one or more nodes directly below it.                                        |
+| **Child**         | A node directly connected below a parent.                                                   |
+| **Leaf**          | A node with no children (also called an external node).                                     |
+| **Internal node** | Any node with at least one child (includes the root unless the tree has one node).          |
+| **Subtree**       | Any node together with all of its descendants — useful for recursive solutions.             |
+| **Depth**         | Number of edges from the root down to a node. Root depth = 0.                               |
+| **Height**        | Number of edges on the longest path from a node down to a leaf. Leaf height = 0.            |
+| **Level**         | Depth + 1. Root is at level 1; some books start at level 0 (making level = depth).          |
+| **Degree**        | Number of children a node has. The degree of the tree = max degree of any node.             |
+| **Siblings**      | Nodes that share the same parent.                                                           |
+| **Ancestor**      | Any node on the path from the root to a given node.                                         |
+| **Descendant**    | Any node in the subtree rooted at a given node.                                             |
 
 ---
 
@@ -93,14 +93,14 @@ graph TD
 ```
 
 | Node | Depth | Height | Degree | Is Leaf? |
-|---|---|---|---|---|
-| A | 0 | 3 | 2 | No |
-| B | 1 | 1 | 2 | No |
-| C | 1 | 2 | 1 | No |
-| D | 2 | 0 | 0 | **Yes** |
-| E | 2 | 0 | 0 | **Yes** |
-| F | 2 | 1 | 1 | No |
-| G | 3 | 0 | 0 | **Yes** |
+| ---- | ----- | ------ | ------ | -------- |
+| A    | 0     | 3      | 2      | No       |
+| B    | 1     | 1      | 2      | No       |
+| C    | 1     | 2      | 1      | No       |
+| D    | 2     | 0      | 0      | **Yes**  |
+| E    | 2     | 0      | 0      | **Yes**  |
+| F    | 2     | 1      | 1      | No       |
+| G    | 3     | 0      | 0      | **Yes**  |
 
 - **Height of tree** = height of root A = **3**
 - **Degree of tree** = max degree of any node = degree of A = B = **2**
@@ -113,19 +113,24 @@ graph TD
 ## 5. Types of Trees
 
 ### General Tree
+
 No restriction on the number of children per node. A file system is a real-world general tree.
 
 ### Binary Tree
+
 Every node has **at most two children** — a left child and a right child. Most interview tree problems involve binary trees.
 
 ### Binary Search Tree (BST)
+
 A binary tree with an ordering rule:
+
 - All values in the **left subtree** < parent value
 - All values in the **right subtree** > parent value
 
 This ordering makes search, insert, and delete $O(\log n)$ in a balanced BST. Covered in depth in Section 11.
 
 ### Balanced Tree
+
 A tree where the height difference between left and right subtrees of every node is at most 1.
 
 $$|\text{height}(\text{left}) - \text{height}(\text{right})| \leq 1 \quad \text{for every node}$$
@@ -136,13 +141,13 @@ Balanced trees guarantee $O(\log n)$ operations. An unbalanced tree (e.g., inser
 
 ## 6. Tree vs Linked List
 
-| Feature | Linked List | Tree |
-|---|---|---|
-| Structure | Linear (one direction) | Hierarchical (branching) |
-| Children per node | 1 (next pointer) | 2 or more |
-| Traversal | Sequential | Multiple paths (DFS, BFS) |
-| Use cases | Stacks, queues, lists | File systems, databases, DOM |
-| Search time (sorted) | $O(n)$ | $O(\log n)$ in balanced trees |
+| Feature              | Linked List            | Tree                          |
+| -------------------- | ---------------------- | ----------------------------- |
+| Structure            | Linear (one direction) | Hierarchical (branching)      |
+| Children per node    | 1 (next pointer)       | 2 or more                     |
+| Traversal            | Sequential             | Multiple paths (DFS, BFS)     |
+| Use cases            | Stacks, queues, lists  | File systems, databases, DOM  |
+| Search time (sorted) | $O(n)$                 | $O(\log n)$ in balanced trees |
 
 Trees are far more flexible and powerful for hierarchical problems. Linked lists are great for sequential data; trees shine when data has natural hierarchy or when you need fast lookups with structure.
 
@@ -229,12 +234,12 @@ We navigate the tree by following `left` and `right` pointers from the root, jus
 
 Let $h$ = height of the tree, $N$ = number of nodes.
 
-| Property | Formula |
-|---|---|
-| Max nodes in a tree of height $h$ | $2^{h+1} - 1$ |
-| Max nodes at the last level | $2^h$ |
-| Min height for $N$ nodes | $\lfloor \log_2 N \rfloor$ |
-| Leaf nodes in a full binary tree | one more than internal nodes with two children |
+| Property                          | Formula                                        |
+| --------------------------------- | ---------------------------------------------- |
+| Max nodes in a tree of height $h$ | $2^{h+1} - 1$                                  |
+| Max nodes at the last level       | $2^h$                                          |
+| Min height for $N$ nodes          | $\lfloor \log_2 N \rfloor$                     |
+| Leaf nodes in a full binary tree  | one more than internal nodes with two children |
 
 These properties appear naturally in algorithm analysis:
 
@@ -248,15 +253,15 @@ A **perfect binary tree** has all internal nodes with exactly 2 children and all
 
 ## 9. Real-World Applications
 
-| Domain | Tree Type | Role |
-|---|---|---|
-| File systems | General tree | Folders and files in a hierarchy |
-| HTML DOM | General tree | `<html>` root, nested elements as children |
-| Database indexes | B-Tree / B+ Tree | Fast $O(\log n)$ range queries |
-| Compilers | Expression tree | Parse and evaluate mathematical expressions |
-| Autocomplete | Trie | Prefix-based suggestions (Section 16) |
-| Priority queues | Heap (binary tree) | Efficient min/max access (Section 12) |
-| Network routing | Spanning tree | Minimum spanning tree algorithms |
+| Domain           | Tree Type          | Role                                        |
+| ---------------- | ------------------ | ------------------------------------------- |
+| File systems     | General tree       | Folders and files in a hierarchy            |
+| HTML DOM         | General tree       | `<html>` root, nested elements as children  |
+| Database indexes | B-Tree / B+ Tree   | Fast $O(\log n)$ range queries              |
+| Compilers        | Expression tree    | Parse and evaluate mathematical expressions |
+| Autocomplete     | Trie               | Prefix-based suggestions (Section 16)       |
+| Priority queues  | Heap (binary tree) | Efficient min/max access (Section 12)       |
+| Network routing  | Spanning tree      | Minimum spanning tree algorithms            |
 
 ---
 
@@ -276,7 +281,7 @@ A **perfect binary tree** has all internal nodes with exactly 2 children and all
 ## 11. FAQs
 
 **What is the difference between depth and height of a node?**  
-**Depth** is measured *downward from the root* to the node (how far the node is from the root). **Height** is measured *upward from the farthest leaf* below the node. The root has depth 0 and the greatest height; a leaf has height 0 and varying depth.
+**Depth** is measured _downward from the root_ to the node (how far the node is from the root). **Height** is measured _upward from the farthest leaf_ below the node. The root has depth 0 and the greatest height; a leaf has height 0 and varying depth.
 
 **Can a tree have cycles?**  
 No. A tree is by definition acyclic. If there is a cycle, the structure becomes a **graph**. Every node in a tree has exactly one parent (except the root, which has none), and there is exactly one path between any two nodes.

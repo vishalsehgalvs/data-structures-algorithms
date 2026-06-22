@@ -23,6 +23,7 @@
 Imagine a tree in your backyard — roots at the bottom, branches spreading upward. In computer science, we **flip that picture**: the root is at the top and leaves hang at the bottom.
 
 Three natural questions arise:
+
 - **How tall is the tree?** → **Height**
 - **How far down is this particular node?** → **Depth**
 - **How wide can you stretch across it?** → **Diameter**
@@ -209,15 +210,15 @@ int main() {
 
 ## 4. Height vs Depth: Key Differences
 
-| Property | Height | Depth |
-|---|---|---|
+| Property      | Height                                | Depth                         |
+| ------------- | ------------------------------------- | ----------------------------- |
 | Measured from | Node to the **deepest leaf below it** | **Root** to the specific node |
-| Direction | Bottom-up | Top-down |
-| Applies to | A node or the whole tree | A specific individual node |
-| Root value | Height of tree = longest path down | Depth of root = **0** |
-| Leaf value | Height of leaf = **0** | Depth varies by position |
+| Direction     | Bottom-up                             | Top-down                      |
+| Applies to    | A node or the whole tree              | A specific individual node    |
+| Root value    | Height of tree = longest path down    | Depth of root = **0**         |
+| Leaf value    | Height of leaf = **0**                | Depth varies by position      |
 
-> **Memory trick:** Height = how *tall* the tree is from that point going *down*. Depth = how *deep* you are from the top.
+> **Memory trick:** Height = how _tall_ the tree is from that point going _down_. Depth = how _deep_ you are from the top.
 
 ---
 
@@ -225,7 +226,7 @@ int main() {
 
 ### What is Diameter?
 
-The **diameter** (also called the *width*) of a binary tree is the **length (in edges) of the longest path between any two nodes**. The path may or may not pass through the root.
+The **diameter** (also called the _width_) of a binary tree is the **length (in edges) of the longest path between any two nodes**. The path may or may not pass through the root.
 
 ### Diameter Example
 
@@ -365,13 +366,14 @@ This becomes the global maximum even though we never check the root.
 
 ## 7. Time and Space Complexity
 
-| Operation | Time | Space |
-|---|---|---|
-| Height of tree | $O(n)$ | $O(h)$ |
-| Depth of a node | $O(n)$ | $O(h)$ |
+| Operation        | Time   | Space  |
+| ---------------- | ------ | ------ |
+| Height of tree   | $O(n)$ | $O(h)$ |
+| Depth of a node  | $O(n)$ | $O(h)$ |
 | Diameter of tree | $O(n)$ | $O(h)$ |
 
 Where:
+
 - $n$ = number of nodes (every node visited once)
 - $h$ = height of the tree = recursion call stack depth
   - $O(\log n)$ for a **balanced** tree
