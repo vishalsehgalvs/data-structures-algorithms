@@ -28,6 +28,7 @@
 Imagine a bag of coloured marbles. You grab a notebook and write each colour with its count. That notebook is a **frequency map**.
 
 In programming, a frequency map is a `HashMap` where:
+
 - **Key** = an element from your input
 - **Value** = how many times that element appears
 
@@ -50,11 +51,11 @@ Frequency map:
 
 Without a frequency map, counting occurrences typically requires nested loops — $O(n^2)$ time. With a hash map, you count everything in a **single pass** — $O(n)$ time.
 
-| Approach | Time | Notes |
-|---|---|---|
-| Brute force (nested loops) | $O(n^2)$ | Check every pair |
-| Sort then scan | $O(n \log n)$ | Useful when order matters |
-| Frequency map | $O(n)$ | Single pass, hash map lookup |
+| Approach                   | Time          | Notes                        |
+| -------------------------- | ------------- | ---------------------------- |
+| Brute force (nested loops) | $O(n^2)$      | Check every pair             |
+| Sort then scan             | $O(n \log n)$ | Useful when order matters    |
+| Frequency map              | $O(n)$        | Single pass, hash map lookup |
 
 Think of it like a cashier scanning items. Instead of re-scanning the whole cart to count each item, they scan once and the register tracks counts automatically.
 
@@ -475,13 +476,13 @@ int main() {
 
 ## 11. When to Use Frequency Map vs Other Approaches
 
-| Problem Type | Naive Approach | With Frequency Map | Improvement |
-|---|---|---|---|
-| Count occurrences | Nested loops $O(n^2)$ | Single pass $O(n)$ | High |
-| Find duplicates | Sort then scan $O(n \log n)$ | HashMap $O(n)$ | Medium |
-| Anagram check | Sort both strings $O(n \log n)$ | Two-pass HashMap $O(n)$ | Medium |
-| Top K frequent | Count and sort $O(n \log n)$ | Freq map + sort $O(n \log n)$ | Cleaner code |
-| First unique | Two nested loops $O(n^2)$ | Two-pass $O(n)$ | High |
+| Problem Type      | Naive Approach                  | With Frequency Map            | Improvement  |
+| ----------------- | ------------------------------- | ----------------------------- | ------------ |
+| Count occurrences | Nested loops $O(n^2)$           | Single pass $O(n)$            | High         |
+| Find duplicates   | Sort then scan $O(n \log n)$    | HashMap $O(n)$                | Medium       |
+| Anagram check     | Sort both strings $O(n \log n)$ | Two-pass HashMap $O(n)$       | Medium       |
+| Top K frequent    | Count and sort $O(n \log n)$    | Freq map + sort $O(n \log n)$ | Cleaner code |
+| First unique      | Two nested loops $O(n^2)$       | Two-pass $O(n)$               | High         |
 
 **Rule of thumb:** reach for a frequency map whenever the problem involves counting, grouping, or querying element occurrences.
 

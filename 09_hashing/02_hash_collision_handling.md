@@ -46,12 +46,12 @@ $$\text{If } |\text{keys}| > |\text{slots}|, \text{ at least one slot must hold}
 
 For example, with table size $m = 7$ and hash $h(k) = k \bmod 7$:
 
-| Key | Hash | Index |
-|---|---|---|
-| 3 | $3 \bmod 7$ | 3 |
-| 10 | $10 \bmod 7$ | **3** ← collision |
-| 17 | $17 \bmod 7$ | **3** ← collision |
-| 5 | $5 \bmod 7$ | 5 |
+| Key | Hash         | Index             |
+| --- | ------------ | ----------------- |
+| 3   | $3 \bmod 7$  | 3                 |
+| 10  | $10 \bmod 7$ | **3** ← collision |
+| 17  | $17 \bmod 7$ | **3** ← collision |
+| 5   | $5 \bmod 7$  | 5                 |
 
 ---
 
@@ -59,10 +59,10 @@ For example, with table size $m = 7$ and hash $h(k) = k \bmod 7$:
 
 There are two main families of collision-handling strategies:
 
-| Technique | Storage Location | Best For |
-|---|---|---|
-| **Separate Chaining** | Outside the table (linked list / dynamic array) | High load factors, easy implementation |
-| **Open Addressing** | Inside the table (probing for free slot) | Cache-friendly access, low load factors |
+| Technique             | Storage Location                                | Best For                                |
+| --------------------- | ----------------------------------------------- | --------------------------------------- |
+| **Separate Chaining** | Outside the table (linked list / dynamic array) | High load factors, easy implementation  |
+| **Open Addressing**   | Inside the table (probing for free slot)        | Cache-friendly access, low load factors |
 
 ```mermaid
 flowchart TD
@@ -430,12 +430,12 @@ Double hashing is the most uniform probing method — each key gets its own uniq
 
 ## 6. Comparing Collision Techniques
 
-| Technique | Clustering | Extra Space | Avg Time | Cache Friendly |
-|---|---|---|---|---|
-| Separate Chaining | None | Yes (linked list) | $O(1)$ | No |
-| Linear Probing | **Primary** (runs) | No | $O(1)$ | **Yes** |
-| Quadratic Probing | Secondary | No | $O(1)$ | Moderate |
-| Double Hashing | Minimal | No | $O(1)$ | Moderate |
+| Technique         | Clustering         | Extra Space       | Avg Time | Cache Friendly |
+| ----------------- | ------------------ | ----------------- | -------- | -------------- |
+| Separate Chaining | None               | Yes (linked list) | $O(1)$   | No             |
+| Linear Probing    | **Primary** (runs) | No                | $O(1)$   | **Yes**        |
+| Quadratic Probing | Secondary          | No                | $O(1)$   | Moderate       |
+| Double Hashing    | Minimal            | No                | $O(1)$   | Moderate       |
 
 - **Separate chaining** is the easiest to implement and handles high load factors gracefully.
 - **Open addressing** methods are better for cache performance since all data lives in one contiguous array.
@@ -449,12 +449,12 @@ The **load factor** $\lambda$ measures how full the table is:
 
 $$\lambda = \frac{n}{m} \quad \text{where } n = \text{entries stored},\ m = \text{table size}$$
 
-| Load Factor | Impact |
-|---|---|
-| $\lambda < 0.5$ | Very few collisions, fast operations |
-| $0.5 \leq \lambda < 0.7$ | Acceptable for open addressing |
-| $\lambda \geq 0.7$ | Collisions spike — time to **rehash** |
-| $\lambda > 1$ | Only possible with chaining |
+| Load Factor              | Impact                                |
+| ------------------------ | ------------------------------------- |
+| $\lambda < 0.5$          | Very few collisions, fast operations  |
+| $0.5 \leq \lambda < 0.7$ | Acceptable for open addressing        |
+| $\lambda \geq 0.7$       | Collisions spike — time to **rehash** |
+| $\lambda > 1$            | Only possible with chaining           |
 
 **Rehashing** doubles the table size and reinserts all existing keys using the new hash function. It is expensive at that moment ($O(n)$) but restores $O(1)$ amortised performance going forward.
 
@@ -472,12 +472,12 @@ Python's `dict` and C++'s `unordered_map` both perform rehashing automatically �
 
 ## 8. Real-World Usage
 
-| Language | Built-in Structure | Collision Strategy |
-|---|---|---|
-| Python | `dict` | Open addressing with custom probing |
-| C++ | `std::unordered_map` | Separate chaining |
-| Java | `HashMap` | Separate chaining (converts to tree at 8+ entries) |
-| Go | `map` | Open addressing |
+| Language | Built-in Structure   | Collision Strategy                                 |
+| -------- | -------------------- | -------------------------------------------------- |
+| Python   | `dict`               | Open addressing with custom probing                |
+| C++      | `std::unordered_map` | Separate chaining                                  |
+| Java     | `HashMap`            | Separate chaining (converts to tree at 8+ entries) |
+| Go       | `map`                | Open addressing                                    |
 
 Understanding these techniques matters in interviews where you may be asked to implement a hash map from scratch or explain how collisions are resolved. It also helps you choose the right structure when keys are expected to collide heavily.
 
