@@ -371,14 +371,14 @@ Both operations run in $O(h)$ time. They are simple but critical — the delete 
 
 ## 9. BST vs Binary Tree: Key Differences
 
-| Feature | Binary Tree | Binary Search Tree |
-|---|---|---|
-| **Ordering rule** | None | Left < root < right at every node |
-| **Search efficiency** | $O(n)$ worst case | $O(h)$ — usually faster |
-| **Inorder output** | Any order | Always sorted ascending |
-| **Insert position** | Flexible (anywhere) | Determined by value comparison |
-| **Find min/max** | $O(n)$ — must scan all | $O(h)$ — leftmost/rightmost node |
-| **Use case** | General hierarchical structure | Search, sort, range queries |
+| Feature               | Binary Tree                    | Binary Search Tree                |
+| --------------------- | ------------------------------ | --------------------------------- |
+| **Ordering rule**     | None                           | Left < root < right at every node |
+| **Search efficiency** | $O(n)$ worst case              | $O(h)$ — usually faster           |
+| **Inorder output**    | Any order                      | Always sorted ascending           |
+| **Insert position**   | Flexible (anywhere)            | Determined by value comparison    |
+| **Find min/max**      | $O(n)$ — must scan all         | $O(h)$ — leftmost/rightmost node  |
+| **Use case**          | General hierarchical structure | Search, sort, range queries       |
 
 Think of a binary tree as an **unorganized bookshelf** and a BST as one **sorted by title**. Searching is much faster on the sorted shelf.
 
@@ -388,13 +388,13 @@ Think of a binary tree as an **unorganized bookshelf** and a BST as one **sorted
 
 The efficiency of BST operations depends on the **height** of the tree. A balanced BST keeps height at $O(\log n)$, but an unbalanced one can degrade to $O(n)$.
 
-| Operation | Average Case (Balanced) | Worst Case (Skewed) |
-|---|---|---|
-| **Search** | $O(\log n)$ | $O(n)$ |
-| **Insert** | $O(\log n)$ | $O(n)$ |
-| **Find Min / Max** | $O(\log n)$ | $O(n)$ |
-| **Inorder Traversal** | $O(n)$ | $O(n)$ |
-| **Space (recursion)** | $O(\log n)$ | $O(n)$ |
+| Operation             | Average Case (Balanced) | Worst Case (Skewed) |
+| --------------------- | ----------------------- | ------------------- |
+| **Search**            | $O(\log n)$             | $O(n)$              |
+| **Insert**            | $O(\log n)$             | $O(n)$              |
+| **Find Min / Max**    | $O(\log n)$             | $O(n)$              |
+| **Inorder Traversal** | $O(n)$                  | $O(n)$              |
+| **Space (recursion)** | $O(\log n)$             | $O(n)$              |
 
 > **When does worst case occur?**  
 > When you insert already-sorted values like 10 → 20 → 30 → 40, the tree becomes a straight line (identical to a linked list) and loses its efficiency advantage. Balanced BSTs like **AVL trees** and **Red-Black trees** fix this automatically.

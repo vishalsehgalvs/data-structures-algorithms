@@ -33,13 +33,13 @@ In a binary tree, the **Lowest Common Ancestor (LCA)** of two nodes $p$ and $q$ 
 
 ## 2. Key Terminology Recap
 
-| Term | Definition |
-|---|---|
-| **Ancestor** | Any node on the path from the root to a given node |
-| **Descendant** | Any node in the subtree rooted at a given node |
-| **Root** | Topmost node — ancestor of every other node |
-| **Depth** | Number of edges from root to a specific node |
-| **LCA** | The deepest node that is ancestor to both $p$ and $q$ |
+| Term           | Definition                                            |
+| -------------- | ----------------------------------------------------- |
+| **Ancestor**   | Any node on the path from the root to a given node    |
+| **Descendant** | Any node in the subtree rooted at a given node        |
+| **Root**       | Topmost node — ancestor of every other node           |
+| **Depth**      | Number of edges from root to a specific node          |
+| **LCA**        | The deepest node that is ancestor to both $p$ and $q$ |
 
 ---
 
@@ -61,13 +61,13 @@ graph TD
     2 --> 5
 ```
 
-| Node A | Node B | LCA |
-|---|---|---|
-| 4 | 5 | **2** |
-| 4 | 2 | **2** (node is its own ancestor) |
-| 4 | 3 | **1** |
-| 2 | 3 | **1** |
-| 1 | 5 | **1** |
+| Node A | Node B | LCA                              |
+| ------ | ------ | -------------------------------- |
+| 4      | 5      | **2**                            |
+| 4      | 2      | **2** (node is its own ancestor) |
+| 4      | 3      | **1**                            |
+| 2      | 3      | **1**                            |
+| 1      | 5      | **1**                            |
 
 ---
 
@@ -283,24 +283,24 @@ The basic implementation assumes both nodes exist. If you must handle missing no
 
 ## 8. Time and Space Complexity
 
-| Aspect | Value | Reason |
-|---|---|---|
-| Time | $O(n)$ | We may visit all $n$ nodes in the worst case |
-| Space (average) | $O(h)$ | Recursion stack = height $h$ of tree |
-| Space (balanced) | $O(\log n)$ | $h = \log n$ for a balanced tree |
-| Space (skewed) | $O(n)$ | $h = n$ for a linked-list-shaped tree |
+| Aspect           | Value       | Reason                                       |
+| ---------------- | ----------- | -------------------------------------------- |
+| Time             | $O(n)$      | We may visit all $n$ nodes in the worst case |
+| Space (average)  | $O(h)$      | Recursion stack = height $h$ of tree         |
+| Space (balanced) | $O(\log n)$ | $h = \log n$ for a balanced tree             |
+| Space (skewed)   | $O(n)$      | $h = n$ for a linked-list-shaped tree        |
 
 ---
 
 ## 9. Why LCA Matters in Real Problems
 
-| Problem | How LCA Helps |
-|---|---|
-| Shortest path between two nodes | Path = node A up to LCA, then down to node B |
-| Network routing | Closest common hub between two devices in a tree |
-| Version control | Common commit from which two branches diverged |
-| File system | Common directory of two absolute file paths |
-| Distance between two nodes | `depth(A) + depth(B) - 2 × depth(LCA)` |
+| Problem                         | How LCA Helps                                    |
+| ------------------------------- | ------------------------------------------------ |
+| Shortest path between two nodes | Path = node A up to LCA, then down to node B     |
+| Network routing                 | Closest common hub between two devices in a tree |
+| Version control                 | Common commit from which two branches diverged   |
+| File system                     | Common directory of two absolute file paths      |
+| Distance between two nodes      | `depth(A) + depth(B) - 2 × depth(LCA)`           |
 
 Whenever a problem involves two nodes in a tree and asks about their relationship, LCA is often the first tool to reach for.
 
@@ -308,12 +308,12 @@ Whenever a problem involves two nodes in a tree and asks about their relationshi
 
 ## 10. LCA vs Other Tree Operations
 
-| Operation | What It Finds | Traversal Style | Time |
-|---|---|---|---|
-| LCA | Deepest shared ancestor | DFS post-order | $O(n)$ |
-| Height | Max depth of subtree | DFS post-order | $O(n)$ |
-| Diameter | Longest path in tree | DFS post-order | $O(n)$ |
-| Level Order | Nodes level by level | BFS (queue) | $O(n)$ |
+| Operation   | What It Finds           | Traversal Style | Time   |
+| ----------- | ----------------------- | --------------- | ------ |
+| LCA         | Deepest shared ancestor | DFS post-order  | $O(n)$ |
+| Height      | Max depth of subtree    | DFS post-order  | $O(n)$ |
+| Diameter    | Longest path in tree    | DFS post-order  | $O(n)$ |
+| Level Order | Nodes level by level    | BFS (queue)     | $O(n)$ |
 
 LCA, height, and diameter all use the **same post-order DFS style** — process children before deciding at the parent. This is not a coincidence: all three require information bubbling up from children before a parent node can make its decision.
 

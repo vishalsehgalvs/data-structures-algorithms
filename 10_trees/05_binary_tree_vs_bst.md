@@ -131,16 +131,16 @@ Every node respects the BST property. You can find any value by simply going lef
 
 ## 4. Key Differences Between Binary Tree and BST
 
-| Feature | Binary Tree | Binary Search Tree |
-|---|---|---|
-| **Ordering Rule** | None — values go anywhere | Left < Root < Right at every node |
-| **Search Efficiency** | $O(n)$ — must visit every node | $O(\log n)$ average case |
-| **Insertion** | Can insert anywhere | Must follow ordering rule strictly |
-| **Duplicates** | Allowed anywhere | Usually not allowed (or handled specially) |
-| **In-order Traversal** | No guaranteed order | Always produces sorted output |
-| **Use Cases** | Expression trees, file systems, decisions | Searching, sorting, range queries |
-| **Structure Flexibility** | Very flexible | Constrained by BST property |
-| **Deletion Complexity** | $O(n)$ to find + remove | $O(\log n)$ average case |
+| Feature                   | Binary Tree                               | Binary Search Tree                         |
+| ------------------------- | ----------------------------------------- | ------------------------------------------ |
+| **Ordering Rule**         | None — values go anywhere                 | Left < Root < Right at every node          |
+| **Search Efficiency**     | $O(n)$ — must visit every node            | $O(\log n)$ average case                   |
+| **Insertion**             | Can insert anywhere                       | Must follow ordering rule strictly         |
+| **Duplicates**            | Allowed anywhere                          | Usually not allowed (or handled specially) |
+| **In-order Traversal**    | No guaranteed order                       | Always produces sorted output              |
+| **Use Cases**             | Expression trees, file systems, decisions | Searching, sorting, range queries          |
+| **Structure Flexibility** | Very flexible                             | Constrained by BST property                |
+| **Deletion Complexity**   | $O(n)$ to find + remove                   | $O(\log n)$ average case                   |
 
 ---
 
@@ -466,14 +466,14 @@ TreeNode* insertBST(TreeNode* node, int value) {
 
 ## 8. Complexity Comparison
 
-| Operation | Binary Tree | BST Average | BST Worst (Skewed) |
-|---|---|---|---|
-| **Search** | $O(n)$ | $O(\log n)$ | $O(n)$ |
-| **Insertion** | $O(n)$ BFS to find slot | $O(\log n)$ | $O(n)$ |
-| **Deletion** | $O(n)$ | $O(\log n)$ | $O(n)$ |
-| **In-order traversal** | $O(n)$ (no ordering) | $O(n)$ (gives sorted output) | $O(n)$ |
-| **Find Min/Max** | $O(n)$ | $O(h)$ — leftmost/rightmost | $O(n)$ |
-| **Space (storage)** | $O(n)$ | $O(n)$ | $O(n)$ |
+| Operation              | Binary Tree             | BST Average                  | BST Worst (Skewed) |
+| ---------------------- | ----------------------- | ---------------------------- | ------------------ |
+| **Search**             | $O(n)$                  | $O(\log n)$                  | $O(n)$             |
+| **Insertion**          | $O(n)$ BFS to find slot | $O(\log n)$                  | $O(n)$             |
+| **Deletion**           | $O(n)$                  | $O(\log n)$                  | $O(n)$             |
+| **In-order traversal** | $O(n)$ (no ordering)    | $O(n)$ (gives sorted output) | $O(n)$             |
+| **Find Min/Max**       | $O(n)$                  | $O(h)$ — leftmost/rightmost  | $O(n)$             |
+| **Space (storage)**    | $O(n)$                  | $O(n)$                       | $O(n)$             |
 
 > **When does BST degrade to $O(n)$?**  
 > When you insert already-sorted data (e.g. 1, 2, 3, 4, 5), every new node becomes a right child, turning the BST into a straight line — identical in shape to a linked list. Self-balancing BSTs (AVL trees, Red-Black trees) prevent this by maintaining $O(\log n)$ height always.
@@ -482,15 +482,15 @@ TreeNode* insertBST(TreeNode* node, int value) {
 
 ## 9. When to Use Binary Tree vs BST
 
-| Scenario | Choose |
-|---|---|
-| Represent hierarchical data with no ordering (file systems, expression trees, decision trees) | **Binary Tree** |
-| Need fast $O(\log n)$ search, insert, delete | **BST** |
-| Need elements in sorted order without extra sorting step | **BST** (in-order traversal) |
-| Structure matters more than searchability (recursive subproblems, syntax trees) | **Binary Tree** |
-| Data has natural ordering (numbers, strings, dates) | **BST** |
-| Need range queries ("find all values between 5 and 20") | **BST** |
-| Working with heaps / priority queues | **Binary Tree** (not BST — heaps have different rules) |
+| Scenario                                                                                      | Choose                                                 |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Represent hierarchical data with no ordering (file systems, expression trees, decision trees) | **Binary Tree**                                        |
+| Need fast $O(\log n)$ search, insert, delete                                                  | **BST**                                                |
+| Need elements in sorted order without extra sorting step                                      | **BST** (in-order traversal)                           |
+| Structure matters more than searchability (recursive subproblems, syntax trees)               | **Binary Tree**                                        |
+| Data has natural ordering (numbers, strings, dates)                                           | **BST**                                                |
+| Need range queries ("find all values between 5 and 20")                                       | **BST**                                                |
+| Working with heaps / priority queues                                                          | **Binary Tree** (not BST — heaps have different rules) |
 
 ---
 
