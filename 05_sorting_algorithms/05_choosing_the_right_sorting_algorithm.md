@@ -114,6 +114,50 @@ def insertion_sort(arr):
 # [5, 3, 1, 4, 2] → [1, 2, 3, 4, 5]
 ```
 
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Insertion Sort
+#include <vector>
+
+void insertionSort(std::vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];              // Element to insert into sorted portion
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];       // Shift right to make room
+            j--;
+        }
+        arr[j + 1] = key;             // Insert at correct position
+    }
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Insertion Sort
+#include <vector>
+
+class Solution {
+public:
+    vector<int> sortArray(vector<int>& arr) {
+        int n = arr.size();
+        for (int i = 1; i < n; i++) {
+            int key = arr[i];              // Element to insert into sorted portion
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];       // Shift right to make room
+                j--;
+            }
+            arr[j + 1] = key;             // Insert at correct position
+        }
+        return arr;
+    }
+};
+```
+
 ---
 
 ### Large input, general purpose → **Quick Sort (randomized)** or **Merge Sort**
@@ -128,6 +172,68 @@ def randomized_partition(arr, low, high):
     rand_index = random.randint(low, high)
     arr[rand_index], arr[high] = arr[high], arr[rand_index]
     return partition(arr, low, high)   # standard partition unchanged
+```
+
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Randomized Quick Sort pivot selection
+#include <vector>
+#include <cstdlib>
+
+int partition(std::vector<int>& arr, int low, int high) {
+    int pivot = arr[high];    // Standard partition using last element
+    int i = low - 1;
+    for (int j = low; j < high; j++)
+        if (arr[j] <= pivot) { i++; std::swap(arr[i], arr[j]); }
+    std::swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+int randomizedPartition(std::vector<int>& arr, int low, int high) {
+    int randIndex = low + rand() % (high - low + 1);  // Random index in [low, high]
+    std::swap(arr[randIndex], arr[high]);              // Move random pivot to last
+    return partition(arr, low, high);                  // Standard partition unchanged
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Randomized Quick Sort
+#include <vector>
+#include <cstdlib>
+
+class Solution {
+    int partition(vector<int>& arr, int low, int high) {
+        int pivot = arr[high];  // Pivot is the randomly selected element
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+            if (arr[j] <= pivot) { i++; swap(arr[i], arr[j]); }
+        swap(arr[i + 1], arr[high]);
+        return i + 1;
+    }
+
+    int randomizedPartition(vector<int>& arr, int low, int high) {
+        int randIndex = low + rand() % (high - low + 1); // Pick random pivot index
+        swap(arr[randIndex], arr[high]);                 // Move pivot to last position
+        return partition(arr, low, high);                // Standard partition unchanged
+    }
+
+    void quickSort(vector<int>& arr, int low, int high) {
+        if (low < high) {
+            int pi = randomizedPartition(arr, low, high);
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+public:
+    vector<int> sortArray(vector<int>& nums) {
+        quickSort(nums, 0, nums.size() - 1);
+        return nums;
+    }
+};
 ```
 
 If the input might already be sorted or nearly sorted, prefer **Merge Sort** for its guaranteed $O(n \log n)$ worst case.
@@ -153,6 +259,45 @@ def counting_sort(arr):
     return [val for val, freq in enumerate(count) for _ in range(freq)]
 
 # [4, 2, 2, 8, 3, 3, 1] → [1, 2, 2, 3, 3, 4, 8]
+```
+
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Counting Sort
+#include <vector>
+#include <algorithm>
+
+std::vector<int> countingSort(std::vector<int> arr) {
+    int maxVal = *std::max_element(arr.begin(), arr.end());  // Find range
+    std::vector<int> count(maxVal + 1, 0);                   // Count array
+    for (int num : arr) count[num]++;                        // Count each value
+    std::vector<int> output;
+    for (int val = 0; val <= maxVal; val++)
+        output.insert(output.end(), count[val], val);        // Place by index
+    return output;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Counting Sort
+#include <vector>
+#include <algorithm>
+
+class Solution {
+public:
+    vector<int> sortArray(vector<int>& arr) {
+        int maxVal = *max_element(arr.begin(), arr.end());  // Find range
+        vector<int> count(maxVal + 1, 0);                   // Count array
+        for (int num : arr) count[num]++;                   // Count each value
+        vector<int> output;
+        for (int val = 0; val <= maxVal; val++)
+            output.insert(output.end(), count[val], val);   // Place by index
+        return output;
+    }
+};
 ```
 
 > **Caution:** if $k$ is very large (e.g., values up to 1 billion), Counting Sort needs a billion-slot array — impractical. Use Radix Sort instead.

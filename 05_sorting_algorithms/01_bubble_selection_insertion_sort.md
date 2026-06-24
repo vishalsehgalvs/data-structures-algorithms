@@ -108,24 +108,51 @@ print(bubble_sort(arr))
 # Output: [1, 3, 4, 5, 8]
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Bubble Sort with early-exit optimisation
+// C++ (simple) — Bubble Sort with early-exit optimisation
 #include <vector>
 #include <algorithm>
 
 void bubbleSort(std::vector<int>& arr) {
     int n = arr.size();
     for (int i = 0; i < n; i++) {
-        bool swapped = false;
+        bool swapped = false;                    // Track if any swap happened this pass
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                std::swap(arr[j], arr[j + 1]);
+                std::swap(arr[j], arr[j + 1]);   // Swap adjacent out-of-order elements
                 swapped = true;
             }
         }
-        if (!swapped) break;
+        if (!swapped) break;                     // Already sorted — exit early
     }
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Bubble Sort
+#include <vector>
+
+class Solution {
+public:
+    vector<int> sortArray(vector<int>& arr) {
+        int n = arr.size();
+        for (int i = 0; i < n; i++) {
+            bool swapped = false;                    // Track if any swap happened this pass
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    swap(arr[j], arr[j + 1]);        // Swap adjacent out-of-order elements
+                    swapped = true;
+                }
+            }
+            if (!swapped) break;                     // Already sorted — exit early
+        }
+        return arr;
+    }
+};
 ```
 
 The `swapped` flag is the key optimisation. If an entire pass completes without a single swap, the array is already sorted and we exit early — bringing the best-case down to $O(n)$.
@@ -204,20 +231,43 @@ print(selection_sort(arr))
 # Output: [1, 3, 4, 5, 8]
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Selection Sort
+// C++ (simple) — Selection Sort
 #include <vector>
 #include <algorithm>
 
 void selectionSort(std::vector<int>& arr) {
     int n = arr.size();
     for (int i = 0; i < n; i++) {
-        int minIndex = i;
+        int minIndex = i;                                  // Assume current index is minimum
         for (int j = i + 1; j < n; j++)
-            if (arr[j] < arr[minIndex]) minIndex = j;
-        std::swap(arr[i], arr[minIndex]);
+            if (arr[j] < arr[minIndex]) minIndex = j;     // Update minimum index
+        std::swap(arr[i], arr[minIndex]);                  // Swap minimum into position
     }
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Selection Sort
+#include <vector>
+
+class Solution {
+public:
+    vector<int> sortArray(vector<int>& arr) {
+        int n = arr.size();
+        for (int i = 0; i < n; i++) {
+            int minIndex = i;                              // Assume current index is minimum
+            for (int j = i + 1; j < n; j++)
+                if (arr[j] < arr[minIndex]) minIndex = j; // Update minimum index
+            swap(arr[i], arr[minIndex]);                   // Swap minimum into position
+        }
+        return arr;
+    }
+};
 ```
 
 Selection Sort always runs exactly $O(n^2)$ comparisons regardless of the input. It never exits early. This makes it less adaptive than Bubble Sort or Insertion Sort, but it does the **fewest swaps** of the three.
@@ -306,22 +356,48 @@ print(insertion_sort(arr))
 # Output: [1, 3, 4, 5, 8]
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Insertion Sort
+// C++ (simple) — Insertion Sort
 #include <vector>
 
 void insertionSort(std::vector<int>& arr) {
     int n = arr.size();
     for (int i = 1; i < n; i++) {
-        int key = arr[i];
+        int key = arr[i];              // Element to be inserted into the sorted portion
         int j = i - 1;
         while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
+            arr[j + 1] = arr[j];       // Shift element one position right
             j--;
         }
-        arr[j + 1] = key;
+        arr[j + 1] = key;             // Insert key at correct position
     }
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Insertion Sort
+#include <vector>
+
+class Solution {
+public:
+    vector<int> sortArray(vector<int>& arr) {
+        int n = arr.size();
+        for (int i = 1; i < n; i++) {
+            int key = arr[i];              // Element to be inserted into the sorted portion
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];       // Shift element one position right
+                j--;
+            }
+            arr[j + 1] = key;             // Insert key at correct position
+        }
+        return arr;
+    }
+};
 ```
 
 The outer loop picks each element as the `key`. The inner `while` loop shifts all elements greater than `key` one step to the right, making room for the key to slot into the correct position.

@@ -114,23 +114,49 @@ print(counting_sort(arr))
 # Output: [1, 2, 2, 3, 3, 4, 8]
 ```
 
+### C++ (simple):
+
 ```cpp
-// C++ — Counting Sort
+// C++ (simple) — Counting Sort
 #include <vector>
 #include <algorithm>
 
 std::vector<int> countingSort(std::vector<int> arr) {
-    int maxVal = *std::max_element(arr.begin(), arr.end());
-    std::vector<int> count(maxVal + 1, 0);
+    int maxVal = *std::max_element(arr.begin(), arr.end());  // Find the range
+    std::vector<int> count(maxVal + 1, 0);                   // Count array
 
-    for (int num : arr) count[num]++;
+    for (int num : arr) count[num]++;                        // Count occurrences
 
-    std::vector<int> output;
+    std::vector<int> output;                                 // Build sorted output
     for (int val = 0; val <= maxVal; val++)
-        output.insert(output.end(), count[val], val);
+        output.insert(output.end(), count[val], val);        // Place 'val' count[val] times
 
     return output;
 }
+```
+
+### C++ (LeetCode class style):
+
+```cpp
+// C++ (LeetCode class style) — Counting Sort
+#include <vector>
+#include <algorithm>
+
+class Solution {
+public:
+    vector<int> sortArray(vector<int>& arr) {
+        int maxVal = *max_element(arr.begin(), arr.end());  // Find the range
+        vector<int> count(maxVal + 1, 0);                   // Count array
+
+        for (int num : arr) count[num]++;                   // Count each value
+
+        vector<int> output;                                 // Build sorted output
+        for (int val = 0; val <= maxVal; val++)
+            output.insert(output.end(), count[val], val);   // Place val exactly count[val] times
+
+        return output;
+    }
+};
 ```
 
 Notice how no two elements are ever compared directly — elements are placed using their own value as an index.
@@ -231,6 +257,78 @@ def radix_sort(arr):
 arr = [170, 45, 75, 90, 802, 24, 2, 66]
 print(radix_sort(arr))
 # Output: [2, 24, 45, 66, 75, 90, 170, 802]
+```
+
+### C++ (simple):
+
+```cpp
+// C++ (simple) — Radix Sort (LSD, uses Counting Sort as subroutine)
+#include <vector>
+
+void countingSortByDigit(std::vector<int>& arr, int place) {
+    int n = arr.size();
+    std::vector<int> output(n);
+    std::vector<int> count(10, 0);   // Digits 0–9
+
+    for (int num : arr)
+        count[(num / place) % 10]++;   // Count each digit at this position
+
+    for (int i = 1; i < 10; i++)
+        count[i] += count[i - 1];      // Prefix sums → actual output positions
+
+    for (int i = n - 1; i >= 0; i--) { // Right-to-left for stability
+        int digit = (arr[i] / place) % 10;
+        output[count[digit] - 1] = arr[i];
+        count[digit]--;
+    }
+    arr = output;
+}
+
+std::vector<int> radixSort(std::vector<int> arr) {
+    if (arr.empty()) return arr;
+    int maxVal = *std::max_element(arr.begin(), arr.end());
+    for (int place = 1; maxVal / place > 0; place *= 10)  // Process each digit position
+        countingSortByDigit(arr, place);
+    return arr;
+}
+```
+
+### C++ (LeetCode class style):
+
+```cpp
+// C++ (LeetCode class style) — Radix Sort (LSD)
+#include <vector>
+#include <algorithm>
+
+class Solution {
+    void countingSortByDigit(vector<int>& arr, int place) {
+        int n = arr.size();
+        vector<int> output(n);
+        vector<int> count(10, 0);    // Digits 0–9
+
+        for (int num : arr)
+            count[(num / place) % 10]++;  // Count each digit at this position
+
+        for (int i = 1; i < 10; i++)
+            count[i] += count[i - 1];     // Prefix sums → actual output positions
+
+        for (int i = n - 1; i >= 0; i--) { // Right-to-left traversal for stability
+            int digit = (arr[i] / place) % 10;
+            output[count[digit] - 1] = arr[i];
+            count[digit]--;
+        }
+        arr = output;
+    }
+
+public:
+    vector<int> sortArray(vector<int>& nums) {
+        if (nums.empty()) return nums;
+        int maxVal = *max_element(nums.begin(), nums.end());
+        for (int place = 1; maxVal / place > 0; place *= 10)  // Each digit position
+            countingSortByDigit(nums, place);
+        return nums;
+    }
+};
 ```
 
 ---

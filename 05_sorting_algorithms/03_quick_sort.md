@@ -154,35 +154,72 @@ print(arr)
 # Output: [1, 5, 7, 8, 9, 10]
 ```
 
-### C++
+### C++ (simple):
 
 ```cpp
-// C++ — Quick Sort (last-element pivot)
+// C++ (simple) — Quick Sort (last-element pivot)
 #include <vector>
 #include <algorithm>
 
 int partition(std::vector<int>& arr, int low, int high) {
-    int pivot = arr[high];
-    int i = low - 1;
+    int pivot = arr[high];    // Last element as pivot
+    int i = low - 1;          // Tracks the smaller-element boundary
 
     for (int j = low; j < high; j++) {
-        if (arr[j] <= pivot) {
+        if (arr[j] <= pivot) {    // Element belongs left of pivot
             i++;
             std::swap(arr[i], arr[j]);
         }
     }
 
-    std::swap(arr[i + 1], arr[high]);
-    return i + 1;
+    std::swap(arr[i + 1], arr[high]);  // Place pivot at correct position
+    return i + 1;                      // Return pivot's final index
 }
 
 void quickSort(std::vector<int>& arr, int low, int high) {
     if (low < high) {
-        int pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+        int pi = partition(arr, low, high);  // Partition index
+        quickSort(arr, low, pi - 1);         // Sort left of pivot
+        quickSort(arr, pi + 1, high);        // Sort right of pivot
     }
 }
+```
+
+### C++ (LeetCode class style):
+
+```cpp
+// C++ (LeetCode class style) — Quick Sort
+#include <vector>
+
+class Solution {
+    int partition(vector<int>& arr, int low, int high) {
+        int pivot = arr[high];    // Last element as pivot
+        int i = low - 1;          // Tracks the smaller-element boundary
+
+        for (int j = low; j < high; j++) {
+            if (arr[j] <= pivot) {    // Element belongs left of pivot
+                i++;
+                swap(arr[i], arr[j]);
+            }
+        }
+        swap(arr[i + 1], arr[high]);  // Place pivot at correct position
+        return i + 1;                 // Return pivot's final index
+    }
+
+    void quickSort(vector<int>& arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);  // Partition index
+            quickSort(arr, low, pi - 1);         // Sort left of pivot
+            quickSort(arr, pi + 1, high);        // Sort right of pivot
+        }
+    }
+
+public:
+    vector<int> sortArray(vector<int>& nums) {
+        quickSort(nums, 0, nums.size() - 1);     // Sort entire array
+        return nums;
+    }
+};
 ```
 
 ---
@@ -297,6 +334,68 @@ def median_of_three(arr, low, high):
     return arr[high]
 ```
 
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Median-of-three pivot selection
+#include <vector>
+#include <algorithm>
+
+void medianOfThree(std::vector<int>& arr, int low, int high) {
+    int mid = low + (high - low) / 2;  // Midpoint index
+
+    // Sort the three candidate positions in place so arr[mid] holds the median
+    if (arr[low] > arr[mid])  std::swap(arr[low], arr[mid]);
+    if (arr[low] > arr[high]) std::swap(arr[low], arr[high]);
+    if (arr[mid] > arr[high]) std::swap(arr[mid], arr[high]);
+
+    // Move median to arr[high] so standard partition logic is unchanged
+    std::swap(arr[mid], arr[high]);
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Quick Sort with median-of-three pivot
+#include <vector>
+
+class Solution {
+    void medianOfThree(vector<int>& arr, int low, int high) {
+        int mid = low + (high - low) / 2;  // Midpoint index
+        // Sort three candidates so arr[mid] holds the median
+        if (arr[low] > arr[mid])  swap(arr[low], arr[mid]);
+        if (arr[low] > arr[high]) swap(arr[low], arr[high]);
+        if (arr[mid] > arr[high]) swap(arr[mid], arr[high]);
+        swap(arr[mid], arr[high]);  // Move median to arr[high] for partition
+    }
+
+    int partition(vector<int>& arr, int low, int high) {
+        int pivot = arr[high];    // Pivot is now the median of three
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+            if (arr[j] <= pivot) { i++; swap(arr[i], arr[j]); }
+        swap(arr[i + 1], arr[high]);
+        return i + 1;
+    }
+
+    void quickSort(vector<int>& arr, int low, int high) {
+        if (low < high) {
+            medianOfThree(arr, low, high);       // Choose better pivot
+            int pi = partition(arr, low, high);  // Partition around median pivot
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+public:
+    vector<int> sortArray(vector<int>& nums) {
+        quickSort(nums, 0, nums.size() - 1);
+        return nums;
+    }
+};
+```
+
 After calling this helper, use `arr[high]` as the pivot in the standard `partition` function — no other changes needed.
 
 ---
@@ -321,6 +420,77 @@ def randomized_quick_sort(arr, low, high):
         pi = randomized_partition(arr, low, high)
         randomized_quick_sort(arr, low, pi - 1)
         randomized_quick_sort(arr, pi + 1, high)
+```
+
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Randomized Quick Sort
+#include <vector>
+#include <algorithm>
+#include <cstdlib>
+
+int partition(std::vector<int>& arr, int low, int high) {
+    int pivot = arr[high];    // Pivot is now the randomly chosen element
+    int i = low - 1;
+    for (int j = low; j < high; j++)
+        if (arr[j] <= pivot) { i++; std::swap(arr[i], arr[j]); }
+    std::swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+int randomizedPartition(std::vector<int>& arr, int low, int high) {
+    int randIndex = low + rand() % (high - low + 1);  // Random index in [low, high]
+    std::swap(arr[randIndex], arr[high]);              // Swap to last position
+    return partition(arr, low, high);                  // Use standard partition
+}
+
+void randomizedQuickSort(std::vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pi = randomizedPartition(arr, low, high);  // Random pivot index
+        randomizedQuickSort(arr, low, pi - 1);         // Sort left of pivot
+        randomizedQuickSort(arr, pi + 1, high);        // Sort right of pivot
+    }
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Randomized Quick Sort
+#include <vector>
+#include <cstdlib>
+
+class Solution {
+    int partition(vector<int>& arr, int low, int high) {
+        int pivot = arr[high];    // Pivot element
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+            if (arr[j] <= pivot) { i++; swap(arr[i], arr[j]); }
+        swap(arr[i + 1], arr[high]);
+        return i + 1;
+    }
+
+    int randomizedPartition(vector<int>& arr, int low, int high) {
+        int randIndex = low + rand() % (high - low + 1);  // Random index in [low, high]
+        swap(arr[randIndex], arr[high]);                  // Move random pivot to last
+        return partition(arr, low, high);                 // Standard partition
+    }
+
+    void quickSort(vector<int>& arr, int low, int high) {
+        if (low < high) {
+            int pi = randomizedPartition(arr, low, high); // Random pivot chosen here
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+public:
+    vector<int> sortArray(vector<int>& nums) {
+        quickSort(nums, 0, nums.size() - 1);
+        return nums;
+    }
+};
 ```
 
 The expected time complexity of randomized Quick Sort is $O(n \log n)$ regardless of the input order.

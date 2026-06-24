@@ -186,43 +186,70 @@ print(merge_sort(arr))
 # Output: [3, 9, 10, 27, 38, 43, 82]
 ```
 
-### C++
+### C++ (simple):
 
 ```cpp
-// C++ — Merge Sort
-#include <iostream>
+// C++ (simple) — Merge Sort
 #include <vector>
 
 std::vector<int> merge(const std::vector<int>& left,
                        const std::vector<int>& right) {
     std::vector<int> result;
     int i = 0, j = 0;
-
+    // Pick the smaller front element from either half
     while (i < (int)left.size() && j < (int)right.size()) {
         if (left[i] <= right[j]) result.push_back(left[i++]);
         else                     result.push_back(right[j++]);
     }
-
-    while (i < (int)left.size())  result.push_back(left[i++]);
-    while (j < (int)right.size()) result.push_back(right[j++]);
+    while (i < (int)left.size())  result.push_back(left[i++]);  // Remaining left
+    while (j < (int)right.size()) result.push_back(right[j++]); // Remaining right
     return result;
 }
 
 std::vector<int> mergeSort(std::vector<int> arr) {
-    if (arr.size() <= 1) return arr;
+    if (arr.size() <= 1) return arr;           // Base case: single element is sorted
 
     int mid = arr.size() / 2;
-    auto left  = mergeSort(std::vector<int>(arr.begin(), arr.begin() + mid));
-    auto right = mergeSort(std::vector<int>(arr.begin() + mid, arr.end()));
+    auto left  = mergeSort(std::vector<int>(arr.begin(), arr.begin() + mid)); // Sort left
+    auto right = mergeSort(std::vector<int>(arr.begin() + mid, arr.end()));   // Sort right
 
-    return merge(left, right);
+    return merge(left, right);                 // Merge sorted halves
 }
+```
 
-int main() {
-    std::vector<int> arr = {38, 27, 43, 3, 9, 82, 10};
-    auto sorted = mergeSort(arr);
-    // Output: 3 9 10 27 38 43 82
-}
+### C++ (LeetCode class style):
+
+```cpp
+// C++ (LeetCode class style) — Merge Sort
+#include <vector>
+
+class Solution {
+    std::vector<int> merge(const std::vector<int>& left,
+                           const std::vector<int>& right) {
+        std::vector<int> result;
+        int i = 0, j = 0;
+        // Pick the smaller front element from either half
+        while (i < (int)left.size() && j < (int)right.size()) {
+            if (left[i] <= right[j]) result.push_back(left[i++]);
+            else                     result.push_back(right[j++]);
+        }
+        while (i < (int)left.size())  result.push_back(left[i++]);  // Remaining left
+        while (j < (int)right.size()) result.push_back(right[j++]); // Remaining right
+        return result;
+    }
+
+public:
+    vector<int> sortArray(vector<int>& nums) {
+        if (nums.size() <= 1) return nums;     // Base case: single element is sorted
+
+        int mid = nums.size() / 2;
+        vector<int> left(nums.begin(), nums.begin() + mid);
+        vector<int> right(nums.begin() + mid, nums.end());
+        left  = sortArray(left);               // Recursively sort left half
+        right = sortArray(right);              // Recursively sort right half
+        return merge(left, right);             // Merge sorted halves
+    }
+};
 ```
 
 ---
