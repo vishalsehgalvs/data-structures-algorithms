@@ -1,7 +1,7 @@
 # What is DSA? — Data Structures & Algorithms Explained in Plain English
 
 > **One-line summary:**
-> A **Data Structure** is how you *store* your data. An **Algorithm** is how you *work with* it.
+> A **Data Structure** is how you _store_ your data. An **Algorithm** is how you _work with_ it.
 > Together, they make your code fast, efficient, and ready to handle real-world scale.
 
 ---
@@ -30,6 +30,7 @@ Now imagine those books are **arranged on shelves by genre, then alphabetically*
 You find any book in seconds.
 
 That's exactly what DSA does for your code:
+
 - **Data Structure** = the shelves (how you organize things)
 - **Algorithm** = the strategy you use to find/sort/arrange the books
 
@@ -50,18 +51,18 @@ A data structure is a **container** for your data.
 
 Just like in real life, different containers suit different purposes:
 
-| Real Life | Programming Equivalent |
-|---|---|
-| Row of lockers (numbered 1–100) | Array |
-| Chain of paper clips | Linked List |
-| Stack of plates | Stack |
-| Queue at a coffee shop | Queue |
-| Dictionary (word → meaning) | Hash Map |
-| Family tree | Tree |
-| Road map (cities + roads) | Graph |
+| Real Life                       | Programming Equivalent |
+| ------------------------------- | ---------------------- |
+| Row of lockers (numbered 1–100) | Array                  |
+| Chain of paper clips            | Linked List            |
+| Stack of plates                 | Stack                  |
+| Queue at a coffee shop          | Queue                  |
+| Dictionary (word → meaning)     | Hash Map               |
+| Family tree                     | Tree                   |
+| Road map (cities + roads)       | Graph                  |
 
 > **The Golden Rule:** Always pick the container that makes your most common operation the fastest.
-> Storing soup in a paper bag *technically* works — but it's a disaster. Same with wrong data structures.
+> Storing soup in a paper bag _technically_ works — but it's a disaster. Same with wrong data structures.
 
 ---
 
@@ -85,15 +86,15 @@ mindmap
 
 ### Quick overview
 
-| Structure | Best for | Real-world analogy |
-|---|---|---|
-| **Array** | Storing items in order, fast access by index | Row of numbered lockers |
-| **Linked List** | Frequent insert/delete in the middle | Chain of paper clips |
-| **Stack** | Undo/redo, function call tracking | Stack of plates |
-| **Queue** | Processing tasks in order | Line at a coffee shop |
-| **Hash Map** | Super-fast lookups by key | A dictionary |
-| **Tree** | Hierarchical data | Company org chart / folder structure |
-| **Graph** | Connections between things | Google Maps road network |
+| Structure       | Best for                                     | Real-world analogy                   |
+| --------------- | -------------------------------------------- | ------------------------------------ |
+| **Array**       | Storing items in order, fast access by index | Row of numbered lockers              |
+| **Linked List** | Frequent insert/delete in the middle         | Chain of paper clips                 |
+| **Stack**       | Undo/redo, function call tracking            | Stack of plates                      |
+| **Queue**       | Processing tasks in order                    | Line at a coffee shop                |
+| **Hash Map**    | Super-fast lookups by key                    | A dictionary                         |
+| **Tree**        | Hierarchical data                            | Company org chart / folder structure |
+| **Graph**       | Connections between things                   | Google Maps road network             |
 
 ---
 
@@ -102,11 +103,13 @@ mindmap
 An algorithm is just a **list of steps to solve a problem**.
 
 You already use algorithms in real life:
+
 - Following a recipe → cooking algorithm
 - GPS directions → shortest path algorithm
 - Googling something → search algorithm
 
 In code, a good algorithm:
+
 - Gets the job done ✅
 - Does it quickly ✅
 - Doesn't waste memory ✅
@@ -203,14 +206,14 @@ public:
 
 **Step-by-step trace for `[42, 87, 15, 93, 60]`:**
 
-| Step | Current number | Current max | Updated? |
-|---|---|---|---|
-| Start | 42 | 42 | — |
-| 1 | 87 | 87 | Yes |
-| 2 | 15 | 87 | No |
-| 3 | 93 | 93 | Yes |
-| 4 | 60 | 93 | No |
-| Done | — | **93** | ✅ |
+| Step  | Current number | Current max | Updated? |
+| ----- | -------------- | ----------- | -------- |
+| Start | 42             | 42          | —        |
+| 1     | 87             | 87          | Yes      |
+| 2     | 15             | 87          | No       |
+| 3     | 93             | 93          | Yes      |
+| 4     | 60             | 93          | No       |
+| Done  | —              | **93**      | ✅       |
 
 ---
 
@@ -218,15 +221,16 @@ public:
 
 People often mix these up. Here's a clean breakdown:
 
-| | Data Structure | Algorithm |
-|---|---|---|
-| **What it is** | A way to organize/store data | A set of steps to solve a problem |
-| **Focus** | How data is arranged | How operations are performed |
-| **Examples** | Array, Stack, Tree, Graph | Sort, Search, Traverse, Find |
-| **Analogy** | A filing cabinet | The instructions for filing a document |
-| **Goal** | Efficient storage and access | Efficient problem solving |
+|                | Data Structure               | Algorithm                              |
+| -------------- | ---------------------------- | -------------------------------------- |
+| **What it is** | A way to organize/store data | A set of steps to solve a problem      |
+| **Focus**      | How data is arranged         | How operations are performed           |
+| **Examples**   | Array, Stack, Tree, Graph    | Sort, Search, Traverse, Find           |
+| **Analogy**    | A filing cabinet             | The instructions for filing a document |
+| **Goal**       | Efficient storage and access | Efficient problem solving              |
 
 They always work **together**:
+
 - You pick a **data structure** to hold your data
 - You use an **algorithm** to work with that data
 
@@ -245,10 +249,10 @@ When your app has **10 million users**, inefficient code crashes everything.
 
 **Real example — searching 1 million items:**
 
-| Approach | Steps needed | Time (rough estimate) |
-|---|---|---|
-| Scan every item one by one | 1,000,000 steps | Slow |
-| Binary Search (smarter algorithm) | ~20 steps | Instant |
+| Approach                          | Steps needed    | Time (rough estimate) |
+| --------------------------------- | --------------- | --------------------- |
+| Scan every item one by one        | 1,000,000 steps | Slow                  |
+| Binary Search (smarter algorithm) | ~20 steps       | Instant               |
 
 That's the power of knowing the right algorithm.
 
@@ -256,15 +260,17 @@ That's the power of knowing the right algorithm.
 
 Every top tech company — Google, Amazon, Microsoft, Meta — tests DSA heavily in interviews.
 Not because you'll write binary search from scratch every day at work, but because it shows:
-- How you *think* through problems
-- Whether you understand *efficiency*
-- Whether you can handle *pressure and complexity*
+
+- How you _think_ through problems
+- Whether you understand _efficiency_
+- Whether you can handle _pressure and complexity_
 
 DSA knowledge is often the difference between landing your dream job and missing out.
 
 ### It Makes You a Better Developer
 
 Even without big-tech interviews, DSA helps you:
+
 - Write code that scales
 - Debug performance problems
 - Pick the right tool for the right job
@@ -285,13 +291,13 @@ flowchart LR
     I[Online Shopping] -->|Hash maps\nSearch algorithms| J[Finds products instantly]
 ```
 
-| App | Data Structure Used | Algorithm Used |
-|---|---|---|
-| Google Search | Hash Map, Graph | PageRank, Indexing |
-| Google Maps | Graph | Dijkstra's shortest path |
-| Spotify / Netflix | Tree, Graph | Recommendation / collaborative filtering |
-| Social Media Feed | Priority Queue | Sorting by relevance |
-| Online Shopping | Hash Map | Search / autocomplete |
+| App               | Data Structure Used | Algorithm Used                           |
+| ----------------- | ------------------- | ---------------------------------------- |
+| Google Search     | Hash Map, Graph     | PageRank, Indexing                       |
+| Google Maps       | Graph               | Dijkstra's shortest path                 |
+| Spotify / Netflix | Tree, Graph         | Recommendation / collaborative filtering |
+| Social Media Feed | Priority Queue      | Sorting by relevance                     |
+| Online Shopping   | Hash Map            | Search / autocomplete                    |
 
 ---
 
@@ -311,13 +317,13 @@ flowchart TD
 
 ### Tips for beginners
 
-| Tip | Why it helps |
-|---|---|
-| **Code every concept** | Reading alone doesn't build skill — your fingers need to type it |
-| **Trace through examples by hand** | Draw it out on paper — it makes it click much faster |
-| **Understand, don't memorize** | If you understand *why* it works, you can adapt it to new problems |
-| **30 minutes a day beats 5 hours on weekends** | Consistency builds real pattern recognition |
-| **Start easy, get harder** | Build confidence first, challenge yourself second |
+| Tip                                            | Why it helps                                                       |
+| ---------------------------------------------- | ------------------------------------------------------------------ |
+| **Code every concept**                         | Reading alone doesn't build skill — your fingers need to type it   |
+| **Trace through examples by hand**             | Draw it out on paper — it makes it click much faster               |
+| **Understand, don't memorize**                 | If you understand _why_ it works, you can adapt it to new problems |
+| **30 minutes a day beats 5 hours on weekends** | Consistency builds real pattern recognition                        |
+| **Start easy, get harder**                     | Build confidence first, challenge yourself second                  |
 
 ---
 
@@ -336,4 +342,4 @@ flowchart TD
 
 ---
 
-*Next up → [Time Complexity: Big O Notation Explained](../02_time_complexity.md)*
+_Next up → [Time Complexity: Big O Notation Explained](../02_time_complexity.md)_

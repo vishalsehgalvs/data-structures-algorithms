@@ -75,11 +75,11 @@ graph TD
     style G fill:#e8f4fd,color:#333
 ```
 
-| Step | Current Node | Compare with 7 | Move |
-|---|---|---|---|
-| 1 | 10 | 7 < 10 | Go Left |
-| 2 | 5 | 7 > 5 | Go Right |
-| 3 | 7 | 7 == 7 | **Found!** |
+| Step | Current Node | Compare with 7 | Move       |
+| ---- | ------------ | -------------- | ---------- |
+| 1    | 10           | 7 < 10         | Go Left    |
+| 2    | 5            | 7 > 5          | Go Right   |
+| 3    | 7            | 7 == 7         | **Found!** |
 
 We only visited **3 of 7 nodes**. That is the power of BST search.
 
@@ -310,6 +310,7 @@ The recursive version naturally handles everything by returning the node at each
 Deleting a node is the **trickiest** of the three operations. Unlike insert, removing a node can break the BST structure if not handled carefully. There are **three distinct cases** based on how many children the target node has.
 
 Think of it like removing a person from a company org chart:
+
 - No reports → just remove them
 - One report → that person steps up directly
 - Two reports → you must pick a careful replacement
@@ -514,13 +515,13 @@ The recursive approach cleanly handles all three cases by returning the updated 
 
 ## 6. Comparison of BST Operations
 
-| Operation | Best Case | Average Case | Worst Case | Key Idea |
-|---|---|---|---|---|
-| **Search** | $O(1)$ | $O(\log n)$ | $O(n)$ | Follow left/right based on comparison |
-| **Insert** | $O(1)$ | $O(\log n)$ | $O(n)$ | Search for position, add as leaf |
-| **Delete** | $O(1)$ | $O(\log n)$ | $O(n)$ | Handle 3 cases; use in-order successor |
-| **Find Min/Max** | $O(1)$ | $O(\log n)$ | $O(n)$ | Walk to leftmost/rightmost node |
-| **Inorder Traversal** | $O(n)$ | $O(n)$ | $O(n)$ | Always visits all nodes |
+| Operation             | Best Case | Average Case | Worst Case | Key Idea                               |
+| --------------------- | --------- | ------------ | ---------- | -------------------------------------- |
+| **Search**            | $O(1)$    | $O(\log n)$  | $O(n)$     | Follow left/right based on comparison  |
+| **Insert**            | $O(1)$    | $O(\log n)$  | $O(n)$     | Search for position, add as leaf       |
+| **Delete**            | $O(1)$    | $O(\log n)$  | $O(n)$     | Handle 3 cases; use in-order successor |
+| **Find Min/Max**      | $O(1)$    | $O(\log n)$  | $O(n)$     | Walk to leftmost/rightmost node        |
+| **Inorder Traversal** | $O(n)$    | $O(n)$       | $O(n)$     | Always visits all nodes                |
 
 > **Worst case $O(n)$** occurs when the BST is fully skewed (like a linked list) — this happens when inserting values in sorted order. Self-balancing trees like AVL trees and Red-Black trees prevent this by maintaining $O(\log n)$ height automatically.
 
