@@ -81,7 +81,7 @@ node4.next = node2   # cycle
 print(has_cycle_hash(node1))   # Output: True
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Cycle detection using an unordered_set
@@ -115,6 +115,34 @@ int main() {
     std::cout << hasCycleHash(n1) << "\n";   // Output: 1 (true)
     // Note: cycle-aware cleanup needed before delete
 }
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Cycle detection using hash set (LeetCode 141)
+#include <unordered_set>
+
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    bool hasCycle(ListNode* head) {
+        std::unordered_set<ListNode*> visited;  // store addresses of visited nodes
+        ListNode* current = head;               // start at the head
+        while (current != nullptr) {
+            if (visited.count(current))         // node seen before → cycle found
+                return true;
+            visited.insert(current);            // mark this node as visited
+            current = current->next;            // advance to next node
+        }
+        return false;   // reached nullptr → no cycle
+    }
+};
 ```
 
 The set catches the cycle when node 2 is visited a second time. While correct, the $O(n)$ extra space is a drawback — we can do better.
@@ -191,7 +219,7 @@ nodeA.next = nodeB; nodeB.next = nodeC
 print(has_cycle_floyd(nodeA))   # Output: False
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Floyd's Cycle Detection (Tortoise and Hare)
@@ -236,6 +264,33 @@ int main() {
     delete nA; delete nB; delete nC;
     // n1–n4 form a cycle; cycle-aware cleanup needed
 }
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Floyd's Cycle Detection (LeetCode 141)
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    bool hasCycle(ListNode* head) {
+        ListNode* slow = head;   // tortoise: moves 1 step
+        ListNode* fast = head;   // hare:     moves 2 steps
+
+        while (fast != nullptr && fast->next != nullptr) {
+            slow = slow->next;          // advance slow by 1
+            fast = fast->next->next;    // advance fast by 2
+            if (slow == fast)           // pointers met → cycle detected
+                return true;
+        }
+        return false;   // fast reached nullptr → no cycle
+    }
+};
 ```
 
 ---

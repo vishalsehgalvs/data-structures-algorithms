@@ -117,7 +117,7 @@ head = node1         # head points to the first node
 # Result: 10 → 20 → 30 → None
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Node struct and manually linked list
@@ -147,6 +147,31 @@ int main() {
 }
 ```
 
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — LeetCode defines nodes as ListNode
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+// In LeetCode problems the list is already built and passed as a parameter.
+// This shows the equivalent node creation using LeetCode's naming convention.
+class Solution {
+public:
+    ListNode* buildExample() {
+        ListNode* node1 = new ListNode(10);  // create first node, val = 10
+        ListNode* node2 = new ListNode(20);  // create second node, val = 20
+        ListNode* node3 = new ListNode(30);  // create third node, val = 30
+        node1->next = node2;                  // node1 → node2
+        node2->next = node3;                  // node2 → node3
+        return node1;                         // return head of the built list
+    }
+};
+```
+
 ---
 
 ## 5. Traversing a Linked List
@@ -168,7 +193,7 @@ print_list(head)
 # Output: 10 -> 20 -> 30 -> None
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Traverse and print each node
@@ -176,12 +201,37 @@ void printList(Node* head) {
     Node* current = head;
     while (current != nullptr) {
         std::cout << current->data << " -> ";
-        current = current->next;
+        current = current->next;   // move to the next node
     }
     std::cout << "nullptr\n";
 }
 
 // Output: 10 -> 20 -> 30 -> nullptr
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Traverse a list given a head pointer
+#include <iostream>
+
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    void printList(ListNode* head) {
+        ListNode* current = head;              // start at the head node
+        while (current != nullptr) {           // stop when we reach the end
+            std::cout << current->val << " -> ";
+            current = current->next;           // advance to the next node
+        }
+        std::cout << "nullptr\n";             // mark end of list
+    }
+};
 ```
 
 Notice we use a `while` loop instead of a `for` loop with an index — linked lists do not support direct index access. You must follow the chain.
@@ -216,7 +266,7 @@ print_list(head)
 # Output: 5 -> 10 -> 20 -> 30 -> None
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 // C++ — Insert at the beginning
@@ -228,6 +278,26 @@ Node* insertAtBeginning(Node* head, int data) {
 
 head = insertAtBeginning(head, 5);
 // Output: 5 -> 10 -> 20 -> 30 -> nullptr
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Prepend a node and return the new head
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* insertAtBeginning(ListNode* head, int val) {
+        ListNode* new_node = new ListNode(val);   // create the new node
+        new_node->next = head;                     // point it to current head
+        return new_node;                           // new node is the new head
+    }
+};
 ```
 
 ---
@@ -255,7 +325,7 @@ print_list(head)
 # Output: 5 -> 10 -> 20 -> 30 -> 40 -> None
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 // C++ — Insert at the end
@@ -272,6 +342,30 @@ Node* insertAtEnd(Node* head, int data) {
 
 head = insertAtEnd(head, 40);
 // Output: 5 -> 10 -> 20 -> 30 -> 40 -> nullptr
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Append a node and return the head
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* insertAtEnd(ListNode* head, int val) {
+        ListNode* new_node = new ListNode(val);   // create new node
+        if (head == nullptr) return new_node;      // empty list: new node becomes head
+        ListNode* current = head;
+        while (current->next != nullptr)           // walk to the last node
+            current = current->next;
+        current->next = new_node;                  // attach new node at the end
+        return head;
+    }
+};
 ```
 
 ---
@@ -303,7 +397,7 @@ print_list(head)
 # Output: 5 -> 10 -> 15 -> 20 -> 30 -> 40 -> None
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 // C++ — Insert at a specific position (0-indexed)
@@ -325,6 +419,36 @@ Node* insertAtPosition(Node* head, int data, int position) {
 
 head = insertAtPosition(head, 15, 2);
 // Output: 5 -> 10 -> 15 -> 20 -> 30 -> 40 -> nullptr
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Insert at a 0-indexed position
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* insertAtPosition(ListNode* head, int val, int position) {
+        ListNode* new_node = new ListNode(val);    // create new node
+        if (position == 0) {
+            new_node->next = head;                  // insert before current head
+            return new_node;                        // new node becomes the head
+        }
+        ListNode* current = head;
+        for (int i = 0; i < position - 1; i++) {   // walk to position - 1
+            if (current == nullptr) return head;    // position out of range
+            current = current->next;
+        }
+        new_node->next = current->next;             // link new node forward
+        current->next  = new_node;                  // link previous node to new node
+        return head;
+    }
+};
 ```
 
 ---
@@ -349,7 +473,7 @@ print_list(head)
 # Output: 10 -> 15 -> 20 -> 30 -> 40 -> None
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 // C++ — Delete the first node
@@ -363,6 +487,28 @@ Node* deleteFromBeginning(Node* head) {
 
 head = deleteFromBeginning(head);
 // Output: 10 -> 15 -> 20 -> 30 -> 40 -> nullptr
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Delete the head node and return the new head
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* deleteFromBeginning(ListNode* head) {
+        if (head == nullptr) return nullptr;   // empty list: nothing to delete
+        ListNode* old_head = head;             // save old head before moving
+        head = head->next;                     // advance head past the deleted node
+        delete old_head;                       // free the old head's memory
+        return head;                           // return the new head
+    }
+};
 ```
 
 ---
@@ -393,7 +539,7 @@ print_list(head)
 # Output: 10 -> 20 -> 30 -> 40 -> None
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 // C++ — Delete the first node matching the given value
@@ -424,6 +570,41 @@ head = deleteByValue(head, 15);
 // Output: 10 -> 20 -> 30 -> 40 -> nullptr
 ```
 
+#### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Delete first node matching a value
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* deleteByValue(ListNode* head, int value) {
+        if (head == nullptr) return nullptr;        // empty list
+        if (head->val == value) {                   // head is the target node
+            ListNode* to_del = head;
+            head = head->next;                      // advance head past deleted node
+            delete to_del;
+            return head;
+        }
+        ListNode* current = head;
+        while (current->next != nullptr) {
+            if (current->next->val == value) {
+                ListNode* to_del = current->next;
+                current->next = current->next->next; // bypass the target node
+                delete to_del;
+                return head;
+            }
+            current = current->next;                 // keep walking forward
+        }
+        return head;   // value not found
+    }
+};
+```
+
 ---
 
 ## 8. Searching in a Linked List
@@ -448,7 +629,7 @@ print("Found at position:", search(head, 30))
 # Output: Found at position: 2
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Search for a value and return its position
@@ -466,6 +647,32 @@ int search(Node* head, int target) {
 
 std::cout << "Found at position: " << search(head, 30) << "\n";
 // Output: Found at position: 2
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Search for a value and return its 0-based index
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    int search(ListNode* head, int target) {
+        ListNode* current = head;   // start at the head node
+        int position = 0;           // track index as we walk the list
+        while (current != nullptr) {
+            if (current->val == target)
+                return position;    // target found — return its index
+            current = current->next; // advance to next node
+            position++;
+        }
+        return -1;   // target not found in the list
+    }
+};
 ```
 
 ---
@@ -563,7 +770,7 @@ ll.delete_by_value(20)
 ll.print_list()            # Output: 10 -> 30 -> None
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Full LinkedList class
@@ -639,6 +846,63 @@ int main() {
     ll.printList();            // Output: 10 -> 30 -> nullptr
     return 0;
 }
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Linked list operations using ListNode
+#include <iostream>
+
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    // Append a value at the end; returns the (unchanged) head
+    ListNode* insertAtEnd(ListNode* head, int val) {
+        ListNode* new_node = new ListNode(val);   // create new node
+        if (!head) return new_node;               // empty list: new node is head
+        ListNode* current = head;
+        while (current->next)                     // walk to the last node
+            current = current->next;
+        current->next = new_node;                 // attach new node at end
+        return head;
+    }
+
+    // Delete first node matching value; returns the (possibly new) head
+    ListNode* deleteByValue(ListNode* head, int value) {
+        if (!head) return nullptr;                // empty list
+        if (head->val == value) {                 // head is the target node
+            ListNode* to_del = head;
+            head = head->next;                    // advance head past deleted node
+            delete to_del;
+            return head;
+        }
+        ListNode* current = head;
+        while (current->next) {
+            if (current->next->val == value) {
+                ListNode* to_del = current->next;
+                current->next = current->next->next;  // bypass the target node
+                delete to_del;
+                return head;
+            }
+            current = current->next;              // keep walking forward
+        }
+        return head;
+    }
+
+    void printList(ListNode* head) {
+        while (head) {
+            std::cout << head->val << " -> ";    // print current node value
+            head = head->next;                    // advance to next node
+        }
+        std::cout << "nullptr\n";
+    }
+};
 ```
 
 ---

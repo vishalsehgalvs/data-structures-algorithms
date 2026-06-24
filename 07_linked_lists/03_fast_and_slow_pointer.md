@@ -138,7 +138,7 @@ node7.next = node5   # Cycle: node7 points back to node5
 print(has_cycle(node4))   # Output: True
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Floyd's Cycle Detection
@@ -183,6 +183,33 @@ int main() {
 }
 ```
 
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Floyd's Cycle Detection (LeetCode 141)
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    bool hasCycle(ListNode* head) {
+        ListNode* slow = head;   // tortoise: moves 1 step
+        ListNode* fast = head;   // hare:     moves 2 steps
+
+        while (fast != nullptr && fast->next != nullptr) {
+            slow = slow->next;          // advance slow by 1
+            fast = fast->next->next;    // advance fast by 2
+            if (slow == fast)           // pointers met → cycle exists
+                return true;
+        }
+        return false;   // fast reached nullptr → no cycle
+    }
+};
+```
+
 **Complexity:** $O(n)$ time — pointers traverse at most the full list. $O(1)$ space — only two pointer variables used.
 
 ---
@@ -217,7 +244,7 @@ n6 = Node(60); n5.next = n6
 print(find_middle(n1).value)   # Output: 40  (second middle for even length)
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Find the middle node using fast and slow pointers
@@ -247,6 +274,31 @@ int main() {
 
     delete n1; delete n2; delete n3; delete n4; delete n5; delete n6;
 }
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Find the middle node (LeetCode 876)
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode* slow = head;   // slow moves 1 step
+        ListNode* fast = head;   // fast moves 2 steps
+
+        while (fast != nullptr && fast->next != nullptr) {
+            slow = slow->next;          // advance slow by 1
+            fast = fast->next->next;    // advance fast by 2
+        }
+        return slow;   // when fast reaches end, slow is at the middle
+    }
+};
 ```
 
 For even-length lists, this returns the **second** of the two middle nodes. This is the standard behavior expected in most interview problems.

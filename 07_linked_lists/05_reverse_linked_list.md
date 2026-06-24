@@ -136,7 +136,7 @@ print("None")
 # Output: 5 -> 4 -> 3 -> 2 -> 1 -> None
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Reverse a linked list iteratively
@@ -185,6 +185,33 @@ int main() {
     Node* cur = new_head;
     while (cur) { Node* tmp = cur->next; delete cur; cur = tmp; }
 }
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Reverse a linked list iteratively (LeetCode 206)
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prev    = nullptr;   // will become the new tail (null)
+        ListNode* current = head;      // start at the old head
+
+        while (current != nullptr) {
+            ListNode* next_node = current->next;   // 1. save next before overwriting
+            current->next       = prev;            // 2. flip pointer backward
+            prev                = current;         // 3. advance prev
+            current             = next_node;       // 4. advance current
+        }
+        return prev;   // prev is now pointing to the new head
+    }
+};
 ```
 
 > The critical insight: always save `current.next` **before** overwriting it. If you skip this step, you lose access to the rest of the list.
@@ -274,7 +301,7 @@ print("None")
 # Output: 5 -> 4 -> 3 -> 2 -> 1 -> None
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Reverse a linked list recursively
@@ -323,6 +350,35 @@ int main() {
     Node* cur = new_head;
     while (cur) { Node* tmp = cur->next; delete cur; cur = tmp; }
 }
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Reverse a linked list recursively (LeetCode 206)
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        // Base case: empty list or single node — already reversed
+        if (head == nullptr || head->next == nullptr)
+            return head;
+
+        // Recurse: go to the end of the list first
+        ListNode* new_head = reverseList(head->next);
+
+        // On the way back: flip the connection
+        head->next->next = head;   // next node now points back to head
+        head->next = nullptr;      // break the old forward link
+
+        return new_head;   // original last node is now the head
+    }
+};
 ```
 
 > The magic line is `head.next.next = head` — it makes the node that was ahead of `head` point **back** to `head`. Then `head.next = None` cuts the old forward link to prevent a cycle.

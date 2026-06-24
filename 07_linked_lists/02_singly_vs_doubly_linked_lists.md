@@ -68,7 +68,7 @@ class Node:
         self.next = None   # Pointer to the next node (default None)
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Node for a singly linked list
@@ -77,6 +77,33 @@ struct Node {
     Node* next;
 
     Node(int val) : data(val), next(nullptr) {}
+};
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — LeetCode's singly linked list node
+struct ListNode {
+    int val;          // value stored in this node
+    ListNode* next;   // pointer to the next node (null at the tail)
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+// In LeetCode problems, ListNode is defined globally.
+// A Solution method receives a ListNode* head as its parameter.
+class Solution {
+public:
+    // Example: count the number of nodes in the list
+    int length(ListNode* head) {
+        int count = 0;
+        ListNode* current = head;      // start at head
+        while (current != nullptr) {
+            count++;                    // count this node
+            current = current->next;   // advance to next
+        }
+        return count;
+    }
 };
 ```
 
@@ -111,7 +138,7 @@ while current is not None:
 # Output: 10  20  30
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Build and traverse a singly linked list
@@ -142,6 +169,42 @@ int main() {
 
     delete node1; delete node2; delete node3;
 }
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Build and traverse using ListNode
+#include <iostream>
+
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    // Build list 10 → 20 → 30 and print each node value
+    void buildAndTraverse() {
+        ListNode* node1 = new ListNode(10);   // first node
+        ListNode* node2 = new ListNode(20);   // second node
+        ListNode* node3 = new ListNode(30);   // third node
+
+        node1->next = node2;   // node1 → node2
+        node2->next = node3;   // node2 → node3
+
+        // Walk forward from head to tail
+        ListNode* current = node1;
+        while (current != nullptr) {
+            std::cout << current->val << "\n";   // print node value
+            current = current->next;              // advance to next node
+        }
+        // Output: 10  20  30
+
+        delete node1; delete node2; delete node3;
+    }
+};
 ```
 
 We start at `node1` and keep moving forward using `next` until we hit `None` / `nullptr`. That is traversal in a singly linked list.
@@ -176,7 +239,7 @@ class Node:
         self.next = None   # Pointer to the next node
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Node for a doubly linked list
@@ -186,6 +249,31 @@ struct Node {
     Node* next;
 
     Node(int val) : data(val), prev(nullptr), next(nullptr) {}
+};
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Doubly linked list node using ListNode
+// Note: standard LeetCode uses singly ListNode; doubly is shown here for completeness
+struct ListNode {
+    int val;          // value stored in this node
+    ListNode* prev;   // pointer to the previous node (null at the head)
+    ListNode* next;   // pointer to the next node (null at the tail)
+    ListNode(int x) : val(x), prev(nullptr), next(nullptr) {}
+};
+
+class Solution {
+public:
+    // Example: traverse the list forward
+    void traverseForward(ListNode* head) {
+        ListNode* current = head;              // start at the head
+        while (current != nullptr) {
+            std::cout << current->val << "\n";  // print current node value
+            current = current->next;            // advance to next node
+        }
+    }
 };
 ```
 
@@ -233,7 +321,7 @@ while current is not None:
 # Output: 30  20  10
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 // C++ — Build and traverse a doubly linked list (forward + backward)
@@ -281,6 +369,55 @@ int main() {
 }
 ```
 
+### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Build and traverse a doubly linked list
+#include <iostream>
+
+struct ListNode {
+    int val;
+    ListNode* prev;
+    ListNode* next;
+    ListNode(int x) : val(x), prev(nullptr), next(nullptr) {}
+};
+
+class Solution {
+public:
+    void buildAndTraverse() {
+        ListNode* node1 = new ListNode(10);   // first node
+        ListNode* node2 = new ListNode(20);   // second node
+        ListNode* node3 = new ListNode(30);   // third node
+
+        // Forward links (next pointers)
+        node1->next = node2;   // node1 → node2
+        node2->next = node3;   // node2 → node3
+
+        // Backward links (prev pointers)
+        node2->prev = node1;   // node2 ← node1
+        node3->prev = node2;   // node3 ← node2
+
+        // Forward traversal using next
+        std::cout << "Forward:\n";
+        ListNode* current = node1;
+        while (current != nullptr) {
+            std::cout << current->val << "\n";   // print node value
+            current = current->next;              // advance forward
+        }
+
+        // Backward traversal using prev (start from tail)
+        std::cout << "Backward:\n";
+        current = node3;
+        while (current != nullptr) {
+            std::cout << current->val << "\n";   // print node value
+            current = current->prev;              // step backward
+        }
+
+        delete node1; delete node2; delete node3;
+    }
+};
+```
+
 Notice how we can walk in both directions — something a singly linked list cannot do without extra tricks.
 
 ---
@@ -320,7 +457,7 @@ def insert_at_head_singly(head, data):
 # After:  head -> [5]  -> [10] -> [20] -> None
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 // C++ — Insert at head (singly)
@@ -329,6 +466,29 @@ Node* insertAtHeadSingly(Node* head, int data) {
     new_node->next = head;   // New node points to current head
     return new_node;         // New node becomes the new head
 }
+
+// Before: head -> [10] -> [20] -> nullptr
+// After:  head -> [5]  -> [10] -> [20] -> nullptr
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Prepend a node to a singly linked list
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* insertAtHeadSingly(ListNode* head, int val) {
+        ListNode* new_node = new ListNode(val);   // create the new node
+        new_node->next = head;                     // point new node to current head
+        return new_node;                           // new node is the new head
+    }
+};
 
 // Before: head -> [10] -> [20] -> nullptr
 // After:  head -> [5]  -> [10] -> [20] -> nullptr
@@ -355,7 +515,7 @@ def insert_at_head_doubly(head, data):
 # After:  None <-> [5]  <-> [10] <-> [20] <-> None
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 // C++ — Insert at head (doubly)
@@ -366,6 +526,32 @@ Node* insertAtHeadDoubly(Node* head, int data) {
         head->prev = new_node;       // Old head's prev ← new node
     return new_node;                 // New node becomes the new head
 }
+
+// Before: nullptr <-> [10] <-> [20] <-> nullptr
+// After:  nullptr <-> [5]  <-> [10] <-> [20] <-> nullptr
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Prepend a node to a doubly linked list
+struct ListNode {
+    int val;
+    ListNode* prev;
+    ListNode* next;
+    ListNode(int x) : val(x), prev(nullptr), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* insertAtHeadDoubly(ListNode* head, int val) {
+        ListNode* new_node = new ListNode(val);   // create the new node
+        new_node->next = head;                     // new node's next → old head
+        if (head != nullptr)
+            head->prev = new_node;                 // old head's prev ← new node
+        return new_node;                           // new node is the new head
+    }
+};
 
 // Before: nullptr <-> [10] <-> [20] <-> nullptr
 // After:  nullptr <-> [5]  <-> [10] <-> [20] <-> nullptr
@@ -394,7 +580,7 @@ while current.next is not None:
     current = current.next
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 // C++ — Delete node with value 20 (singly)
@@ -409,6 +595,41 @@ while (current->next != nullptr) {
     }
     current = current->next;
 }
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Delete first node with given value (singly)
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+class Solution {
+public:
+    ListNode* deleteByValue(ListNode* head, int value) {
+        if (head == nullptr) return nullptr;         // empty list
+        if (head->val == value) {                    // head is the target node
+            ListNode* to_del = head;
+            head = head->next;                       // advance head past target
+            delete to_del;
+            return head;
+        }
+        ListNode* current = head;
+        while (current->next != nullptr) {           // walk from head
+            if (current->next->val == value) {
+                ListNode* to_del = current->next;
+                current->next = current->next->next; // bypass the target node
+                delete to_del;
+                return head;
+            }
+            current = current->next;                 // keep walking forward
+        }
+        return head;
+    }
+};
 ```
 
 We had to walk from the head — worst case $O(n)$.
@@ -431,7 +652,7 @@ def delete_node(node):
     # node is now disconnected — Python GC will free it
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 // C++ — Delete a node given a direct reference (doubly)
@@ -442,6 +663,29 @@ void deleteNode(Node* node) {
         node->next->prev = node->prev;   // Next node links back to previous
     delete node;                          // Free the memory
 }
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+// C++ (LeetCode class style) — Delete a node by direct pointer (doubly)
+struct ListNode {
+    int val;
+    ListNode* prev;
+    ListNode* next;
+    ListNode(int x) : val(x), prev(nullptr), next(nullptr) {}
+};
+
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+        if (node->prev != nullptr)
+            node->prev->next = node->next;   // previous node skips over current
+        if (node->next != nullptr)
+            node->next->prev = node->prev;   // next node links back to previous
+        delete node;                          // free the memory
+    }
+};
 ```
 
 This $O(1)$ deletion of a known node is the standout advantage of a doubly linked list. In many algorithms and system designs — LRU caches, text editor buffers — this makes a real difference.
