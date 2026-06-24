@@ -67,15 +67,33 @@ print(f"Target found at index: {result}" if result != -1 else "Target not found"
 # Output: Target found at index: 2
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Linear Search
+// C++ (simple) — Linear Search
 #include <vector>
 
 int linearSearch(const std::vector<int>& arr, int target) {
     for (int i = 0; i < (int)arr.size(); i++)
-        if (arr[i] == target) return i;
-    return -1;
+        if (arr[i] == target) return i;   // Return index on match
+    return -1;                            // -1 means not found
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Linear Search
+#include <vector>
+
+class Solution {
+public:
+    int search(vector<int>& arr, int target) {
+        for (int i = 0; i < (int)arr.size(); i++)
+            if (arr[i] == target) return i;   // Return index on match
+        return -1;                            // -1 means not found
+    }
+};
 ```
 
 ---
@@ -149,22 +167,47 @@ print(f"Target found at index: {result}" if result != -1 else "Target not found"
 # Output: Target found at index: 3
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Binary Search (iterative)
+// C++ (simple) — Binary Search (iterative)
 #include <vector>
 
 int binarySearch(const std::vector<int>& arr, int target) {
     int low = 0, high = (int)arr.size() - 1;
 
     while (low <= high) {
-        int mid = low + (high - low) / 2;   // Safe midpoint
+        int mid = low + (high - low) / 2;   // Safe midpoint — avoids overflow
 
-        if      (arr[mid] == target) return mid;
-        else if (arr[mid] < target)  low  = mid + 1;
-        else                         high = mid - 1;
+        if      (arr[mid] == target) return mid;      // Found
+        else if (arr[mid] < target)  low  = mid + 1;  // Target in right half
+        else                         high = mid - 1;  // Target in left half
     }
-    return -1;
+    return -1;  // Not found
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Binary Search (iterative)
+#include <vector>
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int low = 0, high = (int)nums.size() - 1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;   // Safe midpoint — avoids overflow
+
+            if      (nums[mid] == target) return mid;      // Found
+            else if (nums[mid] < target)  low  = mid + 1;  // Target in right half
+            else                          high = mid - 1;  // Target in left half
+        }
+        return -1;  // Not found
+    }
+};
 ```
 
 > **Note:** use `mid = low + (high - low) / 2` instead of `(low + high) / 2` to prevent integer overflow when `low + high` exceeds the maximum integer value.

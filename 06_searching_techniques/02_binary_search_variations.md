@@ -58,6 +58,49 @@ def binary_search(arr, target):
     return -1                    # Not found
 ```
 
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Standard Binary Search
+#include <vector>
+
+int binarySearch(const std::vector<int>& arr, int target) {
+    int left = 0, right = (int)arr.size() - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;  // Safe midpoint
+
+        if      (arr[mid] == target) return mid;       // Found — return immediately
+        else if (arr[mid] < target)  left  = mid + 1;  // Search right half
+        else                         right = mid - 1;  // Search left half
+    }
+    return -1;  // Not found
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Standard Binary Search
+#include <vector>
+
+class Solution {
+public:
+    int search(vector<int>& arr, int target) {
+        int left = 0, right = (int)arr.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;  // Safe midpoint
+
+            if      (arr[mid] == target) return mid;       // Found — return immediately
+            else if (arr[mid] < target)  left  = mid + 1;  // Search right half
+            else                         right = mid - 1;  // Search left half
+        }
+        return -1;  // Not found
+    }
+};
+```
+
 For `arr = [1, 3, 5, 7, 9, 11]` and `target = 7`, this returns index `3`. Time complexity: $O(\log n)$.
 
 ---
@@ -88,6 +131,57 @@ def first_occurrence(arr, target):
             right = mid - 1
 
     return result
+```
+
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — First Occurrence
+#include <vector>
+
+int firstOccurrence(const std::vector<int>& arr, int target) {
+    int left = 0, right = (int)arr.size() - 1, result = -1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target) {
+            result = mid;         // Save — but keep searching left
+            right = mid - 1;      // Move left to find earlier occurrence
+        } else if (arr[mid] < target)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return result;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — First Occurrence
+#include <vector>
+
+class Solution {
+public:
+    int searchFirst(vector<int>& arr, int target) {
+        int left = 0, right = (int)arr.size() - 1, result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == target) {
+                result = mid;         // Save — but keep searching left
+                right = mid - 1;      // Move left to find earlier occurrence
+            } else if (arr[mid] < target)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+        return result;
+    }
+};
 ```
 
 **Dry run** on `[2, 4, 4, 4, 7, 9]`, target = `4`:
@@ -129,6 +223,57 @@ def last_occurrence(arr, target):
     return result
 ```
 
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Last Occurrence
+#include <vector>
+
+int lastOccurrence(const std::vector<int>& arr, int target) {
+    int left = 0, right = (int)arr.size() - 1, result = -1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target) {
+            result = mid;         // Save — but keep searching right
+            left = mid + 1;       // Move right to find later occurrence
+        } else if (arr[mid] < target)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return result;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Last Occurrence
+#include <vector>
+
+class Solution {
+public:
+    int searchLast(vector<int>& arr, int target) {
+        int left = 0, right = (int)arr.size() - 1, result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == target) {
+                result = mid;         // Save — but keep searching right
+                left = mid + 1;       // Move right to find later occurrence
+            } else if (arr[mid] < target)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+        return result;
+    }
+};
+```
+
 For `[2, 4, 4, 4, 7, 9]`, target = `4` → returns index `3`.
 
 ---
@@ -145,6 +290,58 @@ def count_occurrences(arr, target):
         return 0                         # Target not present
     last = last_occurrence(arr, target)
     return last - first + 1             # count = last index − first index + 1
+```
+
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Count Occurrences
+// (requires firstOccurrence and lastOccurrence defined above)
+int countOccurrences(const std::vector<int>& arr, int target) {
+    int first = firstOccurrence(arr, target);  // Find leftmost index
+    if (first == -1) return 0;                 // Target not present
+    int last = lastOccurrence(arr, target);    // Find rightmost index
+    return last - first + 1;                   // count = last - first + 1
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Count Occurrences
+#include <vector>
+
+class Solution {
+    int findFirst(vector<int>& arr, int target) {
+        int left = 0, right = (int)arr.size() - 1, result = -1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) { result = mid; right = mid - 1; }  // Save, search left
+            else if (arr[mid] < target) left = mid + 1;
+            else right = mid - 1;
+        }
+        return result;
+    }
+
+    int findLast(vector<int>& arr, int target) {
+        int left = 0, right = (int)arr.size() - 1, result = -1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) { result = mid; left = mid + 1; }   // Save, search right
+            else if (arr[mid] < target) left = mid + 1;
+            else right = mid - 1;
+        }
+        return result;
+    }
+
+public:
+    int countOccurrences(vector<int>& arr, int target) {
+        int first = findFirst(arr, target);  // Leftmost index
+        if (first == -1) return 0;           // Target not present
+        int last = findLast(arr, target);    // Rightmost index
+        return last - first + 1;             // count = last - first + 1
+    }
+};
 ```
 
 **Examples on `[2, 4, 4, 4, 7, 9]`:**
@@ -181,6 +378,53 @@ def floor_value(arr, target):
     return result
 ```
 
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Floor Value
+#include <vector>
+
+int floorValue(const std::vector<int>& arr, int target) {
+    int left = 0, right = (int)arr.size() - 1, result = -1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] <= target) {
+            result = arr[mid];    // This could be the floor — search right for closer value
+            left = mid + 1;       // Move right
+        } else
+            right = mid - 1;      // arr[mid] > target — go left
+    }
+    return result;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Floor Value (largest element ≤ target)
+#include <vector>
+
+class Solution {
+public:
+    int floorValue(vector<int>& arr, int target) {
+        int left = 0, right = (int)arr.size() - 1, result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] <= target) {
+                result = arr[mid];    // Candidate floor — search right for closer value
+                left = mid + 1;       // Move right
+            } else
+                right = mid - 1;      // arr[mid] > target — go left
+        }
+        return result;
+    }
+};
+```
+
 | Array             | Target | Floor |
 | ----------------- | ------ | ----- |
 | `[1, 3, 5, 7, 9]` | `6`    | `5`   |
@@ -211,6 +455,53 @@ def ceiling_value(arr, target):
             left = mid + 1       # arr[mid] < target — go right
 
     return result
+```
+
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Ceiling Value
+#include <vector>
+
+int ceilingValue(const std::vector<int>& arr, int target) {
+    int left = 0, right = (int)arr.size() - 1, result = -1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] >= target) {
+            result = arr[mid];    // Candidate ceiling — search left for smaller value
+            right = mid - 1;      // Move left
+        } else
+            left = mid + 1;       // arr[mid] < target — go right
+    }
+    return result;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Ceiling Value (smallest element ≥ target)
+#include <vector>
+
+class Solution {
+public:
+    int ceilingValue(vector<int>& arr, int target) {
+        int left = 0, right = (int)arr.size() - 1, result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] >= target) {
+                result = arr[mid];    // Candidate ceiling — search left for smaller value
+                right = mid - 1;      // Move left
+            } else
+                left = mid + 1;       // arr[mid] < target — go right
+        }
+        return result;
+    }
+};
 ```
 
 | Array             | Target | Ceiling |
@@ -245,6 +536,53 @@ def strict_upper_bound(arr, target):
             left = mid + 1             # arr[mid] <= target — go right
 
     return result
+```
+
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Strict Upper Bound (smallest element > target)
+#include <vector>
+
+int strictUpperBound(const std::vector<int>& arr, int target) {
+    int left = 0, right = (int)arr.size() - 1, result = -1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] > target) {      // Strictly greater — not equal
+            result = arr[mid];
+            right = mid - 1;          // Search left for smaller qualifying value
+        } else
+            left = mid + 1;           // arr[mid] <= target — go right
+    }
+    return result;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Strict Upper Bound
+#include <vector>
+
+class Solution {
+public:
+    int upperBound(vector<int>& arr, int target) {
+        int left = 0, right = (int)arr.size() - 1, result = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] > target) {      // Strictly greater — not equal
+                result = arr[mid];
+                right = mid - 1;          // Search left for smaller qualifying value
+            } else
+                left = mid + 1;           // arr[mid] <= target — go right
+        }
+        return result;
+    }
+};
 ```
 
 | Array             | Target | Strict upper bound |

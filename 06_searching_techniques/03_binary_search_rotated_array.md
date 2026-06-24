@@ -184,11 +184,10 @@ print(search_rotated(nums, 6))   # Output: 2
 print(search_rotated(nums, 9))   # Output: -1
 ```
 
-### C++
+### C++ (simple):
 
 ```cpp
-// C++ — Search in a Rotated Sorted Array
-#include <iostream>
+// C++ (simple) — Search in a Rotated Sorted Array
 #include <vector>
 
 int searchRotated(const std::vector<int>& nums, int target) {
@@ -221,14 +220,39 @@ int searchRotated(const std::vector<int>& nums, int target) {
 
     return -1;   // Target not found
 }
+```
 
-int main() {
-    std::vector<int> nums = {4, 5, 6, 7, 1, 2, 3};
-    std::cout << searchRotated(nums, 2) << "\n";   // Output: 5
-    std::cout << searchRotated(nums, 6) << "\n";   // Output: 2
-    std::cout << searchRotated(nums, 9) << "\n";   // Output: -1
-    return 0;
-}
+### C++ (LeetCode class style):
+
+```cpp
+// C++ (LeetCode class style) — Search in Rotated Sorted Array (LeetCode 33)
+#include <vector>
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0, right = (int)nums.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) return mid;    // Direct hit
+
+            if (nums[left] <= nums[mid]) {          // Left half is sorted
+                if (nums[left] <= target && target < nums[mid])
+                    right = mid - 1;               // Target in sorted left half
+                else
+                    left = mid + 1;                // Target in right half
+            } else {                               // Right half is sorted
+                if (nums[mid] < target && target <= nums[right])
+                    left = mid + 1;                // Target in sorted right half
+                else
+                    right = mid - 1;               // Target in left half
+            }
+        }
+        return -1;  // Target not found
+    }
+};
 ```
 
 **Output explanation:**
@@ -253,14 +277,26 @@ print(search_rotated(nums, 7))   # Output: 1
 print(search_rotated(nums, 8))   # Output: -1
 ```
 
-### C++
+### C++ (simple):
 
 ```cpp
-// C++ — Different rotation point
+// C++ (simple) — Different rotation point (same searchRotated function)
 std::vector<int> nums2 = {6, 7, 1, 2, 3, 4, 5};
 std::cout << searchRotated(nums2, 3) << "\n";   // Output: 4
 std::cout << searchRotated(nums2, 7) << "\n";   // Output: 1
 std::cout << searchRotated(nums2, 8) << "\n";   // Output: -1
+```
+
+### C++ (LeetCode class style):
+
+```cpp
+// C++ (LeetCode class style) — Different rotation point (same Solution::search)
+// Instantiate Solution and call search with the new array
+Solution sol;
+vector<int> nums2 = {6, 7, 1, 2, 3, 4, 5};
+cout << sol.search(nums2, 3) << "\n";   // Output: 4
+cout << sol.search(nums2, 7) << "\n";   // Output: 1
+cout << sol.search(nums2, 8) << "\n";   // Output: -1
 ```
 
 The same function handles any rotation point correctly because we always check which half is sorted before deciding where to look. This makes the approach robust and general.

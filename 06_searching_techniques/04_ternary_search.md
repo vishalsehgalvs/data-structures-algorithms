@@ -145,11 +145,10 @@ print(ternary_search(arr, 3))    # Output: 2
 print(ternary_search(arr, 11))   # Output: -1
 ```
 
-### C++
+### C++ (simple):
 
 ```cpp
-// C++ — Ternary Search (Iterative) on a sorted array
-#include <iostream>
+// C++ (simple) — Ternary Search (Iterative) on a sorted array
 #include <vector>
 
 int ternarySearch(const std::vector<int>& arr, int target) {
@@ -176,14 +175,39 @@ int ternarySearch(const std::vector<int>& arr, int target) {
 
     return -1;   // Target not found
 }
+```
 
-int main() {
-    std::vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    std::cout << ternarySearch(arr, 7)  << "\n";   // Output: 6
-    std::cout << ternarySearch(arr, 3)  << "\n";   // Output: 2
-    std::cout << ternarySearch(arr, 11) << "\n";   // Output: -1
-    return 0;
-}
+### C++ (LeetCode class style):
+
+```cpp
+// C++ (LeetCode class style) — Ternary Search (Iterative)
+#include <vector>
+
+class Solution {
+public:
+    int search(vector<int>& arr, int target) {
+        int low = 0, high = (int)arr.size() - 1;
+
+        while (low <= high) {
+            // Divide range into three equal parts using two midpoints
+            int mid1 = low + (high - low) / 3;
+            int mid2 = high - (high - low) / 3;
+
+            if (arr[mid1] == target) return mid1;   // Found at mid1
+            if (arr[mid2] == target) return mid2;   // Found at mid2
+
+            if (target < arr[mid1])
+                high = mid1 - 1;     // Target in left third
+            else if (target > arr[mid2])
+                low = mid2 + 1;      // Target in right third
+            else {
+                low  = mid1 + 1;     // Target in middle third
+                high = mid2 - 1;
+            }
+        }
+        return -1;   // Target not found
+    }
+};
 ```
 
 ---
@@ -241,11 +265,10 @@ print(f"Peak at x = {peak_x:.4f}")          # Output: Peak at x = 3.0000
 print(f"Peak value f(x) = {f(peak_x):.4f}") # Output: Peak value f(x) = 9.0000
 ```
 
-### C++
+### C++ (simple):
 
 ```cpp
-// C++ — Ternary Search on a unimodal function (find maximum)
-#include <iostream>
+// C++ (simple) — Ternary Search on a unimodal function (find maximum)
 #include <cmath>
 
 double f(double x) {
@@ -255,8 +278,8 @@ double f(double x) {
 double findMax(double low, double high, int iterations = 200) {
     // Run enough iterations for floating-point precision
     for (int i = 0; i < iterations; i++) {
-        double mid1 = low + (high - low) / 3.0;
-        double mid2 = high - (high - low) / 3.0;
+        double mid1 = low + (high - low) / 3.0;  // First cut point
+        double mid2 = high - (high - low) / 3.0; // Second cut point
 
         if (f(mid1) < f(mid2))
             low = mid1;    // Peak is in the right portion
@@ -265,13 +288,34 @@ double findMax(double low, double high, int iterations = 200) {
     }
     return (low + high) / 2.0;   // Approximate peak location
 }
+```
 
-int main() {
-    double peak_x = findMax(0.0, 10.0);
-    std::cout << "Peak at x = " << peak_x << "\n";    // Output: Peak at x = 3
-    std::cout << "Peak value = " << f(peak_x) << "\n"; // Output: Peak value = 9
-    return 0;
-}
+### C++ (LeetCode class style):
+
+```cpp
+// C++ (LeetCode class style) — Ternary Search on a unimodal function (find peak)
+#include <cmath>
+
+class Solution {
+    double f(double x) {
+        return -(x - 3) * (x - 3) + 9;   // Example: peak at x = 3
+    }
+
+public:
+    double findPeakElement(double low, double high, int iterations = 200) {
+        // Run enough iterations for floating-point precision
+        for (int i = 0; i < iterations; i++) {
+            double mid1 = low + (high - low) / 3.0;  // First cut point
+            double mid2 = high - (high - low) / 3.0; // Second cut point
+
+            if (f(mid1) < f(mid2))
+                low = mid1;    // Peak is in the right portion
+            else
+                high = mid2;   // Peak is in the left portion
+        }
+        return (low + high) / 2.0;   // Approximate peak x-coordinate
+    }
+};
 ```
 
 We run 200 iterations to get high precision with floating-point values. After each iteration the interval shrinks to $\frac{2}{3}$ of its previous size, so after 200 steps the remaining interval width is $10 \times \left(\frac{2}{3}\right)^{200} \approx 10^{-34}$.
@@ -310,36 +354,56 @@ arr = [2, 4, 6, 8, 10, 12, 14, 16]
 print(ternary_search_recursive(arr, 0, len(arr) - 1, 12))  # Output: 5
 ```
 
-### C++
+### C++ (simple):
 
 ```cpp
-// C++ — Ternary Search (Recursive) on a sorted array
-#include <iostream>
+// C++ (simple) — Ternary Search (Recursive) on a sorted array
 #include <vector>
 
 int ternarySearchRecursive(const std::vector<int>& arr,
                            int low, int high, int target) {
     if (low > high) return -1;   // Base case: not found
 
-    int mid1 = low + (high - low) / 3;
-    int mid2 = high - (high - low) / 3;
+    int mid1 = low + (high - low) / 3;   // First cut point
+    int mid2 = high - (high - low) / 3;  // Second cut point
 
-    if (arr[mid1] == target) return mid1;
-    if (arr[mid2] == target) return mid2;
+    if (arr[mid1] == target) return mid1;  // Found at mid1
+    if (arr[mid2] == target) return mid2;  // Found at mid2
 
     if (target < arr[mid1])
-        return ternarySearchRecursive(arr, low, mid1 - 1, target);     // Left third
+        return ternarySearchRecursive(arr, low, mid1 - 1, target);      // Left third
     else if (target > arr[mid2])
-        return ternarySearchRecursive(arr, mid2 + 1, high, target);    // Right third
+        return ternarySearchRecursive(arr, mid2 + 1, high, target);     // Right third
     else
         return ternarySearchRecursive(arr, mid1 + 1, mid2 - 1, target); // Middle third
 }
+```
 
-int main() {
-    std::vector<int> arr = {2, 4, 6, 8, 10, 12, 14, 16};
-    std::cout << ternarySearchRecursive(arr, 0, arr.size() - 1, 12) << "\n";  // Output: 5
-    return 0;
-}
+### C++ (LeetCode class style):
+
+```cpp
+// C++ (LeetCode class style) — Ternary Search (Recursive)
+#include <vector>
+
+class Solution {
+public:
+    int search(vector<int>& arr, int low, int high, int target) {
+        if (low > high) return -1;   // Base case: not found
+
+        int mid1 = low + (high - low) / 3;   // First cut point
+        int mid2 = high - (high - low) / 3;  // Second cut point
+
+        if (arr[mid1] == target) return mid1;  // Found at mid1
+        if (arr[mid2] == target) return mid2;  // Found at mid2
+
+        if (target < arr[mid1])
+            return search(arr, low, mid1 - 1, target);      // Recurse on left third
+        else if (target > arr[mid2])
+            return search(arr, mid2 + 1, high, target);     // Recurse on right third
+        else
+            return search(arr, mid1 + 1, mid2 - 1, target); // Recurse on middle third
+    }
+};
 ```
 
 Output is `5` since `arr[5] = 12`. Each recursive call reduces the search space by one-third.
