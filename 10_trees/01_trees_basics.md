@@ -184,7 +184,7 @@ print(root.left.value)        # Output: 2
 print(root.left.left.value)   # Output: 4
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -200,11 +200,11 @@ struct Node {
 
 int main() {
     // Build the same tree
-    Node* root        = new Node(1);
-    root->left        = new Node(2);
-    root->right       = new Node(3);
-    root->left->left  = new Node(4);
-    root->left->right = new Node(5);
+    Node* root        = new Node(1);   // root node
+    root->left        = new Node(2);   // left child
+    root->right       = new Node(3);   // right child
+    root->left->left  = new Node(4);   // left-left grandchild
+    root->left->right = new Node(5);   // left-right grandchild
 
     //        1
     //       / \
@@ -224,6 +224,33 @@ int main() {
     delete root;
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    // Build the example binary tree and return root
+    TreeNode* buildTree() {
+        TreeNode* root            = new TreeNode(1);  // root node
+        root->left                = new TreeNode(2);  // left child of root
+        root->right               = new TreeNode(3);  // right child of root
+        root->left->left          = new TreeNode(4);  // left-left grandchild
+        root->left->right         = new TreeNode(5);  // left-right grandchild
+        return root;
+    }
+};
 ```
 
 We navigate the tree by following `left` and `right` pointers from the root, just like following `next` pointers in a linked list — but now branching in two directions.

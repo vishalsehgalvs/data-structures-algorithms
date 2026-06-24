@@ -237,7 +237,7 @@ def search_binary_tree(node: TreeNode, target: int) -> bool:
 # Space Complexity: O(h) — recursion stack (h = tree height)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 struct TreeNode {
@@ -248,17 +248,37 @@ struct TreeNode {
 };
 
 bool searchBinaryTree(TreeNode* node, int target) {
-    // Search a plain binary tree — must check both subtrees
-    if (node == nullptr) return false;      // Reached a leaf, not found
-    if (node->val == target) return true;   // Found it
+    if (node == nullptr) return false;      // base case: reached a leaf, not found
+    if (node->val == target) return true;   // found the target
 
-    // Must search BOTH left AND right subtrees
+    // Must search BOTH left AND right subtrees — no ordering to guide us
     return searchBinaryTree(node->left, target) ||
            searchBinaryTree(node->right, target);
 }
 
 // Time Complexity:  O(n) — visits every node in worst case
 // Space Complexity: O(h) — call stack depth equals tree height
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    bool searchBT(TreeNode* node, int target) {
+        if (node == nullptr) return false;       // base case: empty subtree
+        if (node->val == target) return true;    // found the target
+        // must check BOTH sides — no ordering to guide the search
+        return searchBT(node->left, target) || searchBT(node->right, target);
+    }
+};
 ```
 
 This is slow for large trees. Every search requires checking potentially every node.
@@ -298,24 +318,47 @@ def search_bst_iterative(node: TreeNode, target: int) -> bool:
     return False
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 bool searchBST(TreeNode* node, int target) {
-    // Iterative BST search — O(h) space for recursion avoided
+    // Iterative BST search — O(1) space, no recursion needed
     while (node != nullptr) {
         if (node->val == target)
-            return true;                        // Found it
+            return true;                        // found it
         else if (target < node->val)
-            node = node->left;                  // Go left
+            node = node->left;                  // go left: target is smaller
         else
-            node = node->right;                 // Go right
+            node = node->right;                 // go right: target is larger
     }
-    return false;                               // Not found
+    return false;                               // not found
 }
 
 // Time Complexity:  O(log n) average, O(n) worst (skewed)
 // Space Complexity: O(1) iterative version
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    // LeetCode 700: returns the subtree node if found, nullptr if not
+    TreeNode* searchBST(TreeNode* root, int val) {
+        if (root == nullptr) return nullptr;     // not found
+        if (root->val == val) return root;       // found: return the node
+        if (val < root->val)
+            return searchBST(root->left, val);   // go left: val is smaller
+        return searchBST(root->right, val);      // go right: val is larger
+    }
+};
 ```
 
 For a BST with 1,000 nodes, you might find any value in just ~10 steps on average ($\log_2 1000 \approx 10$). That is the power of the BST ordering rule.
@@ -360,14 +403,14 @@ def insert_binary_tree(root: TreeNode, val: int) -> TreeNode:
 # Time Complexity: O(n) — BFS scan to find first empty slot
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <queue>
 
 TreeNode* insertBinaryTree(TreeNode* root, int val) {
     TreeNode* newNode = new TreeNode(val);
-    if (root == nullptr) return newNode;
+    if (root == nullptr) return newNode;    // empty tree: new node is root
 
     std::queue<TreeNode*> q;
     q.push(root);
@@ -377,22 +420,62 @@ TreeNode* insertBinaryTree(TreeNode* root, int val) {
         q.pop();
 
         if (node->left == nullptr) {
-            node->left = newNode;          // First empty left slot
+            node->left = newNode;          // first empty left slot found
             return root;
         } else {
-            q.push(node->left);
+            q.push(node->left);            // keep scanning left side
         }
 
         if (node->right == nullptr) {
-            node->right = newNode;         // First empty right slot
+            node->right = newNode;         // first empty right slot found
             return root;
         } else {
-            q.push(node->right);
+            q.push(node->right);           // keep scanning right side
         }
     }
     return root;
 }
 // Time Complexity: O(n) — BFS to find first empty slot
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <queue>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    TreeNode* insertBinaryTree(TreeNode* root, int val) {
+        TreeNode* newNode = new TreeNode(val);
+        if (root == nullptr) return newNode;   // empty tree: new node is root
+        queue<TreeNode*> q;
+        q.push(root);
+        while (!q.empty()) {
+            TreeNode* node = q.front(); q.pop();
+            if (node->left == nullptr) {
+                node->left = newNode;           // first empty left slot
+                return root;
+            } else {
+                q.push(node->left);             // scan next level
+            }
+            if (node->right == nullptr) {
+                node->right = newNode;          // first empty right slot
+                return root;
+            } else {
+                q.push(node->right);
+            }
+        }
+        return root;
+    }
+};
 ```
 
 ### Inserting in a BST
@@ -442,24 +525,50 @@ def insert_bst(node: TreeNode, value: int) -> TreeNode:
 # Space Complexity: O(h) — recursion stack
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 TreeNode* insertBST(TreeNode* node, int value) {
     if (node == nullptr)
-        return new TreeNode(value);         // New node at correct position
+        return new TreeNode(value);         // found the correct position: insert here
 
     if (value < node->val)
-        node->left = insertBST(node->left, value);    // Go left
+        node->left = insertBST(node->left, value);    // go left: value is smaller
     else if (value > node->val)
-        node->right = insertBST(node->right, value);  // Go right
-    // If value == node->val: duplicate — return unchanged
+        node->right = insertBST(node->right, value);  // go right: value is larger
+    // if value == node->val: duplicate — return unchanged
 
     return node;
 }
 
 // Time Complexity:  O(log n) average, O(n) worst (skewed)
 // Space Complexity: O(h) — recursion depth
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    // LeetCode 701: insert val into BST, return updated root
+    TreeNode* insertBST(TreeNode* root, int val) {
+        if (root == nullptr)
+            return new TreeNode(val);            // correct position found: insert
+        if (val < root->val)
+            root->left = insertBST(root->left, val);    // go left
+        else if (val > root->val)
+            root->right = insertBST(root->right, val);  // go right
+        // if val == root->val: duplicate — return unchanged
+        return root;
+    }
+};
 ```
 
 ---
@@ -536,14 +645,39 @@ def tree_height(node: TreeNode) -> int:
 # Skewed BST:   height = 5  (linear — worst case)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 int treeHeight(TreeNode* node) {
-    if (node == nullptr) return 0;
+    if (node == nullptr) return 0;           // null node has height 0
     return 1 + std::max(treeHeight(node->left), treeHeight(node->right));
 }
 // Compare height vs log2(n) to gauge how balanced the tree is
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <algorithm>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    int treeHeight(TreeNode* node) {
+        if (node == nullptr) return 0;           // null node has height 0
+        int leftH  = treeHeight(node->left);     // height of left subtree
+        int rightH = treeHeight(node->right);    // height of right subtree
+        return 1 + max(leftH, rightH);           // count current node
+    }
+    // Compare height vs log2(n) to gauge how balanced the tree is
+};
 ```
 
 Balanced BSTs like **AVL trees** and **Red-Black trees** fix this automatically — those are more advanced topics covered later in the series.

@@ -96,7 +96,7 @@ root.left.right = TreeNode(5)
 print("Height:", height(root))  # Output: 2
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -113,8 +113,8 @@ struct TreeNode {
 int height(TreeNode* node) {
     if (node == nullptr) return -1;           // null → -1
 
-    int leftH  = height(node->left);
-    int rightH = height(node->right);
+    int leftH  = height(node->left);          // height of left subtree
+    int rightH = height(node->right);         // height of right subtree
 
     return 1 + max(leftH, rightH);            // add 1 for current edge
 }
@@ -129,6 +129,31 @@ int main() {
     cout << "Height: " << height(root) << "\n";  // Output: 2
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <algorithm>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    // LeetCode 104: counts nodes (null=0, leaf=1), not edges
+    int maxDepth(TreeNode* root) {
+        if (root == nullptr) return 0;          // empty tree has depth 0
+        int leftDepth  = maxDepth(root->left);  // depth of left subtree
+        int rightDepth = maxDepth(root->right); // depth of right subtree
+        return 1 + max(leftDepth, rightDepth);  // add 1 for current node
+    }
+};
 ```
 
 The recursion returns −1 for null so that a leaf (both children null) correctly evaluates to $1 + \max(-1, -1) = 0$.
@@ -183,18 +208,18 @@ print("Depth of node 3:", find_depth(root, 3))  # Output: 1
 print("Depth of node 1:", find_depth(root, 1))  # Output: 0
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 int findDepth(TreeNode* root, int target, int currentDepth = 0) {
-    if (root == nullptr) return -1;
+    if (root == nullptr) return -1;                  // target not found in this path
 
-    if (root->val == target) return currentDepth;
+    if (root->val == target) return currentDepth;    // found: return current depth
 
-    int left = findDepth(root->left, target, currentDepth + 1);
-    if (left != -1) return left;
+    int left = findDepth(root->left, target, currentDepth + 1);   // search left
+    if (left != -1) return left;                                   // found in left
 
-    return findDepth(root->right, target, currentDepth + 1);
+    return findDepth(root->right, target, currentDepth + 1);       // search right
 }
 
 int main() {
@@ -204,6 +229,28 @@ int main() {
     cout << "Depth of 1: " << findDepth(root, 1) << "\n";  // 0
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    int findDepth(TreeNode* root, int target, int depth = 0) {
+        if (root == nullptr) return -1;           // target not in this path
+        if (root->val == target) return depth;    // found: return current depth
+        int left = findDepth(root->left, target, depth + 1);   // search left
+        if (left != -1) return left;                            // found in left
+        return findDepth(root->right, target, depth + 1);       // search right
+    }
+};
 ```
 
 ---
@@ -297,25 +344,25 @@ sol = DiameterSolver()
 print("Diameter:", sol.diameter(root))  # Output: 4
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
 #include <algorithm>
 using namespace std;
 
-int maxDiameter = 0;  // global tracker
+int maxDiameter = 0;  // global tracker (reset before each call)
 
 int heightForDiameter(TreeNode* node) {
-    if (node == nullptr) return -1;
+    if (node == nullptr) return -1;          // null → height -1
 
-    int leftH  = heightForDiameter(node->left);
-    int rightH = heightForDiameter(node->right);
+    int leftH  = heightForDiameter(node->left);   // height of left subtree
+    int rightH = heightForDiameter(node->right);  // height of right subtree
 
-    int currentDiameter = (leftH + 1) + (rightH + 1);
-    maxDiameter = max(maxDiameter, currentDiameter);
+    int currentDiameter = (leftH + 1) + (rightH + 1);   // edges on both sides
+    maxDiameter = max(maxDiameter, currentDiameter);      // track global max
 
-    return 1 + max(leftH, rightH);
+    return 1 + max(leftH, rightH);           // return height of current subtree
 }
 
 int diameter(TreeNode* root) {
@@ -335,6 +382,36 @@ int main() {
     cout << "Diameter: " << diameter(root) << "\n";  // Output: 4
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <algorithm>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+    int dfs(TreeNode* node, int& diameter) {
+        if (node == nullptr) return -1;                   // null → height -1
+        int leftH  = dfs(node->left, diameter);           // height of left subtree
+        int rightH = dfs(node->right, diameter);          // height of right subtree
+        diameter = max(diameter, (leftH + 1) + (rightH + 1));  // path through node
+        return 1 + max(leftH, rightH);                    // height of current subtree
+    }
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        int diameter = 0;
+        dfs(root, diameter);                              // fills diameter via reference
+        return diameter;
+    }
+};
 ```
 
 ---

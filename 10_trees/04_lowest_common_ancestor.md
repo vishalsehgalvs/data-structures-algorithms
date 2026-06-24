@@ -153,7 +153,7 @@ def lowest_common_ancestor(root, p, q):
     return left if left is not None else right
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -167,22 +167,43 @@ struct TreeNode {
 };
 
 TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-    // Base case: empty subtree
-    if (root == nullptr) return nullptr;
+    if (root == nullptr) return nullptr;          // base case: empty subtree
+    if (root == p || root == q) return root;      // current node matches a target
 
-    // Current node matches one of the targets
-    if (root == p || root == q) return root;
+    TreeNode* left  = lowestCommonAncestor(root->left,  p, q);  // search left subtree
+    TreeNode* right = lowestCommonAncestor(root->right, p, q);  // search right subtree
 
-    // Search both subtrees
-    TreeNode* left  = lowestCommonAncestor(root->left,  p, q);
-    TreeNode* right = lowestCommonAncestor(root->right, p, q);
-
-    // Both found → current node is the LCA
-    if (left != nullptr && right != nullptr) return root;
-
-    // Only one side found something
-    return (left != nullptr) ? left : right;
+    if (left != nullptr && right != nullptr) return root;  // both found → LCA is here
+    return (left != nullptr) ? left : right;               // pass up the non-null side
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root == nullptr) return nullptr;          // base case: empty subtree
+        if (root == p || root == q) return root;      // current node is a target
+
+        TreeNode* left  = lowestCommonAncestor(root->left,  p, q);  // search left
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);  // search right
+
+        if (left != nullptr && right != nullptr) return root;  // split point → LCA
+        return (left != nullptr) ? left : right;               // pass non-null side up
+    }
+};
 ```
 
 ---
@@ -218,7 +239,7 @@ p3, q3 = root.left.left, root.left
 print(lowest_common_ancestor(root, p3, q3).val)  # Output: 2
 ```
 
-**C++ — same tests:**
+**C++ (simple):**
 
 ```cpp
 int main() {
@@ -228,16 +249,46 @@ int main() {
     root->left->left      = new TreeNode(4);
     root->left->right     = new TreeNode(5);
 
-    // LCA(4, 5)
+    // LCA(4, 5) — targets in different subtrees
     auto res1 = lowestCommonAncestor(root, root->left->left, root->left->right);
     cout << res1->val << "\n";   // Output: 2
 
-    // LCA(4, 3)
+    // LCA(4, 3) — targets in completely separate branches
     auto res2 = lowestCommonAncestor(root, root->left->left, root->right);
     cout << res2->val << "\n";   // Output: 1
 
-    // LCA(4, 2) — ancestor case
+    // LCA(4, 2) — one node is ancestor of the other
     auto res3 = lowestCommonAncestor(root, root->left->left, root->left);
+    cout << res3->val << "\n";   // Output: 2
+
+    return 0;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    Solution sol;
+    TreeNode* root        = new TreeNode(1);
+    root->left            = new TreeNode(2);
+    root->right           = new TreeNode(3);
+    root->left->left      = new TreeNode(4);
+    root->left->right     = new TreeNode(5);
+
+    // LCA(4, 5) — targets in different subtrees
+    auto* res1 = sol.lowestCommonAncestor(root, root->left->left, root->left->right);
+    cout << res1->val << "\n";   // Output: 2
+
+    // LCA(4, 3) — targets in completely separate branches
+    auto* res2 = sol.lowestCommonAncestor(root, root->left->left, root->right);
+    cout << res2->val << "\n";   // Output: 1
+
+    // LCA(4, 2) — one node is ancestor of the other
+    auto* res3 = sol.lowestCommonAncestor(root, root->left->left, root->left);
     cout << res3->val << "\n";   // Output: 2
 
     return 0;
@@ -267,6 +318,60 @@ p = root.left         # Node 2
 q = root.left.right   # Node 3
 
 print(lowest_common_ancestor(root, p, q).val)  # Output: 2
+```
+
+**C++ (simple):**
+
+```cpp
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+int main() {
+    // Build tree:    1
+    //               /
+    //              2
+    //               \
+    //                3
+    TreeNode* root        = new TreeNode(1);
+    root->left            = new TreeNode(2);        // node 2
+    root->left->right     = new TreeNode(3);        // node 3 (child of 2)
+
+    TreeNode* p = root->left;         // Node 2 — ancestor of q
+    TreeNode* q = root->left->right;  // Node 3
+
+    auto res = lowestCommonAncestor(root, p, q);
+    cout << res->val << "\n";  // Output: 2
+    return 0;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+int main() {
+    Solution sol;
+    TreeNode* root        = new TreeNode(1);
+    root->left            = new TreeNode(2);        // node 2
+    root->left->right     = new TreeNode(3);        // node 3 (child of 2)
+
+    TreeNode* p = root->left;         // Node 2 — ancestor of q
+    TreeNode* q = root->left->right;  // Node 3
+
+    auto* res = sol.lowestCommonAncestor(root, p, q);
+    cout << res->val << "\n";  // Output: 2
+    return 0;
+}
 ```
 
 This works because when we reach node 2 (which equals $p$), we **return immediately without descending further**. Node 2 is correctly returned as the LCA.

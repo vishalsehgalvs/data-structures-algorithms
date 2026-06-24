@@ -93,7 +93,7 @@ def preorder(root):
 # Output: 1 2 4 5 3
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 void preorder(Node* root) {
@@ -104,6 +104,35 @@ void preorder(Node* root) {
     preorder(root->right);       // Then right subtree
 }
 // Output: 1 2 4 5 3
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <vector>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+    void helper(TreeNode* root, vector<int>& result) {
+        if (root == nullptr) return;       // base case: empty subtree
+        result.push_back(root->val);       // visit root first
+        helper(root->left, result);        // then recurse on left subtree
+        helper(root->right, result);       // then recurse on right subtree
+    }
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> result;
+        helper(root, result);
+        return result;
+    }
+};
 ```
 
 ---
@@ -137,7 +166,7 @@ def inorder(root):
 # Output: 4 2 5 1 3
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 void inorder(Node* root) {
@@ -148,6 +177,35 @@ void inorder(Node* root) {
     inorder(root->right);        // Then right subtree
 }
 // Output: 4 2 5 1 3
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <vector>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+    void helper(TreeNode* root, vector<int>& result) {
+        if (root == nullptr) return;       // base case: empty subtree
+        helper(root->left, result);        // recurse left subtree first
+        result.push_back(root->val);       // visit root (middle)
+        helper(root->right, result);       // recurse right subtree last
+    }
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> result;
+        helper(root, result);
+        return result;
+    }
+};
 ```
 
 Node 4 is printed before node 2, even though 2 is higher in the tree — we only print a node **after fully finishing its left subtree**.
@@ -184,7 +242,7 @@ def postorder(root):
 # Output: 4 5 2 3 1
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 void postorder(Node* root) {
@@ -195,6 +253,35 @@ void postorder(Node* root) {
     cout << root->value << " ";  // Root last
 }
 // Output: 4 5 2 3 1
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <vector>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+    void helper(TreeNode* root, vector<int>& result) {
+        if (root == nullptr) return;       // base case: empty subtree
+        helper(root->left, result);        // recurse left subtree first
+        helper(root->right, result);       // recurse right subtree second
+        result.push_back(root->val);       // visit root last
+    }
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> result;
+        helper(root, result);
+        return result;
+    }
+};
 ```
 
 ---
@@ -243,7 +330,7 @@ def level_order(root):
 # Output: 1 2 3 4 5
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <queue>
@@ -264,6 +351,43 @@ void levelOrder(Node* root) {
     }
 }
 // Output: 1 2 3 4 5
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> result;
+        if (root == nullptr) return result;    // empty tree
+        queue<TreeNode*> q;
+        q.push(root);                          // start BFS from root
+        while (!q.empty()) {
+            int levelSize = q.size();          // nodes at current level
+            vector<int> level;
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode* node = q.front(); q.pop();  // dequeue node
+                level.push_back(node->val);           // collect value
+                if (node->left)  q.push(node->left);  // enqueue left child
+                if (node->right) q.push(node->right); // enqueue right child
+            }
+            result.push_back(level);           // save this level's values
+        }
+        return result;
+    }
+};
 ```
 
 The queue ensures nodes at the same level are processed left to right before descending.
@@ -332,6 +456,132 @@ print("Postorder:   ", end=""); postorder(root);    print()  # 4 5 2 3 1
 print("Level Order: ", end=""); level_order(root);  print()  # 1 2 3 4 5
 ```
 
+**C++ (simple):**
+
+```cpp
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int value;
+    Node* left;
+    Node* right;
+    Node(int val) : value(val), left(nullptr), right(nullptr) {}
+};
+
+void preorder(Node* root) {
+    if (!root) return;
+    cout << root->value << " ";   // root first
+    preorder(root->left);         // then left
+    preorder(root->right);        // then right
+}
+
+void inorder(Node* root) {
+    if (!root) return;
+    inorder(root->left);          // left first
+    cout << root->value << " ";   // then root
+    inorder(root->right);         // then right
+}
+
+void postorder(Node* root) {
+    if (!root) return;
+    postorder(root->left);        // left first
+    postorder(root->right);       // right second
+    cout << root->value << " ";   // root last
+}
+
+void levelOrder(Node* root) {
+    if (!root) return;
+    queue<Node*> q;
+    q.push(root);
+    while (!q.empty()) {
+        Node* node = q.front(); q.pop();
+        cout << node->value << " ";             // visit node
+        if (node->left)  q.push(node->left);   // enqueue children
+        if (node->right) q.push(node->right);
+    }
+}
+
+int main() {
+    Node* root        = new Node(1);
+    root->left        = new Node(2);
+    root->right       = new Node(3);
+    root->left->left  = new Node(4);
+    root->left->right = new Node(5);
+
+    cout << "Preorder:    "; preorder(root);    cout << "\n";  // 1 2 4 5 3
+    cout << "Inorder:     "; inorder(root);     cout << "\n";  // 4 2 5 1 3
+    cout << "Postorder:   "; postorder(root);   cout << "\n";  // 4 5 2 3 1
+    cout << "Level Order: "; levelOrder(root);  cout << "\n";  // 1 2 3 4 5
+    return 0;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+    void preHelper(TreeNode* r, vector<int>& v) {
+        if (!r) return;
+        v.push_back(r->val);          // root first
+        preHelper(r->left, v);        // then left
+        preHelper(r->right, v);       // then right
+    }
+    void inHelper(TreeNode* r, vector<int>& v) {
+        if (!r) return;
+        inHelper(r->left, v);         // left first
+        v.push_back(r->val);          // then root
+        inHelper(r->right, v);        // then right
+    }
+    void postHelper(TreeNode* r, vector<int>& v) {
+        if (!r) return;
+        postHelper(r->left, v);       // left first
+        postHelper(r->right, v);      // right second
+        v.push_back(r->val);          // root last
+    }
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> v; preHelper(root, v); return v;
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> v; inHelper(root, v); return v;
+    }
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> v; postHelper(root, v); return v;
+    }
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> result;
+        if (!root) return result;
+        queue<TreeNode*> q;
+        q.push(root);
+        while (!q.empty()) {
+            int sz = q.size();                     // nodes at current level
+            vector<int> level;
+            for (int i = 0; i < sz; i++) {
+                auto* node = q.front(); q.pop();
+                level.push_back(node->val);              // collect level's values
+                if (node->left)  q.push(node->left);     // enqueue left child
+                if (node->right) q.push(node->right);    // enqueue right child
+            }
+            result.push_back(level);               // save this level's result
+        }
+        return result;
+    }
+};
+```
+
 ---
 
 ## 6. DFS vs BFS: When to Use Which
@@ -381,7 +631,7 @@ def build_tree():
     return root
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -396,13 +646,40 @@ struct Node {
 };
 
 Node* buildTree() {
-    Node* root        = new Node(1);
-    root->left        = new Node(2);
-    root->right       = new Node(3);
-    root->left->left  = new Node(4);
-    root->left->right = new Node(5);
+    Node* root        = new Node(1);   // root node
+    root->left        = new Node(2);   // left child of root
+    root->right       = new Node(3);   // right child of root
+    root->left->left  = new Node(4);   // left-left grandchild
+    root->left->right = new Node(5);   // left-right grandchild
     return root;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    // Build the example binary tree and return its root
+    TreeNode* buildTree() {
+        TreeNode* root            = new TreeNode(1);  // root node
+        root->left                = new TreeNode(2);  // left child of root
+        root->right               = new TreeNode(3);  // right child of root
+        root->left->left          = new TreeNode(4);  // left-left grandchild
+        root->left->right         = new TreeNode(5);  // left-right grandchild
+        return root;
+    }
+};
 ```
 
 ---
