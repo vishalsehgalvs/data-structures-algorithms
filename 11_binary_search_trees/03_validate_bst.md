@@ -45,6 +45,7 @@ Just checking that each node is greater than its left child and smaller than its
 The best way to validate a BST is to pass a **minimum and maximum allowed value** to each node as you traverse the tree.
 
 Think of it like setting boundaries:
+
 - When you go **left** from a node, the current node value becomes the new **maximum**.
 - When you go **right**, the current node value becomes the new **minimum**.
 
@@ -52,8 +53,8 @@ Every node's value must stay within its allowed range. If it goes out of range, 
 
 ### How the Range Updates
 
-| Direction | What changes |
-|-----------|-------------|
+| Direction | What changes                               |
+| --------- | ------------------------------------------ |
 | Go left   | Current node value becomes the new **max** |
 | Go right  | Current node value becomes the new **min** |
 
@@ -71,10 +72,10 @@ Let us validate this BST using the range method:
     3   7
 ```
 
-| Node | Range | Result |
-|------|-------|--------|
-| 10   | (-inf, +inf) | Valid |
-| 5    | (-inf, 10)   | Valid |
+| Node | Range        | Result       |
+| ---- | ------------ | ------------ |
+| 10   | (-inf, +inf) | Valid        |
+| 5    | (-inf, 10)   | Valid        |
 | 3    | (-inf, 5)    | Valid (leaf) |
 | 7    | (5, 10)      | Valid (leaf) |
 | 15   | (10, +inf)   | Valid (leaf) |
@@ -120,6 +121,43 @@ The function `validate` checks each node against its allowed range. If any node 
 
 The base case handles empty nodes, which are always considered valid. This is how recursion bottoms out cleanly.
 
+**C++:**
+
+```cpp
+#include <climits>
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        return validate(root, LLONG_MIN, LLONG_MAX);
+    }
+
+private:
+    bool validate(TreeNode* node, long long minVal, long long maxVal) {
+        // An empty node is always valid
+        if (node == nullptr) return true;
+
+        // Check if current node's value is within the allowed range
+        if (node->val <= minVal || node->val >= maxVal) return false;
+
+        // Recurse left: update max to current node value
+        // Recurse right: update min to current node value
+        return validate(node->left, minVal, node->val) &&
+               validate(node->right, node->val, maxVal);
+    }
+};
+// Time: O(n) | Space: O(h) for recursion stack
+```
+
+> **Note:** We use `long long` for boundaries (not `int`) to safely handle nodes with values equal to `INT_MIN` or `INT_MAX`.
+
 ---
 
 ## Example Walkthrough: Invalid BST
@@ -146,6 +184,29 @@ print(sol.isValidBST(root))  # Output: False
 ```
 
 The output is `False` because node `3` falls in the right subtree of `5`, but its value is less than `5`. The range check at node `3` would be `(5, 6)`, and `3` is not within that range.
+
+**C++:**
+
+```cpp
+// Building an invalid BST manually
+//
+//        5
+//       / \
+//      4   6
+//         / \
+//        3   7
+//
+// Node 3 is in the right subtree of 5, but 3 < 5. Invalid!
+
+TreeNode* root = new TreeNode(5);
+root->left = new TreeNode(4);
+root->right = new TreeNode(6);
+root->right->left = new TreeNode(3);  // This violates the BST property
+root->right->right = new TreeNode(7);
+
+Solution sol;
+cout << sol.isValidBST(root);  // Output: 0 (false)
+```
 
 ---
 
@@ -176,6 +237,32 @@ print(sol.isValidBST(root))  # Output: True
 ```
 
 Every node stays within its valid range. The function correctly returns `True`.
+
+**C++:**
+
+```cpp
+// Building a valid BST
+//
+//        8
+//       / \
+//      3   10
+//     / \    \
+//    1   6    14
+//       / \
+//      4   7
+
+TreeNode* root = new TreeNode(8);
+root->left = new TreeNode(3);
+root->right = new TreeNode(10);
+root->left->left = new TreeNode(1);
+root->left->right = new TreeNode(6);
+root->right->right = new TreeNode(14);
+root->left->right->left = new TreeNode(4);
+root->left->right->right = new TreeNode(7);
+
+Solution sol;
+cout << sol.isValidBST(root);  // Output: 1 (true)
+```
 
 ---
 
@@ -213,17 +300,49 @@ class Solution:
 
 This approach visits each node once and checks that values are always increasing. It is clean and easy to understand once you are comfortable with tree traversals.
 
+**C++:**
+
+```cpp
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        prev = LLONG_MIN;  // Track the last visited value
+        return inorder(root);
+    }
+
+private:
+    long long prev;
+
+    bool inorder(TreeNode* node) {
+        if (node == nullptr) return true;
+
+        // Traverse left subtree first
+        if (!inorder(node->left)) return false;
+
+        // Current value must be greater than previous value
+        if (node->val <= prev) return false;
+
+        // Update previous value
+        prev = node->val;
+
+        // Traverse right subtree
+        return inorder(node->right);
+    }
+};
+// Time: O(n) | Space: O(h) for recursion stack
+```
+
 ---
 
 ## Comparison of Both Approaches
 
-| Feature | Min-Max Range Approach | Inorder Traversal Approach |
-|---------|----------------------|--------------------------|
-| Core Idea | Pass valid range to every node | Check if inorder values are sorted |
-| Time Complexity | O(n) | O(n) |
-| Space Complexity | O(h) for recursion stack | O(h) for recursion stack |
-| Handles duplicates | Yes, with strict less/greater check | Yes, same check |
-| Beginner friendliness | Slightly harder to visualize | Easier if you know inorder traversal |
+| Feature               | Min-Max Range Approach              | Inorder Traversal Approach           |
+| --------------------- | ----------------------------------- | ------------------------------------ |
+| Core Idea             | Pass valid range to every node      | Check if inorder values are sorted   |
+| Time Complexity       | O(n)                                | O(n)                                 |
+| Space Complexity      | O(h) for recursion stack            | O(h) for recursion stack             |
+| Handles duplicates    | Yes, with strict less/greater check | Yes, same check                      |
+| Beginner friendliness | Slightly harder to visualize        | Easier if you know inorder traversal |
 
 Both approaches run in **O(n)** time where `n` is the number of nodes. Either one is acceptable in interviews. Choose whichever you find easier to explain.
 
