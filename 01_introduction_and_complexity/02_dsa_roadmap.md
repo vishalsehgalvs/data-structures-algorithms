@@ -172,7 +172,7 @@ print(find_largest([-5, -2, -8]))     # Output: -2
 print(find_largest([42]))             # Output: 42
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 #include <iostream>
@@ -205,6 +205,26 @@ int main() {
 
     return 0;
 }
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Return the maximum value in a non-empty array
+    int findLargest(vector<int>& numbers) {
+        int largest = numbers[0];  // assume first is the largest
+        for (int i = 1; i < numbers.size(); i++) {
+            if (numbers[i] > largest)
+                largest = numbers[i];  // found something bigger — update
+        }
+        return largest;  // largest value after full scan
+    }
+};
 ```
 
 This goes through the list exactly once → **Time complexity: O(n)**

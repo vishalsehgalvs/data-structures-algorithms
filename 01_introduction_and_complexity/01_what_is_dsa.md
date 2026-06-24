@@ -153,7 +153,7 @@ scores = [42, 87, 15, 93, 60]
 print(find_max(scores))   # Output: 93
 ```
 
-### C++
+### C++ (simple)
 
 ```cpp
 #include <iostream>
@@ -179,6 +179,26 @@ int main() {
     cout << findMax(scores) << endl;   // Output: 93
     return 0;
 }
+```
+
+### C++ (LeetCode class style)
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Return the maximum value in a non-empty array
+    int findMax(vector<int>& numbers) {
+        int maxVal = numbers[0];  // assume first element is the biggest
+        for (int i = 1; i < numbers.size(); i++) {
+            if (numbers[i] > maxVal)
+                maxVal = numbers[i];  // found something bigger — update
+        }
+        return maxVal;  // return the largest value found
+    }
+};
 ```
 
 **Step-by-step trace for `[42, 87, 15, 93, 60]`:**

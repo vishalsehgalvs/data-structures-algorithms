@@ -89,7 +89,7 @@ print(get_first_element([10, 20, 30]))   # Output: 10
 print(get_first_element([10, 20, 30, 40, 50, 60, 70]))   # Still: 10, still O(1)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 #include <iostream>
@@ -154,7 +154,7 @@ print(binary_search(sorted_arr, 23))   # Output: 5 (index of 23)
 print(binary_search(sorted_arr, 10))   # Output: -1 (not found)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 #include <iostream>
@@ -187,6 +187,28 @@ int main() {
 }
 ```
 
+#### C++ (LeetCode class style)
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // LeetCode 704: Binary Search
+    int search(vector<int>& nums, int target) {
+        int left = 0, right = nums.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;  // avoids overflow vs (l+r)/2
+            if (nums[mid] == target) return mid;  // found at mid
+            else if (nums[mid] < target) left = mid + 1;  // target in right half
+            else right = mid - 1;                         // target in left half
+        }
+        return -1;  // not found
+    }
+};
+```
+
 ---
 
 ### O(n) — Linear Time
@@ -206,7 +228,7 @@ def print_all(arr):
 print_all([1, 2, 3, 4, 5])
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 #include <iostream>
@@ -246,7 +268,7 @@ def print_pairs(arr):
 print_pairs([1, 2, 3])
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 #include <iostream>
@@ -326,7 +348,7 @@ def two_loops(arr):
     # Two separate loops do NOT make it O(n²) — they're not nested
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 void twoLoops(vector<int> arr) {
@@ -368,7 +390,7 @@ print(find_name(students, "Charlie"))   # Output: 2
 print(find_name(students, "Eve"))       # Output: -1
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 int findName(vector<string> names, string target) {
@@ -377,6 +399,25 @@ int findName(vector<string> names, string target) {
     }
     return -1;   // Not found
 }
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    // Return the index of target in names, or -1 if not found
+    int findName(vector<string>& names, string target) {
+        for (int i = 0; i < names.size(); i++) {
+            if (names[i] == target) return i;  // found at index i
+        }
+        return -1;  // target not in the list
+    }
+};
 ```
 
 Worst case: the name is last (or not there) → you check all `n` names → **O(n)**.
@@ -402,7 +443,7 @@ print(has_duplicate([1, 2, 3, 2]))   # Output: True
 print(has_duplicate([1, 2, 3, 4]))   # Output: False
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 bool hasDuplicate(vector<int> arr) {
@@ -413,6 +454,26 @@ bool hasDuplicate(vector<int> arr) {
     }
     return false;
 }
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Return true if any value appears more than once in the array
+    bool containsDuplicate(vector<int>& nums) {
+        for (int i = 0; i < nums.size(); i++) {
+            for (int j = i + 1; j < nums.size(); j++) {
+                if (nums[i] == nums[j]) return true;  // found a duplicate pair
+            }
+        }
+        return false;  // no duplicates found
+    }
+};
 ```
 
 For 10,000 elements this does up to **100 million comparisons** — a performance problem. A smarter approach using a hash set brings this down to **O(n)**, which we'll cover in the Hashing section.

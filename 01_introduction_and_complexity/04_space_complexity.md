@@ -78,7 +78,7 @@ print(sum_array([1, 2, 3, 4, 5]))   # Output: 15
 # Space complexity: O(1)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 #include <iostream>
@@ -128,7 +128,7 @@ print(double_values([1, 2, 3]))   # Output: [2, 4, 6]
 # Space complexity: O(n)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 vector<int> doubleValues(vector<int> arr) {
@@ -170,7 +170,7 @@ grid = create_grid(3)
 # Space complexity: O(n²)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 vector<vector<int>> createGrid(int n) {
@@ -221,7 +221,7 @@ countdown(5)
 # Space complexity: O(n) — call stack goes n levels deep
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 void countdown(int n) {
@@ -258,6 +258,18 @@ print_squares(4)
 
 The key: `temp` is overwritten, not added to a list. So memory stays flat.
 
+**C++ (simple):**
+
+```cpp
+void printSquares(int n) {
+    for (int i = 1; i <= n; i++) {
+        int temp = i * i;  // created and overwritten each loop, not accumulated
+        cout << temp << endl;
+    }
+}
+// 'temp' is reused each iteration — Space: O(1)
+```
+
 ---
 
 ### String Concatenation — A Sneaky O(n²) Trap
@@ -284,6 +296,32 @@ def build_string_fast(n):
 ```
 
 Always prefer `"".join(list)` over `+=` string concatenation in a loop.
+
+**C++ (simple):**
+
+```cpp
+#include <string>
+#include <sstream>
+using namespace std;
+
+// BAD: += in a loop creates a new string copy each time — O(n²) total work
+string buildStringSlow(int n) {
+    string result = "";
+    for (int i = 0; i < n; i++) {
+        result += "x";  // each += may copy the whole string
+    }
+    return result;
+}
+
+// GOOD: use stringstream or pre-allocated string — O(n)
+string buildStringFast(int n) {
+    ostringstream oss;
+    for (int i = 0; i < n; i++) {
+        oss << "x";  // efficient streaming append, no copying
+    }
+    return oss.str();  // single string created at the end
+}
+```
 
 ---
 
@@ -342,7 +380,7 @@ def analyze_me(arr):
 # Total Space Complexity: O(n)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 pair<vector<int>, int> analyzeMe(vector<int> arr) {

@@ -188,7 +188,7 @@ print(count_halvings(1024))  # Output: 10  (log₂(1024) = 10)
 print(count_halvings(8))     # Output: 3   (log₂(8) = 3)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 #include <iostream>
@@ -246,7 +246,7 @@ print(binary_search(sorted_arr, 1000))    # Found in at most 10 steps
 print(binary_search(sorted_arr, 9999))    # Output: -1
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 #include <iostream>
@@ -279,6 +279,28 @@ int main() {
     cout << binarySearch(arr, 9999) << endl;   // Output: -1
     return 0;
 }
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // LeetCode 704: Binary Search
+    int search(vector<int>& nums, int target) {
+        int left = 0, right = nums.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;  // safe mid calculation (avoids overflow)
+            if (nums[mid] == target) return mid;  // found at mid
+            else if (nums[mid] < target) left = mid + 1;  // target in right half
+            else right = mid - 1;                         // target in left half
+        }
+        return -1;  // target not in array
+    }
+};
 ```
 
 1,024 elements → at most **10 comparisons**. This is why Binary Search is O(log n).

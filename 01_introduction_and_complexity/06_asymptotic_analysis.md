@@ -73,7 +73,7 @@ print(linear_search([3, 7, 2, 9, 5], 9))   # Output: 3 (index of 9)
 # Worst case: target is last or not present → n comparisons → O(n)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 #include <iostream>
@@ -92,6 +92,24 @@ int main() {
     cout << linearSearch(arr, 9) << endl;   // Output: 3
     return 0;
 }
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Linear search: scan every element until target is found
+    int linearSearch(vector<int>& arr, int target) {
+        for (int i = 0; i < arr.size(); i++) {  // visit each element once
+            if (arr[i] == target) return i;      // found at index i
+        }
+        return -1;  // target not present
+    }
+};
 ```
 
 Worst case: the target is the last element, or not there at all → loop runs `n` times → **O(n)**.
@@ -136,7 +154,7 @@ print(linear_search([9, 3, 7, 2, 5], 9))   # Output: 0
 # Best-case time complexity: Ω(1)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 // Best case: target found at first index
@@ -171,7 +189,7 @@ print_all([1, 2, 3, 4, 5])
 # Whether arr has 5 or 5 million items → always n steps → Θ(n)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 void printAll(vector<int> arr) {
@@ -239,7 +257,7 @@ def two_loops(arr):
     # NOT O(n²) — loops are sequential, not nested
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 void twoLoops(vector<int> arr) {
@@ -273,7 +291,7 @@ compare_all_pairs([1, 2, 3])
 # Total = 9 = 3² → confirms O(n²)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 void compareAllPairs(vector<int> arr) {

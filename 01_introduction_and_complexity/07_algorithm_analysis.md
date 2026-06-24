@@ -70,7 +70,7 @@ def sum_array(arr):
 # n = len(arr) — as the array grows, so does the work
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 int sumArray(vector<int> arr) {
@@ -114,7 +114,7 @@ def print_all(arr):
 # Time Complexity: O(n)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 void printAll(vector<int> arr) {
@@ -142,7 +142,7 @@ def print_pairs(arr):
 # Time Complexity: O(n²)
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 void printPairs(vector<int> arr) {
@@ -183,7 +183,7 @@ def mixed_ops(arr):
 # Raw count: 1 + n + n² + 1 = n² + n + 2
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 int mixedOps(vector<int> arr) {
@@ -247,7 +247,7 @@ def copy_array(arr):
 # Space: O(n) — copy grows proportionally with arr
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 vector<int> copyArray(vector<int> arr) {
@@ -275,7 +275,7 @@ def sum_only(arr):
 # Space: O(1) — only 'total' exists, regardless of arr size
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 int sumOnly(vector<int> arr) {
@@ -308,7 +308,7 @@ print(has_pair_with_sum([1, 3, 5, 7], 8))   # Output: True  (1+7 or 3+5)
 print(has_pair_with_sum([1, 2, 3], 10))      # Output: False
 ```
 
-#### C++
+#### C++ (simple)
 
 ```cpp
 bool hasPairWithSum(vector<int> arr, int target) {
@@ -320,6 +320,26 @@ bool hasPairWithSum(vector<int> arr, int target) {
     }
     return false;
 }
+```
+
+#### C++ (LeetCode class style)
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Check if any two distinct elements sum to target — brute force O(n²)
+    bool hasPairWithSum(vector<int>& arr, int target) {
+        for (int i = 0; i < arr.size(); i++) {           // try each element as first
+            for (int j = i + 1; j < arr.size(); j++) {   // try each remaining as second
+                if (arr[i] + arr[j] == target) return true; // found a valid pair
+            }
+        }
+        return false;  // no pair sums to target
+    }
+};
 ```
 
 **Applying the 6 steps:**
@@ -381,6 +401,21 @@ for i in range(n):
     for j in range(n):
         pass   # n × n = n² times
 # Total: O(n²)
+```
+
+#### C++ (simple)
+
+```cpp
+// Sequential loops — ADD → O(n)
+for (int i = 0; i < n; i++) { }  // n times
+for (int j = 0; j < n; j++) { }  // n times
+// Total: n + n = 2n = O(n)
+
+// Nested loops — MULTIPLY → O(n²)
+for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) { }  // n × n = n² times
+}
+// Total: O(n²)
 ```
 
 ### Mistake 3 — Ignoring Space Complexity
