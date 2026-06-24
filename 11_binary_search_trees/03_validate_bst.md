@@ -134,14 +134,14 @@ struct TreeNode {
 
 // Plain function — no class needed
 bool validate(TreeNode* node, long long minVal, long long maxVal) {
-    if (node == nullptr) return true;
-    if (node->val <= minVal || node->val >= maxVal) return false;
-    return validate(node->left, minVal, node->val) &&
-           validate(node->right, node->val, maxVal);
+    if (node == nullptr) return true;                              // empty node is valid
+    if (node->val <= minVal || node->val >= maxVal) return false;  // out of allowed range
+    return validate(node->left, minVal, node->val) &&              // left: tighten max
+           validate(node->right, node->val, maxVal);               // right: tighten min
 }
 
 bool isValidBST(TreeNode* root) {
-    return validate(root, LLONG_MIN, LLONG_MAX);
+    return validate(root, LLONG_MIN, LLONG_MAX); // start with widest possible range
 }
 // Time: O(n) | Space: O(h) for recursion stack
 ```
@@ -154,15 +154,15 @@ bool isValidBST(TreeNode* root) {
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
-        return validate(root, LLONG_MIN, LLONG_MAX);
+        return validate(root, LLONG_MIN, LLONG_MAX); // start validation with full range
     }
 
 private:
     bool validate(TreeNode* node, long long minVal, long long maxVal) {
-        if (node == nullptr) return true;
-        if (node->val <= minVal || node->val >= maxVal) return false;
-        return validate(node->left, minVal, node->val) &&
-               validate(node->right, node->val, maxVal);
+        if (node == nullptr) return true;                              // empty node: valid
+        if (node->val <= minVal || node->val >= maxVal) return false;  // range violation
+        return validate(node->left, minVal, node->val) &&              // left: update max
+               validate(node->right, node->val, maxVal);               // right: update min
     }
 };
 ```
@@ -194,7 +194,7 @@ print(sol.isValidBST(root))  # Output: False
 
 The output is `False` because node `3` falls in the right subtree of `5`, but its value is less than `5`. The range check at node `3` would be `(5, 6)`, and `3` is not within that range.
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 // Building an invalid BST manually
@@ -247,7 +247,7 @@ print(sol.isValidBST(root))  # Output: True
 
 Every node stays within its valid range. The function correctly returns `True`.
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 // Building a valid BST
@@ -314,15 +314,15 @@ This approach visits each node once and checks that values are always increasing
 ```cpp
 // Plain function — pass prev by reference so all recursive calls share it
 bool inorder(TreeNode* node, long long& prev) {
-    if (node == nullptr) return true;
-    if (!inorder(node->left, prev)) return false;
-    if (node->val <= prev) return false;
-    prev = node->val;
-    return inorder(node->right, prev);
+    if (node == nullptr) return true;           // base case: empty node is valid
+    if (!inorder(node->left, prev)) return false;  // check left subtree first
+    if (node->val <= prev) return false;        // must be strictly greater than previous
+    prev = node->val;                           // update previous to current value
+    return inorder(node->right, prev);          // check right subtree
 }
 
 bool isValidBST(TreeNode* root) {
-    long long prev = LLONG_MIN;
+    long long prev = LLONG_MIN;  // start with smallest possible value
     return inorder(root, prev);
 }
 // Time: O(n) | Space: O(h) for recursion stack
@@ -334,17 +334,17 @@ bool isValidBST(TreeNode* root) {
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
-        long long prev = LLONG_MIN;
+        long long prev = LLONG_MIN;  // start with smallest possible value
         return inorder(root, prev);
     }
 
 private:
     bool inorder(TreeNode* node, long long& prev) {
-        if (node == nullptr) return true;
-        if (!inorder(node->left, prev)) return false;
-        if (node->val <= prev) return false;
-        prev = node->val;
-        return inorder(node->right, prev);
+        if (node == nullptr) return true;           // base case: empty node is valid
+        if (!inorder(node->left, prev)) return false;  // check left subtree first
+        if (node->val <= prev) return false;        // must be strictly increasing
+        prev = node->val;                           // record current as new previous
+        return inorder(node->right, prev);          // check right subtree
     }
 };
 ```

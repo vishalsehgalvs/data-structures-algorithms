@@ -117,7 +117,7 @@ def search_bst_recursive(root, target):
 # Skewed BST:       O(n)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 struct Node {
@@ -132,19 +132,35 @@ Node* searchBST(Node* root, int target) {
     Node* current = root;
     while (current != nullptr) {
         if (target == current->value) return current;      // Found
-        else if (target < current->value) current = current->left;
-        else current = current->right;
+        else if (target < current->value) current = current->left; // go left
+        else current = current->right;                             // go right
     }
     return nullptr;  // Not found
 }
 
 // Recursive search
 Node* searchBSTRecursive(Node* root, int target) {
-    if (root == nullptr || root->value == target) return root;
-    if (target < root->value) return searchBSTRecursive(root->left, target);
-    return searchBSTRecursive(root->right, target);
+    if (root == nullptr || root->value == target) return root; // base case
+    if (target < root->value) return searchBSTRecursive(root->left, target);  // left
+    return searchBSTRecursive(root->right, target);            // right
 }
 // Time: O(h) | Space: O(1) iterative, O(h) recursive
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+class Solution {
+public:
+    // LeetCode 700: Search in a Binary Search Tree
+    TreeNode* searchBST(TreeNode* root, int val) {
+        while (root != nullptr) {              // walk until null or match found
+            if (val == root->val) return root; // exact match — return this node
+            root = (val < root->val) ? root->left : root->right; // go left or right
+        }
+        return nullptr;  // val not present in tree
+    }
+};
 ```
 
 ---
@@ -233,22 +249,22 @@ def insert_bst_recursive(root, val):
 # Time Complexity: O(h) | Balanced: O(log n) | Skewed: O(n)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
-// Iterative insert
+// Iterative insert — O(1) extra space
 Node* insertBST(Node* root, int val) {
     Node* newNode = new Node(val);
-    if (root == nullptr) return newNode;
+    if (root == nullptr) return newNode;  // empty tree — new node becomes root
 
     Node* current = root;
     while (true) {
         if (val < current->value) {
-            if (current->left == nullptr) { current->left = newNode; break; }
-            current = current->left;
+            if (current->left == nullptr) { current->left = newNode; break; } // insert here
+            current = current->left;   // keep going left
         } else if (val > current->value) {
-            if (current->right == nullptr) { current->right = newNode; break; }
-            current = current->right;
+            if (current->right == nullptr) { current->right = newNode; break; } // insert here
+            current = current->right;  // keep going right
         } else {
             break;  // Duplicate: do nothing
         }
@@ -256,16 +272,33 @@ Node* insertBST(Node* root, int val) {
     return root;
 }
 
-// Recursive insert
+// Recursive insert — cleaner and easier to read
 Node* insertBSTRecursive(Node* root, int val) {
-    if (root == nullptr) return new Node(val);
+    if (root == nullptr) return new Node(val);  // found the empty position
     if (val < root->value)
-        root->left = insertBSTRecursive(root->left, val);
+        root->left = insertBSTRecursive(root->left, val);   // go left
     else if (val > root->value)
-        root->right = insertBSTRecursive(root->right, val);
+        root->right = insertBSTRecursive(root->right, val); // go right
     return root;  // Duplicate: return unchanged
 }
 // Time: O(h) | Space: O(1) iterative, O(h) recursive
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+class Solution {
+public:
+    // LeetCode 701: Insert into a Binary Search Tree
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        if (root == nullptr) return new TreeNode(val); // empty spot found — insert here
+        if (val < root->val)
+            root->left = insertIntoBST(root->left, val);   // val belongs in left subtree
+        else
+            root->right = insertIntoBST(root->right, val); // val belongs in right subtree
+        return root;  // return updated root after linking new node
+    }
+};
 ```
 
 The recursive version naturally handles everything by returning the node at each level and linking it back. The BST property is maintained because we always route the value to the correct side.
@@ -401,50 +434,78 @@ def delete_bst(root, val):
 # Space: O(h) recursion stack
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 Node* findMinNode(Node* node) {
-    // Leftmost node is the in-order successor
+    // Leftmost node is the in-order successor (smallest in right subtree)
     while (node->left != nullptr)
         node = node->left;
     return node;
 }
 
 Node* deleteBST(Node* root, int val) {
-    if (root == nullptr) return nullptr;   // Node not found
+    if (root == nullptr) return nullptr;   // Node not found — nothing to delete
 
     if (val < root->value)
-        root->left = deleteBST(root->left, val);      // Search left
+        root->left = deleteBST(root->left, val);      // Search left subtree
     else if (val > root->value)
-        root->right = deleteBST(root->right, val);    // Search right
+        root->right = deleteBST(root->right, val);    // Search right subtree
     else {
         // Found the node to delete
 
-        // Case 1: No children (leaf)
+        // Case 1: No children (leaf) — simply remove
         if (root->left == nullptr && root->right == nullptr) {
             delete root;
             return nullptr;
         }
-        // Case 2: One child
+        // Case 2: One child — replace node with its only child
         if (root->left == nullptr) {
-            Node* temp = root->right;
+            Node* temp = root->right;  // right child takes this node's place
             delete root;
             return temp;
         }
         if (root->right == nullptr) {
-            Node* temp = root->left;
+            Node* temp = root->left;   // left child takes this node's place
             delete root;
             return temp;
         }
-        // Case 3: Two children — use in-order successor
-        Node* successor = findMinNode(root->right);
-        root->value = successor->value;               // Copy successor value
-        root->right = deleteBST(root->right, successor->value);  // Delete successor
+        // Case 3: Two children — replace with in-order successor
+        Node* successor = findMinNode(root->right); // smallest node in right subtree
+        root->value = successor->value;              // copy successor value here
+        root->right = deleteBST(root->right, successor->value); // delete successor
     }
     return root;
 }
 // Time: O(h) | Space: O(h) recursion stack
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+class Solution {
+public:
+    // LeetCode 450: Delete Node in a BST
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if (root == nullptr) return nullptr;  // key not found
+        if (key < root->val)
+            root->left = deleteNode(root->left, key);    // search left subtree
+        else if (key > root->val)
+            root->right = deleteNode(root->right, key);  // search right subtree
+        else {
+            // Found the node to delete
+            if (!root->left && !root->right) { delete root; return nullptr; } // leaf
+            if (!root->left) { auto t = root->right; delete root; return t; }  // one child
+            if (!root->right) { auto t = root->left; delete root; return t; }  // one child
+            // Two children: replace with in-order successor
+            TreeNode* s = root->right;
+            while (s->left) s = s->left;  // find leftmost in right subtree
+            root->val = s->val;            // copy successor value to current node
+            root->right = deleteNode(root->right, s->val); // remove the successor
+        }
+        return root;
+    }
+};
 ```
 
 The recursive approach cleanly handles all three cases by returning the updated subtree at each level and linking it back — exactly like insert.
@@ -552,7 +613,7 @@ print("Inorder after delete:", end=" ")
 inorder(root)   # 3 7 10 15
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -631,6 +692,48 @@ int main() {
 Search 7: Found
 Search 8: Not Found
 Inorder after delete: 3 7 10 15
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+class Solution {
+public:
+    // LeetCode 701: Insert into a BST — new node always lands as a leaf
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        if (root == nullptr) return new TreeNode(val);  // found empty spot — place here
+        if (val < root->val)
+            root->left = insertIntoBST(root->left, val);   // smaller values go left
+        else
+            root->right = insertIntoBST(root->right, val); // larger values go right
+        return root;  // return updated root
+    }
+
+    // LeetCode 700: Search in BST — O(h) time by going left or right each step
+    TreeNode* searchBST(TreeNode* root, int val) {
+        while (root != nullptr) {
+            if (val == root->val) return root;                         // found
+            root = (val < root->val) ? root->left : root->right;      // narrow down
+        }
+        return nullptr;  // not found
+    }
+
+    // LeetCode 450: Delete Node in a BST — handle 3 cases
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if (root == nullptr) return nullptr;  // key not in tree
+        if (key < root->val) root->left = deleteNode(root->left, key);   // go left
+        else if (key > root->val) root->right = deleteNode(root->right, key); // go right
+        else {
+            if (!root->left) { auto t = root->right; delete root; return t; } // 0 or 1 child
+            if (!root->right) { auto t = root->left; delete root; return t; } // 1 child
+            TreeNode* s = root->right;
+            while (s->left) s = s->left;  // find in-order successor (leftmost right)
+            root->val = s->val;            // replace current with successor value
+            root->right = deleteNode(root->right, s->val); // delete the successor
+        }
+        return root;
+    }
+};
 ```
 
 Each operation maintains the BST property. You can always verify correctness by running an inorder traversal — if the BST is valid, the output will always be sorted ascending.

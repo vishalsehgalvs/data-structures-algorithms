@@ -110,16 +110,29 @@ class Node:
         self.right = None  # Points to larger child
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 struct Node {
-    int value;
-    Node* left;
-    Node* right;
+    int value;    // data stored in this node
+    Node* left;   // pointer to smaller (left) child
+    Node* right;  // pointer to larger (right) child
 
     Node(int val) : value(val), left(nullptr), right(nullptr) {}
 };
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// LeetCode uses TreeNode — same concept, but val instead of value
+struct TreeNode {
+    int val;          // data stored in this node
+    TreeNode* left;   // pointer to smaller child
+    TreeNode* right;  // pointer to larger child
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+// Pre-defined on LeetCode — you just use TreeNode* directly in solutions
 ```
 
 This is the building block for everything in a BST. Every insert, search, and traversal operation works on these node connections.
@@ -170,7 +183,7 @@ def search(root, target):
 # At 40 → 40 == 40, FOUND!  (visited 3 of 7 nodes)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 Node* search(Node* root, int target) {
@@ -192,6 +205,22 @@ Node* searchIterative(Node* root, int target) {
     }
     return nullptr;  // Not found
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+class Solution {
+public:
+    // LeetCode 700: Search in a Binary Search Tree
+    TreeNode* searchBST(TreeNode* root, int val) {
+        while (root != nullptr) {              // walk down until null or match
+            if (val == root->val) return root; // exact match — return this node
+            root = (val < root->val) ? root->left : root->right; // go left or right
+        }
+        return nullptr;  // val not found in tree
+    }
+};
 ```
 
 The time complexity for search is $O(h)$ where $h$ is the height of the tree. In a balanced BST, $h = O(\log n)$, making it very efficient. We only visited 3 nodes instead of all 7 in the example above.
@@ -228,7 +257,7 @@ def insert(root, value):
 # Left of 40 is None → Insert 35 here!
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 Node* insert(Node* root, int value) {
@@ -244,6 +273,23 @@ Node* insert(Node* root, int value) {
 
     return root;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+class Solution {
+public:
+    // LeetCode 701: Insert into a Binary Search Tree
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        if (root == nullptr) return new TreeNode(val); // empty spot found — insert here
+        if (val < root->val)
+            root->left = insertIntoBST(root->left, val);   // val belongs in left subtree
+        else
+            root->right = insertIntoBST(root->right, val); // val belongs in right subtree
+        return root;  // return updated root after linking new node
+    }
+};
 ```
 
 After inserting 35, the tree looks like:
@@ -301,18 +347,40 @@ def inorder(root):
 # Output: 20 30 35 40 50 60 70 80  ← always sorted!
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 void inorder(Node* root) {
-    if (root == nullptr) return;
+    if (root == nullptr) return;       // base case: empty node, stop here
 
-    inorder(root->left);                          // Left
-    std::cout << root->value << " ";              // Root
-    inorder(root->right);                         // Right
+    inorder(root->left);               // visit left subtree (smaller values)
+    std::cout << root->value << " ";   // print current node
+    inorder(root->right);              // visit right subtree (larger values)
 }
 
 // Output for our BST: 20 30 35 40 50 60 70 80
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+class Solution {
+public:
+    // Collect BST values in sorted order via inorder traversal
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> result;
+        inorder(root, result);  // fill result through recursive helper
+        return result;          // values come out in sorted ascending order
+    }
+
+private:
+    void inorder(TreeNode* root, vector<int>& result) {
+        if (root == nullptr) return;          // base case: nothing to visit
+        inorder(root->left, result);          // visit left subtree first (smaller)
+        result.push_back(root->val);          // record current node value
+        inorder(root->right, result);         // visit right subtree last (larger)
+    }
+};
 ```
 
 > Inorder traversal = left → root → right.  
@@ -344,7 +412,7 @@ def find_max(root):
 # find_max(root) → 80  (rightmost node)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 int findMin(Node* root) {
@@ -363,6 +431,29 @@ int findMax(Node* root) {
 
 // findMin(root) → 20
 // findMax(root) → 80
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+class Solution {
+public:
+    // LeetCode 230: Kth Smallest Element in a BST
+    // Inorder traversal visits BST nodes in ascending order — kth visit is kth smallest
+    int kthSmallest(TreeNode* root, int k) {
+        int result = -1;
+        inorder(root, k, result);  // track countdown k and store answer in result
+        return result;
+    }
+
+private:
+    void inorder(TreeNode* node, int& k, int& result) {
+        if (node == nullptr) return;           // base case: nothing to visit
+        inorder(node->left, k, result);        // visit smaller values first
+        if (--k == 0) { result = node->val; return; }  // kth node reached — record it
+        inorder(node->right, k, result);       // visit larger values
+    }
+};
 ```
 
 Both operations run in $O(h)$ time. They are simple but critical — the delete operation (covered in the next post) uses `findMin` to find the inorder successor during node removal.
@@ -486,7 +577,7 @@ print("Min:", find_min(root))  # 20
 print("Max:", find_max(root))  # 80
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -559,6 +650,47 @@ Search 60: Found
 Search 55: Not found
 Min: 20
 Max: 80
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+class Solution {
+public:
+    // LeetCode 701: Insert into a BST — returns updated root
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        if (root == nullptr) return new TreeNode(val);  // found empty spot — insert here
+        if (val < root->val)
+            root->left = insertIntoBST(root->left, val);   // go left for smaller value
+        else
+            root->right = insertIntoBST(root->right, val); // go right for larger value
+        return root;  // return updated root
+    }
+
+    // LeetCode 700: Search in BST — returns matching node or nullptr
+    TreeNode* searchBST(TreeNode* root, int val) {
+        while (root != nullptr) {
+            if (val == root->val) return root;                         // found
+            root = (val < root->val) ? root->left : root->right;      // move toward val
+        }
+        return nullptr;  // not found
+    }
+
+    // Return BST values in sorted ascending order via inorder traversal
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> result;
+        inorder(root, result);  // fill result through helper
+        return result;
+    }
+
+private:
+    void inorder(TreeNode* node, vector<int>& result) {
+        if (node == nullptr) return;          // base case
+        inorder(node->left, result);          // smaller values first
+        result.push_back(node->val);          // record current node
+        inorder(node->right, result);         // larger values last
+    }
+};
 ```
 
 This shows how clean and simple BST logic is when everything is built step by step. You insert values, and the tree organizes itself automatically.
