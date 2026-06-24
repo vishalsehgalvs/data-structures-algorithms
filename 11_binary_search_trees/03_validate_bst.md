@@ -121,7 +121,7 @@ The function `validate` checks each node against its allowed range. If any node 
 
 The base case handles empty nodes, which are always considered valid. This is how recursion bottoms out cleanly.
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <climits>
@@ -130,9 +130,27 @@ struct TreeNode {
     int val;
     TreeNode* left;
     TreeNode* right;
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
+// Plain function — no class needed
+bool validate(TreeNode* node, long long minVal, long long maxVal) {
+    if (node == nullptr) return true;
+    if (node->val <= minVal || node->val >= maxVal) return false;
+    return validate(node->left, minVal, node->val) &&
+           validate(node->right, node->val, maxVal);
+}
+
+bool isValidBST(TreeNode* root) {
+    return validate(root, LLONG_MIN, LLONG_MAX);
+}
+// Time: O(n) | Space: O(h) for recursion stack
+```
+
+> **Note:** We use `long long` for boundaries (not `int`) to safely handle nodes with values equal to `INT_MIN` or `INT_MAX`.
+
+**C++ (LeetCode class style):**
+
+```cpp
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
@@ -141,22 +159,13 @@ public:
 
 private:
     bool validate(TreeNode* node, long long minVal, long long maxVal) {
-        // An empty node is always valid
         if (node == nullptr) return true;
-
-        // Check if current node's value is within the allowed range
         if (node->val <= minVal || node->val >= maxVal) return false;
-
-        // Recurse left: update max to current node value
-        // Recurse right: update min to current node value
         return validate(node->left, minVal, node->val) &&
                validate(node->right, node->val, maxVal);
     }
 };
-// Time: O(n) | Space: O(h) for recursion stack
 ```
-
-> **Note:** We use `long long` for boundaries (not `int`) to safely handle nodes with values equal to `INT_MIN` or `INT_MAX`.
 
 ---
 
@@ -300,36 +309,44 @@ class Solution:
 
 This approach visits each node once and checks that values are always increasing. It is clean and easy to understand once you are comfortable with tree traversals.
 
-**C++:**
+**C++ (simple):**
+
+```cpp
+// Plain function — pass prev by reference so all recursive calls share it
+bool inorder(TreeNode* node, long long& prev) {
+    if (node == nullptr) return true;
+    if (!inorder(node->left, prev)) return false;
+    if (node->val <= prev) return false;
+    prev = node->val;
+    return inorder(node->right, prev);
+}
+
+bool isValidBST(TreeNode* root) {
+    long long prev = LLONG_MIN;
+    return inorder(root, prev);
+}
+// Time: O(n) | Space: O(h) for recursion stack
+```
+
+**C++ (LeetCode class style):**
 
 ```cpp
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
-        prev = LLONG_MIN;  // Track the last visited value
-        return inorder(root);
+        long long prev = LLONG_MIN;
+        return inorder(root, prev);
     }
 
 private:
-    long long prev;
-
-    bool inorder(TreeNode* node) {
+    bool inorder(TreeNode* node, long long& prev) {
         if (node == nullptr) return true;
-
-        // Traverse left subtree first
-        if (!inorder(node->left)) return false;
-
-        // Current value must be greater than previous value
+        if (!inorder(node->left, prev)) return false;
         if (node->val <= prev) return false;
-
-        // Update previous value
         prev = node->val;
-
-        // Traverse right subtree
-        return inorder(node->right);
+        return inorder(node->right, prev);
     }
 };
-// Time: O(n) | Space: O(h) for recursion stack
 ```
 
 ---
