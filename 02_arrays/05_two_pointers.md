@@ -118,29 +118,30 @@ print(has_pair_with_sum(arr, 20))   # Output: False
 # ⚠️ Array must be sorted for this to work
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
 #include <iostream>
 #include <vector>
 using namespace std;
 
+// Returns true if any two elements in the sorted array add up to target
 bool hasPairWithSum(vector<int> arr, int target) {
     int left = 0;
-    int right = arr.size() - 1;
+    int right = (int)arr.size() - 1;
 
     while (left < right) {
         int currentSum = arr[left] + arr[right];
 
         if (currentSum == target)
-            return true;          // found
+            return true;          // found a valid pair
         else if (currentSum < target)
-            left++;               // need bigger
+            left++;               // sum too small — move left forward to get bigger value
         else
-            right--;              // need smaller
+            right--;              // sum too large — move right backward to get smaller value
     }
 
-    return false;
+    return false;   // no pair found
 }
 
 int main() {
@@ -149,6 +150,32 @@ int main() {
     cout << hasPairWithSum(arr, 20) << endl;   // Output: 0 (false)
     return 0;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Two Sum II — sorted array, opposite-ends two pointer — O(n) time, O(1) space
+    bool hasPairWithSum(vector<int>& arr, int target) {
+        int left = 0;
+        int right = (int)arr.size() - 1;
+
+        while (left < right) {
+            int currentSum = arr[left] + arr[right];
+
+            if (currentSum == target) return true;   // pair found
+            else if (currentSum < target) left++;    // need larger value
+            else right--;                            // need smaller value
+        }
+
+        return false;   // exhausted all pairs
+    }
+};
 ```
 
 **Trace for target = 10:**
@@ -201,22 +228,27 @@ print(arr[:count])    # Output: [1, 2, 3, 4, 5]
 # Time: O(n)   Space: O(1) — in-place, no extra array
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Removes duplicates in-place; returns count of unique elements — O(n)
 int removeDuplicates(vector<int>& arr) {
     if (arr.empty()) return 0;
 
-    int slow = 0;   // last unique position
+    int slow = 0;   // points to the last confirmed unique element
 
-    for (int fast = 1; fast < arr.size(); fast++) {
-        if (arr[fast] != arr[slow]) {   // new unique found
-            slow++;
-            arr[slow] = arr[fast];
+    for (int fast = 1; fast < (int)arr.size(); fast++) {
+        if (arr[fast] != arr[slow]) {   // found a new unique value
+            slow++;                     // advance the unique-write position
+            arr[slow] = arr[fast];      // overwrite next slot with the new unique
         }
     }
 
-    return slow + 1;
+    return slow + 1;   // total unique elements = last unique index + 1
 }
 
 int main() {
@@ -227,6 +259,33 @@ int main() {
         cout << arr[i] << " ";   // Output: 1 2 3 4 5
     return 0;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // LeetCode 26: Remove Duplicates from Sorted Array — O(n) time, O(1) space
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.empty()) return 0;
+
+        int slow = 0;   // write pointer: last unique position
+
+        for (int fast = 1; fast < (int)nums.size(); fast++) {
+            if (nums[fast] != nums[slow]) {   // new unique element found
+                slow++;                        // advance write position
+                nums[slow] = nums[fast];       // place unique element here
+            }
+            // if same as slow, fast just skips over it
+        }
+
+        return slow + 1;   // number of unique elements
+    }
+};
 ```
 
 ---
@@ -254,19 +313,45 @@ print(reverse_array([1, 2, 3, 4, 5]))   # Output: [5, 4, 3, 2, 1]
 # Time: O(n)   Space: O(1) — in-place
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
+#include <vector>
+using namespace std;
+
+// Reverses array in-place — O(n/2) swaps = O(n) time, O(1) space
 void reverseArray(vector<int>& arr) {
     int left = 0;
-    int right = arr.size() - 1;
+    int right = (int)arr.size() - 1;
 
     while (left < right) {
-        swap(arr[left], arr[right]);
-        left++;
-        right--;
+        swap(arr[left], arr[right]);   // swap elements at both ends
+        left++;    // move left pointer inward
+        right--;   // move right pointer inward
     }
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // LeetCode 344: Reverse String (same logic for array) — O(n) time, O(1) space
+    void reverseArray(vector<int>& arr) {
+        int left = 0;
+        int right = (int)arr.size() - 1;
+
+        while (left < right) {
+            swap(arr[left], arr[right]);   // in-place swap — no extra array needed
+            left++;    // shrink window from the left
+            right--;   // shrink window from the right
+        }
+    }
+};
 ```
 
 n/2 swaps total. Stops when pointers meet or cross.
@@ -298,22 +383,51 @@ print(is_palindrome([1, 2, 3, 4, 5]))   # Output: False
 # Time: O(n)   Space: O(1)
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
+#include <vector>
+using namespace std;
+
+// Returns true if array reads the same forward and backward — O(n) time, O(1) space
 bool isPalindrome(vector<int> arr) {
     int left = 0;
-    int right = arr.size() - 1;
+    int right = (int)arr.size() - 1;
 
     while (left < right) {
         if (arr[left] != arr[right])
-            return false;
-        left++;
-        right--;
+            return false;   // mismatch — not a palindrome
+        left++;    // move inward from the left
+        right--;   // move inward from the right
     }
 
-    return true;
+    return true;   // all pairs matched
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Checks if array is a palindrome using opposite-ends two pointer — O(n), O(1)
+    bool isPalindrome(vector<int>& arr) {
+        int left = 0;
+        int right = (int)arr.size() - 1;
+
+        while (left < right) {
+            if (arr[left] != arr[right])
+                return false;   // first mismatch — stop immediately
+            left++;    // both pointers move toward the center
+            right--;
+        }
+
+        return true;   // survived all comparisons — it's a palindrome
+    }
+};
 ```
 
 ---

@@ -100,6 +100,8 @@ The outer loop runs `n - m + 1` times (9 - 6 + 1 = 4 here). The inner loop compa
 
 ## 5. Naive Search Code
 
+#### Python
+
 ```python
 def naive_search(text, pattern):
     n = len(text)     # length of the text
@@ -128,44 +130,77 @@ pattern = "ABCABD"
 print(naive_search(text, pattern))   # Output: [3]
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++
 #include <iostream>
 #include <vector>
 #include <string>
+using namespace std;
 
-std::vector<int> naive_search(const std::string& text, const std::string& pattern) {
-    int n = text.length();
-    int m = pattern.length();
-    std::vector<int> results;
+// Plain function — brute force pattern search, O(n × m)
+vector<int> naive_search(const string& text, const string& pattern) {
+    int n = text.length();    // total length of the text
+    int m = pattern.length(); // length of the pattern
+    vector<int> results;      // will hold all match start indices
 
     for (int i = 0; i <= n - m; i++) {
         bool match = true;
 
         for (int j = 0; j < m; j++) {
             if (text[i + j] != pattern[j]) {
-                match = false;   // mismatch — stop comparing
+                match = false;   // mismatch — stop comparing this window
                 break;
             }
         }
 
         if (match) {
-            results.push_back(i);   // match found at index i
+            results.push_back(i);   // full match found at index i
         }
     }
     return results;
 }
 
 int main() {
-    std::string text = "ABCABCABD";
-    std::string pattern = "ABCABD";
-    std::vector<int> result = naive_search(text, pattern);
+    string text = "ABCABCABD";
+    string pattern = "ABCABD";
+    vector<int> result = naive_search(text, pattern);
 
     for (int idx : result) {
-        std::cout << "Match at index: " << idx << std::endl;
+        cout << "Match at index: " << idx << endl;
     }
     // Output: Match at index: 3
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    // Returns all starting indices where pattern occurs in text
+    vector<int> naiveSearch(string text, string pattern) {
+        int n = text.length();     // text length
+        int m = pattern.length();  // pattern length
+        vector<int> results;
+
+        for (int i = 0; i <= n - m; i++) {
+            bool match = true;
+            for (int j = 0; j < m; j++) {
+                if (text[i + j] != pattern[j]) {
+                    match = false;   // mismatch — skip this window
+                    break;
+                }
+            }
+            if (match) results.push_back(i);  // record match start index
+        }
+        return results;
+    }
+};
 ```
 
 ---
@@ -241,6 +276,8 @@ When a mismatch happens at pattern position `j`, we jump to `lps[j-1]` — this 
 
 ## 9. Building the LPS Array
 
+#### Python
+
 ```python
 def build_lps(pattern):
     m = len(pattern)
@@ -282,27 +319,30 @@ print(build_lps(pattern))   # Output: [0, 0, 0, 1, 2, 0]
 | 5   | D          | 2      | D ≠ C → fall back: length=lps[1]=0 | —      |
 | 5   | D          | 0      | D ≠ A → length stays 0, i++        | 0      |
 
+#### C++ (simple):
+
 ```cpp
-// C++
 #include <vector>
 #include <string>
+using namespace std;
 
-std::vector<int> build_lps(const std::string& pattern) {
+// Build the LPS (Longest Proper Prefix which is also Suffix) array
+vector<int> build_lps(const string& pattern) {
     int m = pattern.length();
-    std::vector<int> lps(m, 0);
-    int length = 0;
-    int i = 1;
+    vector<int> lps(m, 0);  // initialise all to 0
+    int length = 0;          // current length of matching prefix-suffix
+    int i = 1;               // start from position 1
 
     while (i < m) {
         if (pattern[i] == pattern[length]) {
-            length++;
+            length++;          // extend the matching prefix-suffix
             lps[i] = length;
             i++;
         } else {
             if (length != 0) {
-                length = lps[length - 1];   // fall back
+                length = lps[length - 1];  // fall back using already-computed LPS
             } else {
-                lps[i] = 0;
+                lps[i] = 0;   // no prefix-suffix at this position
                 i++;
             }
         }
@@ -311,9 +351,46 @@ std::vector<int> build_lps(const std::string& pattern) {
 }
 ```
 
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    // Build the LPS array from the pattern (used internally by KMP)
+    vector<int> buildLPS(string pattern) {
+        int m = pattern.length();
+        vector<int> lps(m, 0);  // lps[i] = length of longest proper prefix-suffix for pattern[0..i]
+        int length = 0;          // tracks current matching prefix length
+        int i = 1;
+
+        while (i < m) {
+            if (pattern[i] == pattern[length]) {
+                length++;          // current char extends the match
+                lps[i] = length;
+                i++;
+            } else {
+                if (length != 0) {
+                    length = lps[length - 1];  // fall back without re-checking i
+                } else {
+                    lps[i] = 0;  // no prefix-suffix possible here
+                    i++;
+                }
+            }
+        }
+        return lps;
+    }
+};
+```
+
 ---
 
 ## 10. KMP Search Code
+
+#### Python
 
 ```python
 def kmp_search(text, pattern):
@@ -370,40 +447,100 @@ print(kmp_search(text, pattern))   # Output: [3]
 
 Notice step 6: instead of resetting `i` back to 4, we only reset `j` to 2 — we reused the `"AB"` we already matched.
 
+#### C++ (simple):
+
 ```cpp
-// C++
-#include <iostream>
 #include <vector>
 #include <string>
+using namespace std;
 
-std::vector<int> kmp_search(const std::string& text, const std::string& pattern) {
+// Plain function — KMP search using precomputed LPS array
+vector<int> kmp_search(const string& text, const string& pattern) {
     int n = text.length();
     int m = pattern.length();
-    std::vector<int> lps = build_lps(pattern);
+    vector<int> lps = build_lps(pattern);  // O(m) preprocessing
 
-    std::vector<int> results;
+    vector<int> results;
     int i = 0;   // text pointer
     int j = 0;   // pattern pointer
 
     while (i < n) {
         if (text[i] == pattern[j]) {
-            i++;
+            i++;   // characters match — advance both
             j++;
         }
 
         if (j == m) {
-            results.push_back(i - j);   // match found
-            j = lps[j - 1];             // look for next match
+            results.push_back(i - j);   // full match found at index i-j
+            j = lps[j - 1];             // use LPS to find next possible match
         } else if (i < n && text[i] != pattern[j]) {
             if (j != 0) {
-                j = lps[j - 1];   // skip using LPS
+                j = lps[j - 1];   // skip using LPS — do NOT move i backward
             } else {
-                i++;   // no fallback, move text pointer
+                i++;   // no fallback possible — advance text
             }
         }
     }
     return results;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    // Returns all starting indices where pattern is found in text
+    vector<int> kmpSearch(string text, string pattern) {
+        int n = text.length();
+        int m = pattern.length();
+        vector<int> lps = buildLPS(pattern);  // preprocess pattern in O(m)
+
+        vector<int> results;
+        int i = 0;   // position in text
+        int j = 0;   // position in pattern
+
+        while (i < n) {
+            if (text[i] == pattern[j]) {
+                i++;   // matched — advance both pointers
+                j++;
+            }
+
+            if (j == m) {
+                results.push_back(i - j);  // record where the match started
+                j = lps[j - 1];            // look for overlapping matches
+            } else if (i < n && text[i] != pattern[j]) {
+                if (j != 0) {
+                    j = lps[j - 1];  // jump using LPS — avoid re-checking i
+                } else {
+                    i++;  // j is 0, no prefix to fall back on
+                }
+            }
+        }
+        return results;
+    }
+
+private:
+    vector<int> buildLPS(const string& pattern) {
+        int m = pattern.length();
+        vector<int> lps(m, 0);
+        int length = 0, i = 1;
+        while (i < m) {
+            if (pattern[i] == pattern[length]) {
+                lps[i++] = ++length;   // extend the prefix-suffix match
+            } else if (length != 0) {
+                length = lps[length - 1];  // fall back
+            } else {
+                lps[i++] = 0;  // no prefix-suffix here
+            }
+        }
+        return lps;
+    }
+};
 ```
 
 ---
@@ -449,12 +586,67 @@ print("Indices:", results)       # Output: Indices: [1, 3, 5]
 
 ### Check if pattern exists
 
+#### Python
+
 ```python
 def contains_pattern(text, pattern):
     return len(kmp_search(text, pattern)) > 0
 
 print(contains_pattern("hello world", "world"))   # Output: True
 print(contains_pattern("hello world", "earth"))   # Output: False
+```
+
+#### C++ (simple):
+
+```cpp
+#include <string>
+#include <vector>
+using namespace std;
+
+// Plain function — returns true if pattern is found anywhere in text
+bool containsPattern(const string& text, const string& pattern) {
+    return !kmp_search(text, pattern).empty();  // empty results means no match
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    // Returns the index of the first occurrence, or -1 if not found
+    int strStr(string haystack, string needle) {
+        if (needle.empty()) return 0;  // empty pattern always matches at index 0
+        int n = haystack.length(), m = needle.length();
+        vector<int> lps = buildLPS(needle);
+        int i = 0, j = 0;
+        while (i < n) {
+            if (haystack[i] == needle[j]) { i++; j++; }
+            if (j == m) return i - j;    // full match found
+            else if (i < n && haystack[i] != needle[j]) {
+                if (j != 0) j = lps[j - 1];  // use LPS to skip
+                else i++;                     // no fallback, advance text
+            }
+        }
+        return -1;  // pattern not found
+    }
+
+private:
+    vector<int> buildLPS(const string& pattern) {
+        int m = pattern.length();
+        vector<int> lps(m, 0);
+        int length = 0, i = 1;
+        while (i < m) {
+            if (pattern[i] == pattern[length]) lps[i++] = ++length;
+            else if (length != 0) length = lps[length - 1];
+            else lps[i++] = 0;
+        }
+        return lps;
+    }
+};
 ```
 
 ### Python built-in (simplest option)

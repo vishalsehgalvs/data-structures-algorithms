@@ -126,7 +126,7 @@ print(next_greater_element(arr))
 # Output: [4, 4, 5, 5, -1]
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 // Next Greater Element using Monotonic Decreasing Stack
@@ -162,6 +162,34 @@ int main() {
 }
 ```
 
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — LeetCode #496: Next Greater Element I
+#include <vector>
+#include <stack>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> result(n, -1);  // -1 if no greater element found
+        stack<int> stk;             // stores indices of unresolved elements
+
+        for (int i = 0; i < n; i++) {
+            // Pop while current element is greater than element at stack top
+            while (!stk.empty() && arr[i] > arr[stk.top()]) {
+                int idx = stk.top(); stk.pop();
+                result[idx] = arr[i];  // arr[i] is the NGE for index idx
+            }
+            stk.push(i);               // push current index as unresolved
+        }
+        return result;                 // remaining in stack have no NGE (-1)
+    }
+};
+```
+
 Each element is pushed and popped **at most once**, so the total cost across all iterations is $O(n)$ — far better than the brute-force $O(n^2)$ that checks every pair.
 
 ---
@@ -195,7 +223,7 @@ print(next_smaller_element(arr))
 # Output: [2, 1, 1, -1, -1]
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 // Next Smaller Element using Monotonic Increasing Stack
@@ -228,6 +256,34 @@ int main() {
     // Output: 2 1 1 -1 -1
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Next Smaller Element using monotonic increasing stack
+#include <vector>
+#include <stack>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> nextSmallerElement(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> result(n, -1);  // -1 if no smaller element found
+        stack<int> stk;             // stores indices of unresolved elements
+
+        for (int i = 0; i < n; i++) {
+            // Pop while current element is smaller than element at stack top
+            while (!stk.empty() && arr[i] < arr[stk.top()]) {
+                int idx = stk.top(); stk.pop();
+                result[idx] = arr[i];  // arr[i] is the NSE for index idx
+            }
+            stk.push(i);               // push current index as unresolved
+        }
+        return result;                 // remaining in stack have no NSE (-1)
+    }
+};
 ```
 
 For `[4, 2, 7, 1, 3]`:
@@ -314,7 +370,7 @@ print(previous_greater_element(arr))
 # Output: [-1, 10, 10, 6, 10]
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 // Previous Greater Element using Monotonic Decreasing Stack
@@ -351,6 +407,36 @@ int main() {
     // Output: -1 10 10 6 10
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Previous Greater Element using monotonic decreasing stack
+#include <vector>
+#include <stack>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> previousGreaterElement(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> result(n, -1);  // -1 if no greater element to the left
+        stack<int> stk;             // stores actual values in decreasing order
+
+        for (int i = 0; i < n; i++) {
+            // Remove elements that cannot be a previous greater (≤ current)
+            while (!stk.empty() && stk.top() <= arr[i])
+                stk.pop();
+
+            if (!stk.empty())
+                result[i] = stk.top();  // stack top is the PGE for arr[i]
+
+            stk.push(arr[i]);           // push current value onto the stack
+        }
+        return result;
+    }
+};
 ```
 
 **Key difference from NGE:** We store **values** (not indices) and read the top _before_ pushing, instead of resolving on pop.

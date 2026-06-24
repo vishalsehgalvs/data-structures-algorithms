@@ -61,7 +61,7 @@ print(numbers[4])    # Output: 50  (last element)
 print(numbers[-1])   # Output: 50  (last element using negative index)
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
 #include <iostream>
@@ -69,19 +69,33 @@ print(numbers[-1])   # Output: 50  (last element using negative index)
 using namespace std;
 
 int main() {
-    // Fixed-size array
+    // Fixed-size array — size must be declared upfront
     int numbers[] = {10, 20, 30, 40, 50};
+    cout << numbers[0] << endl;   // Output: 10 (first element)
+    cout << numbers[4] << endl;   // Output: 50 (last element)
 
-    cout << numbers[0] << endl;   // Output: 10
-    cout << numbers[4] << endl;   // Output: 50
-
-    // Dynamic array using vector (preferred in C++ DSA)
+    // Dynamic array using vector — preferred in C++ DSA (resizes automatically)
     vector<int> nums = {10, 20, 30, 40, 50};
     cout << nums[0] << endl;      // Output: 10
     cout << nums[4] << endl;      // Output: 50
 
     return 0;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Returns the element at a given index — O(1) direct access
+    int getElement(vector<int>& nums, int index) {
+        return nums[index];   // constant time — memory address computed directly
+    }
+};
 ```
 
 ---
@@ -101,16 +115,38 @@ print(arr[len(arr) - 1])  # Output: 20 (last element, index 3)
 # arr[4] → IndexError: list index out of range
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
-vector<int> arr = {5, 10, 15, 20};
+#include <iostream>
+#include <vector>
+using namespace std;
 
-cout << arr.size() << endl;          // Output: 4
-cout << arr[arr.size() - 1] << endl; // Output: 20
+int main() {
+    vector<int> arr = {5, 10, 15, 20};
 
-// arr[4] → undefined behavior (no bounds check in raw arrays)
-// Use arr.at(4) for safe bounds-checked access
+    cout << arr.size() << endl;           // Output: 4 — number of elements
+    cout << arr[arr.size() - 1] << endl;  // Output: 20 — last index is always size-1
+
+    // arr[4] → undefined behavior — C++ does NOT check bounds automatically
+    // Use arr.at(4) to get a bounds-checked std::out_of_range exception
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Returns the last element of the array — O(1)
+    int getLastElement(vector<int>& arr) {
+        return arr[arr.size() - 1];   // last valid index = size - 1
+    }
+};
 ```
 
 ---
@@ -137,20 +173,46 @@ for i in range(len(arr)):
 # Index 4: 4
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
-vector<int> arr = {3, 7, 1, 9, 4};
+#include <iostream>
+#include <vector>
+using namespace std;
 
-for (int i = 0; i < arr.size(); i++) {
-    cout << "Index " << i << ": " << arr[i] << endl;
+int main() {
+    vector<int> arr = {3, 7, 1, 9, 4};
+
+    // Visit every element from left to right using index
+    for (int i = 0; i < (int)arr.size(); i++) {
+        cout << "Index " << i << ": " << arr[i] << endl;
+    }
+    // Output:
+    // Index 0: 3
+    // Index 1: 7
+    // Index 2: 1
+    // Index 3: 9
+    // Index 4: 4
+    return 0;
 }
-// Output:
-// Index 0: 3
-// Index 1: 7
-// Index 2: 1
-// Index 3: 9
-// Index 4: 4
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <iostream>
+using namespace std;
+
+class Solution {
+public:
+    // Prints each element alongside its index (forward traversal)
+    void traverseArray(vector<int>& arr) {
+        for (int i = 0; i < (int)arr.size(); i++) {   // cast avoids signed/unsigned warning
+            cout << "Index " << i << ": " << arr[i] << endl;
+        }
+    }
+};
 ```
 
 Using the index `i` gives you access to both position and value — often needed in problems.
@@ -170,15 +232,41 @@ for i in range(len(arr) - 1, -1, -1):
 # Output: 4, 9, 1, 7, 3
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
-vector<int> arr = {3, 7, 1, 9, 4};
+#include <iostream>
+#include <vector>
+using namespace std;
 
-for (int i = arr.size() - 1; i >= 0; i--) {
-    cout << arr[i] << endl;
+int main() {
+    vector<int> arr = {3, 7, 1, 9, 4};
+
+    // Start from the last index and move backward to 0
+    for (int i = (int)arr.size() - 1; i >= 0; i--) {
+        cout << arr[i] << endl;
+    }
+    // Output: 4, 9, 1, 7, 3
+    return 0;
 }
-// Output: 4, 9, 1, 7, 3
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <iostream>
+using namespace std;
+
+class Solution {
+public:
+    // Prints array elements in reverse order
+    void reverseTraverse(vector<int>& arr) {
+        for (int i = (int)arr.size() - 1; i >= 0; i--) {   // start at last index
+            cout << arr[i] << endl;
+        }
+    }
+};
 ```
 
 Useful for: reversing an array, finding last occurrence of a value, or scanning from the end.
@@ -212,21 +300,65 @@ print("Min:", min_val)   # Output: Min: 3
 # Space: O(1) — only two extra variables
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
-vector<int> arr = {12, 3, 45, 7, 23};
+#include <iostream>
+#include <vector>
+using namespace std;
 
-int maxVal = arr[0];   // assume first is max
-int minVal = arr[0];   // assume first is min
-
-for (int i = 1; i < arr.size(); i++) {
-    if (arr[i] > maxVal) maxVal = arr[i];
-    if (arr[i] < minVal) minVal = arr[i];
+// Scans the array once and returns the max value — O(n)
+int findMax(vector<int> arr) {
+    int maxVal = arr[0];   // assume first element is the maximum
+    for (int i = 1; i < (int)arr.size(); i++) {
+        if (arr[i] > maxVal) maxVal = arr[i];   // update if larger
+    }
+    return maxVal;
 }
 
-cout << "Max: " << maxVal << endl;   // Output: Max: 45
-cout << "Min: " << minVal << endl;   // Output: Min: 3
+// Scans the array once and returns the min value — O(n)
+int findMin(vector<int> arr) {
+    int minVal = arr[0];   // assume first element is the minimum
+    for (int i = 1; i < (int)arr.size(); i++) {
+        if (arr[i] < minVal) minVal = arr[i];   // update if smaller
+    }
+    return minVal;
+}
+
+int main() {
+    vector<int> arr = {12, 3, 45, 7, 23};
+    cout << "Max: " << findMax(arr) << endl;   // Output: Max: 45
+    cout << "Min: " << findMin(arr) << endl;   // Output: Min: 3
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Returns the maximum value — O(n) time, O(1) space
+    int findMax(vector<int>& arr) {
+        int maxVal = arr[0];   // initialize with first element
+        for (int i = 1; i < (int)arr.size(); i++) {
+            if (arr[i] > maxVal) maxVal = arr[i];   // keep updating best
+        }
+        return maxVal;
+    }
+
+    // Returns the minimum value — O(n) time, O(1) space
+    int findMin(vector<int>& arr) {
+        int minVal = arr[0];   // initialize with first element
+        for (int i = 1; i < (int)arr.size(); i++) {
+            if (arr[i] < minVal) minVal = arr[i];   // keep updating best
+        }
+        return minVal;
+    }
+};
 ```
 
 ---
@@ -252,24 +384,51 @@ if not found:
 # Time: O(n) worst case — target is last or not present
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
-vector<int> arr = {15, 6, 22, 8, 30};
-int target = 22;
-int result = -1;
+#include <iostream>
+#include <vector>
+using namespace std;
 
-for (int i = 0; i < arr.size(); i++) {
-    if (arr[i] == target) {
-        result = i;
-        break;
+// Returns index of target in arr, or -1 if not found — O(n)
+int linearSearch(vector<int> arr, int target) {
+    for (int i = 0; i < (int)arr.size(); i++) {
+        if (arr[i] == target)
+            return i;   // return as soon as target is found
     }
+    return -1;   // scanned all elements, not found
 }
 
-if (result != -1)
-    cout << "Found at index " << result << endl;   // Output: Found at index 2
-else
-    cout << "Not found" << endl;
+int main() {
+    vector<int> arr = {15, 6, 22, 8, 30};
+    int result = linearSearch(arr, 22);
+    if (result != -1)
+        cout << "Found at index " << result << endl;   // Output: Found at index 2
+    else
+        cout << "Not found" << endl;
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Returns the first index where target appears, or -1 if absent
+    // Time: O(n) — worst case scans all elements
+    int search(vector<int>& nums, int target) {
+        for (int i = 0; i < (int)nums.size(); i++) {
+            if (nums[i] == target)
+                return i;   // found — return index immediately
+        }
+        return -1;   // not present in the array
+    }
+};
 ```
 
 We'll cover Binary Search (O(log n)) in Section 6. Linear search is O(n) — fine for unsorted data.
@@ -307,20 +466,53 @@ print(arr)   # Output: [5, 4, 3, 2, 1]
 # Time: O(n)  Space: O(1) — in-place, no new array created
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
-vector<int> arr = {1, 2, 3, 4, 5};
-int left = 0;
-int right = arr.size() - 1;
+#include <iostream>
+#include <vector>
+using namespace std;
 
-while (left < right) {
-    swap(arr[left], arr[right]);   // built-in swap
-    left++;
-    right--;
+// Reverses the array in-place — O(n) time, O(1) space
+void reverseArray(vector<int>& arr) {
+    int left = 0;
+    int right = (int)arr.size() - 1;
+
+    while (left < right) {
+        swap(arr[left], arr[right]);   // built-in swap — no temp variable needed
+        left++;    // move left pointer inward
+        right--;   // move right pointer inward
+    }
 }
 
-for (int x : arr) cout << x << " ";   // Output: 5 4 3 2 1
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5};
+    reverseArray(arr);
+    for (int x : arr) cout << x << " ";   // Output: 5 4 3 2 1
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Reverses the array in-place using two pointers — O(n/2) = O(n)
+    void reverseArray(vector<int>& arr) {
+        int left = 0;
+        int right = (int)arr.size() - 1;
+
+        while (left < right) {
+            swap(arr[left], arr[right]);   // no temp needed — std::swap handles it
+            left++;    // shrink from left
+            right--;   // shrink from right
+        }
+    }
+};
 ```
 
 This two-pointer idea is a preview of a very powerful technique covered in detail later in this section.
@@ -368,22 +560,52 @@ print(freq)   # Output: {1: 3, 2: 2, 3: 3}
 # Time: O(n)   Space: O(n)
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
+#include <iostream>
+#include <vector>
 #include <unordered_map>
-vector<int> arr = {1, 3, 2, 3, 1, 3, 2, 1};
+using namespace std;
 
-unordered_map<int, int> freq;
-
-for (int num : arr) {
-    freq[num]++;   // auto-initializes to 0 if key doesn't exist
+// Returns frequency map: each element → how many times it appears
+unordered_map<int, int> frequencyCount(vector<int> arr) {
+    unordered_map<int, int> freq;
+    for (int num : arr) {
+        freq[num]++;   // default value is 0; operator++ increments it
+    }
+    return freq;
 }
 
-for (auto& p : freq) {
-    cout << p.first << ": " << p.second << endl;
+int main() {
+    vector<int> arr = {1, 3, 2, 3, 1, 3, 2, 1};
+    auto freq = frequencyCount(arr);
+    for (auto& p : freq) {
+        cout << p.first << ": " << p.second << endl;
+    }
+    // Output: 1: 3, 2: 2, 3: 3
+    return 0;
 }
-// Output: 1: 3, 2: 2, 3: 3
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    // Counts occurrences of each element — O(n) time, O(n) space
+    unordered_map<int, int> frequencyCount(vector<int>& arr) {
+        unordered_map<int, int> freq;
+        for (int num : arr) {
+            freq[num]++;   // unordered_map auto-initializes missing keys to 0
+        }
+        return freq;
+    }
+};
 ```
 
 ---
@@ -411,19 +633,58 @@ print(prefix[3] - prefix[0])   # Output: 11
 # Build: O(n)  |  Each query: O(1)
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
-vector<int> arr = {2, 4, 1, 6, 3};
-vector<int> prefix(arr.size());
-prefix[0] = arr[0];
+#include <iostream>
+#include <vector>
+using namespace std;
 
-for (int i = 1; i < arr.size(); i++) {
-    prefix[i] = prefix[i - 1] + arr[i];
+// Builds prefix sum array: prefix[i] = sum of arr[0..i]
+vector<int> buildPrefix(vector<int> arr) {
+    int n = arr.size();
+    vector<int> prefix(n);
+    prefix[0] = arr[0];   // first entry equals first element
+    for (int i = 1; i < n; i++) {
+        prefix[i] = prefix[i - 1] + arr[i];   // running cumulative total
+    }
+    return prefix;
 }
 
-// Sum from index 1 to 3
-cout << prefix[3] - prefix[0] << endl;   // Output: 11
+int main() {
+    vector<int> arr = {2, 4, 1, 6, 3};
+    vector<int> prefix = buildPrefix(arr);
+    // Sum from index 1 to 3: prefix[3] - prefix[0]
+    cout << prefix[3] - prefix[0] << endl;   // Output: 11
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Builds prefix sum array in O(n); each range query is then O(1)
+    vector<int> buildPrefix(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> prefix(n);
+        prefix[0] = arr[0];   // base case: prefix of one element
+        for (int i = 1; i < n; i++) {
+            prefix[i] = prefix[i - 1] + arr[i];   // add current element to running sum
+        }
+        return prefix;
+    }
+
+    // Returns sum of arr[l..r] — O(1) using precomputed prefix array
+    int rangeSum(vector<int>& prefix, int l, int r) {
+        if (l == 0) return prefix[r];         // no subtraction needed when l is 0
+        return prefix[r] - prefix[l - 1];    // subtract prefix before l
+    }
+};
 ```
 
 Covered in detail in the next file.
@@ -452,20 +713,57 @@ print(max_sum)   # Output: 6  (subarray [4, -1, 2, 1])
 # Time: O(n)   Space: O(1)
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
-vector<int> arr = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
 
-int maxSum = arr[0];
-int currentSum = arr[0];
+// Returns the maximum subarray sum using Kadane's algorithm — O(n)
+int maxSubarraySum(vector<int> arr) {
+    int maxSum = arr[0];       // best sum found anywhere so far
+    int currentSum = arr[0];   // best sum of subarray ending at current index
 
-for (int i = 1; i < arr.size(); i++) {
-    currentSum = max(arr[i], currentSum + arr[i]);
-    maxSum = max(maxSum, currentSum);
+    for (int i = 1; i < (int)arr.size(); i++) {
+        // Extend existing subarray or start fresh — pick whichever is larger
+        currentSum = max(arr[i], currentSum + arr[i]);
+        maxSum = max(maxSum, currentSum);   // update global best
+    }
+    return maxSum;
 }
 
-cout << maxSum << endl;   // Output: 6
+int main() {
+    vector<int> arr = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+    cout << maxSubarraySum(arr) << endl;   // Output: 6
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    // Maximum subarray sum — Kadane's Algorithm
+    // Time: O(n), Space: O(1)
+    int maxSubArray(vector<int>& nums) {
+        int maxSum = nums[0];       // tracks the best sum seen globally
+        int currentSum = nums[0];   // tracks best sum ending at this index
+
+        for (int i = 1; i < (int)nums.size(); i++) {
+            // If running sum is dragging us down, reset to current element
+            currentSum = max(nums[i], currentSum + nums[i]);
+            maxSum = max(maxSum, currentSum);   // never let global max drop
+        }
+        return maxSum;
+    }
+};
 ```
 
 Covered in detail in a dedicated file later in this section.

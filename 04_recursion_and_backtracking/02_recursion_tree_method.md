@@ -52,13 +52,13 @@ In the previous post we learned how recursion breaks a problem into smaller subp
 
 A recursion tree helps you:
 
-| Goal | How the tree helps |
-|---|---|
-| Understand total function calls | Count all nodes |
-| Visualise recursion depth | Count the levels (height of the tree) |
-| Calculate time complexity | Sum the work across all levels |
-| Spot repeated subproblems | Look for identical nodes — key for Dynamic Programming |
-| Debug recursive functions | See exactly which calls happen and when |
+| Goal                            | How the tree helps                                     |
+| ------------------------------- | ------------------------------------------------------ |
+| Understand total function calls | Count all nodes                                        |
+| Visualise recursion depth       | Count the levels (height of the tree)                  |
+| Calculate time complexity       | Sum the work across all levels                         |
+| Spot repeated subproblems       | Look for identical nodes — key for Dynamic Programming |
+| Debug recursive functions       | See exactly which calls happen and when                |
 
 Most beginners struggle with recursion because they try to trace it in their head. Drawing it out makes everything much clearer.
 
@@ -101,15 +101,31 @@ countdown(3)
 # 0
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Recursive countdown
+// C++ (simple) — Recursive countdown
 #include <iostream>
 
 void countdown(int n) {
-    if (n == 0) { std::cout << 0 << std::endl; return; }
-    std::cout << n << std::endl;
-    countdown(n - 1);
+    if (n == 0) { std::cout << 0 << std::endl; return; }   // base case
+    std::cout << n << std::endl;   // print current number
+    countdown(n - 1);              // recursive case: move toward base case
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Recursive countdown
+class Solution {
+public:
+    void countdown(int n) {
+        if (n == 0) { std::cout << 0 << std::endl; return; }   // base case
+        std::cout << n << std::endl;   // print current number
+        countdown(n - 1);              // recursive case: move toward base case
+    }
+};
 ```
 
 **Recursion tree for `countdown(3)`:**
@@ -126,13 +142,13 @@ countdown(0)   ← base case
 
 This is a **linear tree** — each call makes exactly one recursive call. The tree has depth `n` with `n + 1` total nodes.
 
-| Property | Value |
-|---|---|
-| Branching factor | 1 (one child per node) |
-| Depth | n |
-| Total nodes | n + 1 |
-| **Time complexity** | **O(n)** |
-| Space complexity | O(n) — call stack depth |
+| Property            | Value                   |
+| ------------------- | ----------------------- |
+| Branching factor    | 1 (one child per node)  |
+| Depth               | n                       |
+| Total nodes         | n + 1                   |
+| **Time complexity** | **O(n)**                |
+| Space complexity    | O(n) — call stack depth |
 
 ---
 
@@ -150,13 +166,29 @@ def fib(n):
 print(fib(4))   # Output: 3
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Recursive Fibonacci
+// C++ (simple) — Recursive Fibonacci
 int fib(int n) {
-    if (n == 0) return 0;
-    if (n == 1) return 1;
-    return fib(n - 1) + fib(n - 2);
+    if (n == 0) return 0;   // base case
+    if (n == 1) return 1;   // base case
+    return fib(n - 1) + fib(n - 2);   // recursive case: sum of two smaller subproblems
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Recursive Fibonacci
+class Solution {
+public:
+    int fib(int n) {
+        if (n == 0) return 0;   // base case
+        if (n == 1) return 1;   // base case
+        return fib(n - 1) + fib(n - 2);   // recursive case: sum of two smaller subproblems
+    }
+};
 ```
 
 **Recursion tree for `fib(4)`:**
@@ -174,33 +206,33 @@ int fib(int n) {
 **Key observation — overlapping subproblems:**
 
 | Subproblem | Times computed |
-|---|---|
-| `fib(2)` | 2 |
-| `fib(1)` | 3 |
-| `fib(0)` | 2 |
+| ---------- | -------------- |
+| `fib(2)`   | 2              |
+| `fib(1)`   | 3              |
+| `fib(0)`   | 2              |
 
 `fib(2)` is computed **twice** — this is wasted work. This pattern is called **overlapping subproblems** and is exactly why Dynamic Programming (memoisation) exists. We will revisit this later in the series.
 
 **Counting nodes per level for `fib(n)`:**
 
 | Level | Nodes | Work |
-|---|---|---|
-| 0 | 1 | 1 |
-| 1 | 2 | 2 |
-| 2 | 4 | 4 |
-| 3 | 8 | 8 |
-| ... | ... | ... |
-| n | 2ⁿ | 2ⁿ |
+| ----- | ----- | ---- |
+| 0     | 1     | 1    |
+| 1     | 2     | 2    |
+| 2     | 4     | 4    |
+| 3     | 8     | 8    |
+| ...   | ...   | ...  |
+| n     | 2ⁿ    | 2ⁿ   |
 
 At each level the number of calls roughly doubles. Total nodes ≈ $2^n$.
 
-| Property | Value |
-|---|---|
-| Branching factor | 2 |
-| Depth | n |
-| Total nodes | ≈ 2ⁿ |
-| **Time complexity** | **O(2ⁿ)** — exponential |
-| Space complexity | O(n) — max call stack depth |
+| Property            | Value                       |
+| ------------------- | --------------------------- |
+| Branching factor    | 2                           |
+| Depth               | n                           |
+| Total nodes         | ≈ 2ⁿ                        |
+| **Time complexity** | **O(2ⁿ)** — exponential     |
+| Space complexity    | O(n) — max call stack depth |
 
 ---
 
@@ -212,12 +244,12 @@ The **branching factor** is how many recursive calls each node makes.
 
 $$\text{Total nodes} \approx \text{branching\_factor}^{\text{depth}}$$
 
-| Function | Branching factor | Depth | Total nodes | Time |
-|---|---|---|---|---|
-| `countdown(n)` | 1 | n | n | O(n) |
-| `fib(n)` | 2 | n | 2ⁿ | O(2ⁿ) |
-| Binary search | 1 | log n | log n | O(log n) |
-| Merge sort | 2 | log n | n | O(n log n) |
+| Function       | Branching factor | Depth | Total nodes | Time       |
+| -------------- | ---------------- | ----- | ----------- | ---------- |
+| `countdown(n)` | 1                | n     | n           | O(n)       |
+| `fib(n)`       | 2                | n     | 2ⁿ          | O(2ⁿ)      |
+| Binary search  | 1                | log n | log n       | O(log n)   |
+| Merge sort     | 2                | log n | n           | O(n log n) |
 
 ### Work Done Per Level
 
@@ -251,12 +283,27 @@ def sum_of_digits(n):
 print(sum_of_digits(123))   # Output: 6  (1 + 2 + 3)
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Sum of digits
+// C++ (simple) — Sum of digits
 int sum_of_digits(int n) {
-    if (n < 10) return n;   // base case
-    return (n % 10) + sum_of_digits(n / 10);
+    if (n < 10) return n;                              // base case: single digit
+    return (n % 10) + sum_of_digits(n / 10);          // last digit + sum of remaining digits
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Sum of digits
+class Solution {
+public:
+    int sumOfDigits(int n) {
+        if (n < 10) return n;                          // base case: single digit
+        return (n % 10) + sumOfDigits(n / 10);        // last digit + sum of remaining digits
+    }
+};
 ```
 
 **Recursion tree for `sum_of_digits(123)`:**
@@ -273,23 +320,23 @@ sum_of_digits(123)
 
 Another linear tree. Depth = number of digits in `n` = $d$.
 
-| Property | Value |
-|---|---|
-| Branching factor | 1 |
-| Depth | d (number of digits) |
+| Property            | Value                     |
+| ------------------- | ------------------------- |
+| Branching factor    | 1                         |
+| Depth               | d (number of digits)      |
 | **Time complexity** | **O(d)** — extremely fast |
 
 ---
 
 ## 8. Recursion Tree vs Tracing by Hand
 
-| Feature | Tracing by Hand | Recursion Tree |
-|---|---|---|
-| Simple linear recursion | Fine | Fine |
-| Branching recursion (2+ calls) | Confusing | Very clear |
-| Counting total calls | Error-prone | Easy — count nodes |
-| Finding time complexity | Hard | Straightforward |
-| Spotting repeated work | Difficult | Visual and obvious |
+| Feature                        | Tracing by Hand | Recursion Tree     |
+| ------------------------------ | --------------- | ------------------ |
+| Simple linear recursion        | Fine            | Fine               |
+| Branching recursion (2+ calls) | Confusing       | Very clear         |
+| Counting total calls           | Error-prone     | Easy — count nodes |
+| Finding time complexity        | Hard            | Straightforward    |
+| Spotting repeated work         | Difficult       | Visual and obvious |
 
 > Use hand-tracing for simple single-branch recursion. Switch to the recursion tree the moment a function makes two or more recursive calls.
 
@@ -335,7 +382,7 @@ Draw the recursion tree for each of these on paper, then verify by tracing the c
 
 - The recursion tree maps every function call as a node — each branch is a subproblem, each leaf is a base case.
 - **Linear trees** (branching factor = 1) give O(n) time. **Binary trees** (branching factor = 2) give O(2ⁿ) time.
-- **Total nodes ≈ branching\_factor^depth** — use this formula to estimate time complexity quickly.
+- **Total nodes ≈ branching_factor^depth** — use this formula to estimate time complexity quickly.
 - **Overlapping subproblems** (same node appearing multiple times) signal that memoisation or Dynamic Programming can drastically improve the solution.
 - Summing the work across all levels of the tree gives you the total time complexity.
 - The recursion tree is the foundation for understanding backtracking, merge sort, and Dynamic Programming — all coming up in this series.

@@ -123,7 +123,7 @@ print(stack.pop())    # Output: 2
 print(stack.empty())  # Output: False
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -166,6 +166,42 @@ int main() {
     cout << stack.empty() << "\n"; // 0 (false)
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — LeetCode #225: Implement Stack using Queues (push costly)
+#include <queue>
+using namespace std;
+
+class MyStack {
+    queue<int> q;              // single queue to simulate a stack
+public:
+    void push(int x) {
+        q.push(x);             // enqueue x at the rear
+        // Rotate all previous elements to the back so x sits at front
+        int sz = q.size();
+        for (int i = 0; i < sz - 1; i++) {
+            q.push(q.front()); // move front element to the rear
+            q.pop();           // remove it from the front
+        }
+    }
+
+    int pop() {
+        int val = q.front();   // front is always the stack top
+        q.pop();               // remove the top element
+        return val;
+    }
+
+    int top() {
+        return q.front();      // peek without removing
+    }
+
+    bool empty() {
+        return q.empty();      // true if no elements remain
+    }
+};
 ```
 
 - `push`: $O(n)$ — rotates all $n-1$ existing elements
@@ -234,7 +270,7 @@ print(stack2.top())    # Output: 20
 print(stack2.empty())  # Output: False
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -281,6 +317,50 @@ int main() {
     cout << stack.empty() << "\n";  // 0 (false)
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — LeetCode #225: Implement Stack using Queues (pop costly)
+#include <queue>
+using namespace std;
+
+class MyStack {
+    queue<int> q1, q2;         // q1 = main queue, q2 = temporary helper
+public:
+    void push(int x) {
+        q1.push(x);            // simple O(1) enqueue — latest element at back
+    }
+
+    int pop() {
+        // Move all but the last element into q2
+        while (q1.size() > 1) {
+            q2.push(q1.front()); // shift elements to helper
+            q1.pop();
+        }
+        int result = q1.front(); // last element = stack top
+        q1.pop();
+        swap(q1, q2);            // restore q1 as the main queue
+        return result;
+    }
+
+    int top() {
+        while (q1.size() > 1) {
+            q2.push(q1.front());
+            q1.pop();
+        }
+        int result = q1.front(); // peek at the last element
+        q2.push(q1.front());
+        q1.pop();
+        swap(q1, q2);
+        return result;
+    }
+
+    bool empty() {
+        return q1.empty();       // true if no elements remain
+    }
+};
 ```
 
 - `push`: $O(1)$
@@ -347,7 +427,7 @@ print(q.front())    # Output: 2
 print(q.empty())    # Output: False
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -387,6 +467,39 @@ int main() {
     cout << q.empty()   << "\n";  // 0 (false)
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — LeetCode #232: Implement Queue using Stacks (enqueue costly)
+#include <stack>
+using namespace std;
+
+class MyQueue {
+    stack<int> s1, s2;         // s1 = main, s2 = helper for reversal
+public:
+    void push(int x) {
+        // Move all from s1 to s2, push x, move back — keeps oldest on top
+        while (!s1.empty()) { s2.push(s1.top()); s1.pop(); }
+        s1.push(x);             // x goes to bottom (oldest element stays on top)
+        while (!s2.empty()) { s1.push(s2.top()); s2.pop(); }
+    }
+
+    int pop() {
+        int val = s1.top();    // top of s1 = oldest element (FIFO front)
+        s1.pop();
+        return val;
+    }
+
+    int peek() {
+        return s1.top();       // oldest element without removing
+    }
+
+    bool empty() {
+        return s1.empty();     // true if queue has no elements
+    }
+};
 ```
 
 - `enqueue`: $O(n)$ — moves all elements twice per call
@@ -465,7 +578,7 @@ print(q2.dequeue())  # Output: c
 print(q2.dequeue())  # Output: d
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -516,6 +629,47 @@ int main() {
     cout << q.dequeue() << "\n";  // 4
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — LeetCode #232: Implement Queue using Stacks (amortized O(1))
+#include <stack>
+using namespace std;
+
+class MyQueue {
+    stack<int> inbox, outbox;  // inbox for push, outbox for pop
+
+    void transfer() {
+        // Only transfer when outbox is empty — each element moves exactly once
+        if (outbox.empty()) {
+            while (!inbox.empty()) {
+                outbox.push(inbox.top()); // reverse inbox order into outbox
+                inbox.pop();
+            }
+        }
+    }
+public:
+    void push(int x) {
+        inbox.push(x);         // always O(1) — just add to inbox
+    }
+
+    int pop() {
+        transfer();            // lazy move from inbox to outbox if needed
+        int val = outbox.top(); outbox.pop();
+        return val;            // outbox top = oldest element (FIFO)
+    }
+
+    int peek() {
+        transfer();            // ensure outbox has elements
+        return outbox.top();   // oldest element without removing
+    }
+
+    bool empty() {
+        return inbox.empty() && outbox.empty(); // empty only if both are empty
+    }
+};
 ```
 
 **Why amortized $O(1)$?**  

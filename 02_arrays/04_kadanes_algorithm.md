@@ -72,23 +72,60 @@ print(max_subarray_brute([-2, 1, -3, 4, -1, 2, 1, -5, 4]))   # Output: 6
 # Time: O(n²) — 10,000 elements = ~100 million operations
 ```
 
-#### C++ (Brute Force)
+#### C++ (simple):
 
 ```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Brute force: check every subarray — O(n²), too slow for large inputs
 int maxSubarrayBrute(vector<int> arr) {
     int maxSum = arr[0];
 
-    for (int i = 0; i < arr.size(); i++) {
+    for (int i = 0; i < (int)arr.size(); i++) {
         int currentSum = 0;
-        for (int j = i; j < arr.size(); j++) {
+        for (int j = i; j < (int)arr.size(); j++) {   // extend subarray from i to j
             currentSum += arr[j];
             if (currentSum > maxSum)
-                maxSum = currentSum;
+                maxSum = currentSum;   // track the best sum seen
         }
     }
 
     return maxSum;
 }
+
+int main() {
+    vector<int> arr = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+    cout << maxSubarrayBrute(arr) << endl;   // Output: 6
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Brute force: O(n²) — illustrates why Kadane's is needed
+    int maxSubarrayBrute(vector<int>& arr) {
+        int maxSum = arr[0];
+
+        for (int i = 0; i < (int)arr.size(); i++) {
+            int currentSum = 0;
+            for (int j = i; j < (int)arr.size(); j++) {   // try every ending index
+                currentSum += arr[j];
+                if (currentSum > maxSum)
+                    maxSum = currentSum;   // update global best
+            }
+        }
+
+        return maxSum;
+    }
+};
 ```
 
 Works correctly but is way too slow for large inputs. Kadane's does the same in O(n).
@@ -166,7 +203,7 @@ print(max_subarray([-3, -1, -4, -2]))                    # Output: -1
 print(max_subarray([5]))                                  # Output: 5
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
 #include <iostream>
@@ -176,10 +213,11 @@ using namespace std;
 
 int maxSubarray(vector<int> arr) {
     // Initialize with first element, NOT zero
+    // (handles all-negative arrays correctly)
     int maxSum = arr[0];
     int currentSum = arr[0];
 
-    for (int i = 1; i < arr.size(); i++) {
+    for (int i = 1; i < (int)arr.size(); i++) {
         // Extend or start fresh — whichever is bigger
         currentSum = max(arr[i], currentSum + arr[i]);
 
@@ -199,6 +237,38 @@ int main() {
 
     return 0;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    // LeetCode 53: Maximum Subarray — Kadane's Algorithm
+    // Time: O(n), Space: O(1)
+    int maxSubArray(vector<int>& nums) {
+        // Must initialize with nums[0], not 0 — handles all-negative arrays
+        int maxSum = nums[0];
+        int currentSum = nums[0];
+
+        for (int i = 1; i < (int)nums.size(); i++) {
+            // If running sum becomes a drag, start fresh from current element
+            currentSum = max(nums[i], currentSum + nums[i]);
+
+            maxSum = max(maxSum, currentSum);   // update global best
+        }
+
+        return maxSum;
+    }
+};
+```
+
+}
+
 ```
 
 ---
@@ -230,9 +300,11 @@ Notice index 1: the algorithm dropped the -2 running sum and started fresh at 1.
 If every element is negative, the answer should be the **least negative** single element — not 0.
 
 ```
-Input:  [-3, -1, -4, -2]
-Output: -1   ← the best we can do
-```
+
+Input: [-3, -1, -4, -2]
+Output: -1 ← the best we can do
+
+````
 
 This works correctly **only because** we initialize `max_sum = arr[0]` (not 0). Initializing with 0 would wrongly return 0 for all-negative arrays.
 
@@ -241,6 +313,57 @@ This works correctly **only because** we initialize `max_sum = arr[0]` (not 0). 
 ```python
 print(max_subarray([-3, -1, -4, -2]))   # Output: -1  ✓
 # If you had initialized max_sum = 0, you'd get 0 — WRONG
+````
+
+#### C++ (simple):
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Works correctly for all-negative arrays because we init with arr[0], not 0
+int maxSubarray(vector<int> arr) {
+    int maxSum = arr[0];       // never initialize with 0 for max subarray
+    int currentSum = arr[0];
+
+    for (int i = 1; i < (int)arr.size(); i++) {
+        currentSum = max(arr[i], currentSum + arr[i]);
+        maxSum = max(maxSum, currentSum);
+    }
+    return maxSum;
+}
+
+int main() {
+    // All-negative — answer is -1 (least negative), NOT 0
+    cout << maxSubarray({-3, -1, -4, -2}) << endl;   // Output: -1
+    // Initializing maxSum = 0 would wrongly return 0 here
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    // Correctly handles all-negative arrays by initializing with nums[0], not 0
+    int maxSubArray(vector<int>& nums) {
+        int maxSum = nums[0];       // if initialized to 0, wrong answer for all-negative
+        int currentSum = nums[0];
+
+        for (int i = 1; i < (int)nums.size(); i++) {
+            currentSum = max(nums[i], currentSum + nums[i]);
+            maxSum = max(maxSum, currentSum);
+        }
+        return maxSum;
+    }
+};
 ```
 
 ---
@@ -281,24 +404,29 @@ print(result)    # Output: 6
 print(subarray)  # Output: [4, -1, 2, 1]
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Returns {maxSum, subarray} by tracking start and end indices
 pair<int, vector<int>> maxSubarrayWithIndices(vector<int> arr) {
     int maxSum = arr[0], currentSum = arr[0];
     int start = 0, end = 0, tempStart = 0;
 
-    for (int i = 1; i < arr.size(); i++) {
+    for (int i = 1; i < (int)arr.size(); i++) {
         if (arr[i] > currentSum + arr[i]) {
-            currentSum = arr[i];
-            tempStart = i;
+            currentSum = arr[i];   // start fresh: current element alone is better
+            tempStart = i;         // potential new start
         } else {
-            currentSum += arr[i];
+            currentSum += arr[i];  // extend: current running sum + arr[i] is better
         }
 
         if (currentSum > maxSum) {
             maxSum = currentSum;
-            start = tempStart;
+            start = tempStart;   // commit new start when we find a new global max
             end = i;
         }
     }
@@ -306,6 +434,48 @@ pair<int, vector<int>> maxSubarrayWithIndices(vector<int> arr) {
     vector<int> subarray(arr.begin() + start, arr.begin() + end + 1);
     return {maxSum, subarray};
 }
+
+int main() {
+    auto [sum, sub] = maxSubarrayWithIndices({-2, 1, -3, 4, -1, 2, 1, -5, 4});
+    cout << sum << endl;   // Output: 6
+    for (int x : sub) cout << x << " ";   // Output: 4 -1 2 1
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Tracks start and end indices to return the actual subarray, not just the sum
+    pair<int, vector<int>> maxSubarrayWithIndices(vector<int>& arr) {
+        int maxSum = arr[0], currentSum = arr[0];
+        int start = 0, end = 0, tempStart = 0;
+
+        for (int i = 1; i < (int)arr.size(); i++) {
+            if (arr[i] > currentSum + arr[i]) {
+                currentSum = arr[i];   // reset: starting fresh here is better
+                tempStart = i;         // new potential start
+            } else {
+                currentSum += arr[i];  // extend current subarray
+            }
+
+            if (currentSum > maxSum) {
+                maxSum = currentSum;
+                start = tempStart;   // lock in the start when max is updated
+                end = i;             // update end to current index
+            }
+        }
+
+        // Extract the actual subarray from start to end (inclusive)
+        vector<int> subarray(arr.begin() + start, arr.begin() + end + 1);
+        return {maxSum, subarray};
+    }
+};
 ```
 
 ---

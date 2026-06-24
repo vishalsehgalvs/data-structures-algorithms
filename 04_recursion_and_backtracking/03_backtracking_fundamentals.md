@@ -106,6 +106,56 @@ def backtrack(current_state, choices):
             undo_choice(choice)              # Step 3: Unchoose
 ```
 
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — General Backtracking Template
+#include <vector>
+using namespace std;
+
+void backtrack(vector<int>& current, int start,
+               const vector<int>& nums,
+               vector<vector<int>>& result) {
+    // Record every valid state (or check a condition before recording)
+    result.push_back(current);
+
+    for (int i = start; i < (int)nums.size(); i++) {
+        current.push_back(nums[i]);               // Step 1: Choose
+        backtrack(current, i + 1, nums, result);  // Step 2: Explore
+        current.pop_back();                       // Step 3: Unchoose (backtrack)
+    }
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — General Backtracking Template
+class Solution {
+public:
+    vector<vector<int>> solve(vector<int>& nums) {
+        vector<vector<int>> result;   // stores all valid solutions
+        vector<int> current;          // current path being explored
+        backtrack(current, 0, nums, result);
+        return result;
+    }
+
+private:
+    void backtrack(vector<int>& current, int start,
+                   vector<int>& nums,
+                   vector<vector<int>>& result) {
+        // Record every valid state (or check a condition before recording)
+        result.push_back(current);
+
+        for (int i = start; i < (int)nums.size(); i++) {
+            current.push_back(nums[i]);               // Step 1: Choose
+            backtrack(current, i + 1, nums, result);  // Step 2: Explore
+            current.pop_back();                       // Step 3: Unchoose (backtrack)
+        }
+    }
+};
+```
+
 The key observation: **after every recursive call, you undo the choice you made**. This keeps your state clean so the next option starts from the same point.
 
 ---
@@ -137,31 +187,60 @@ print(result)
 # Output: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
 ```
 
-```cpp
-// C++ — Generate all subsets using backtracking
-#include <iostream>
-#include <vector>
+**C++ (simple):**
 
-void backtrack(const std::vector<int>& nums, int start,
-               std::vector<int>& current,
-               std::vector<std::vector<int>>& result) {
-    // Every state is a valid subset
-    result.push_back(current);
+```cpp
+// C++ (simple) — Generate all subsets using backtracking
+#include <vector>
+using namespace std;
+
+void backtrack(const vector<int>& nums, int start,
+               vector<int>& current,
+               vector<vector<int>>& result) {
+    result.push_back(current);   // every state is a valid subset — record it
 
     for (int i = start; i < (int)nums.size(); i++) {
-        current.push_back(nums[i]);              // Step 1: Choose
-        backtrack(nums, i + 1, current, result); // Step 2: Explore
-        current.pop_back();                      // Step 3: Unchoose
+        current.push_back(nums[i]);              // Step 1: Choose nums[i]
+        backtrack(nums, i + 1, current, result); // Step 2: Explore with next index
+        current.pop_back();                      // Step 3: Unchoose (backtrack)
     }
 }
 
 int main() {
-    std::vector<int> nums = {1, 2, 3};
-    std::vector<std::vector<int>> result;
-    std::vector<int> current;
+    vector<int> nums = {1, 2, 3};
+    vector<vector<int>> result;
+    vector<int> current;
     backtrack(nums, 0, current, result);
-    // Output: [[], [1], [1,2], [1,2,3], [1,3], [2], [2,3], [3]]
+    // Output: [], [1], [1,2], [1,2,3], [1,3], [2], [2,3], [3]
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Generate all subsets using backtracking
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> result;   // stores all subsets
+        vector<int> current;          // current subset being built
+        backtrack(nums, 0, current, result);
+        return result;
+    }
+
+private:
+    void backtrack(vector<int>& nums, int start,
+                   vector<int>& current,
+                   vector<vector<int>>& result) {
+        result.push_back(current);   // every state is a valid subset — record it
+
+        for (int i = start; i < (int)nums.size(); i++) {
+            current.push_back(nums[i]);              // Step 1: Choose nums[i]
+            backtrack(nums, i + 1, current, result); // Step 2: Explore with next index
+            current.pop_back();                      // Step 3: Unchoose (backtrack)
+        }
+    }
+};
 ```
 
 Notice how `current` is modified before each recursive call and then restored with `pop()` afterward. The list always goes back to what it was before you made that choice.
@@ -247,36 +326,71 @@ print(result)
 # Output: [[7]]
 ```
 
-```cpp
-// C++ — Find all subsets that sum to a target
-#include <iostream>
-#include <vector>
+**C++ (simple):**
 
-void backtrack(const std::vector<int>& nums, int start, int remaining,
-               std::vector<int>& current,
-               std::vector<std::vector<int>>& result) {
+```cpp
+// C++ (simple) — Find all subsets that sum to a target
+#include <vector>
+using namespace std;
+
+void backtrack(const vector<int>& nums, int start, int remaining,
+               vector<int>& current,
+               vector<vector<int>>& result) {
     if (remaining == 0) {
-        result.push_back(current);   // valid combination found
+        result.push_back(current);   // valid combination found — record it
         return;
     }
 
     for (int i = start; i < (int)nums.size(); i++) {
-        if (nums[i] <= remaining) {       // Prune: skip if too large
-            current.push_back(nums[i]);   // Choose
-            backtrack(nums, i + 1, remaining - nums[i], current, result);  // Explore
-            current.pop_back();           // Unchoose
+        if (nums[i] <= remaining) {              // prune: skip if too large
+            current.push_back(nums[i]);          // Step 1: Choose
+            backtrack(nums, i + 1, remaining - nums[i], current, result);  // Step 2: Explore
+            current.pop_back();                  // Step 3: Unchoose (backtrack)
         }
     }
 }
 
 int main() {
-    std::vector<int> nums = {2, 3, 6, 7};
+    vector<int> nums = {2, 3, 6, 7};
     int target = 7;
-    std::vector<std::vector<int>> result;
-    std::vector<int> current;
+    vector<vector<int>> result;
+    vector<int> current;
     backtrack(nums, 0, target, current, result);
     // Output: [[7]]
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Find all subsets that sum to a target
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& nums, int target) {
+        vector<vector<int>> result;   // stores all valid combinations
+        vector<int> current;          // current combination being explored
+        backtrack(nums, 0, target, current, result);
+        return result;
+    }
+
+private:
+    void backtrack(vector<int>& nums, int start, int remaining,
+                   vector<int>& current,
+                   vector<vector<int>>& result) {
+        if (remaining == 0) {
+            result.push_back(current);   // valid combination found — record it
+            return;
+        }
+
+        for (int i = start; i < (int)nums.size(); i++) {
+            if (nums[i] <= remaining) {            // prune: skip if too large
+                current.push_back(nums[i]);        // Step 1: Choose
+                backtrack(nums, i + 1, remaining - nums[i], current, result);  // Step 2: Explore
+                current.pop_back();                // Step 3: Unchoose (backtrack)
+            }
+        }
+    }
+};
 ```
 
 Only `[7]` is a valid answer here because no other single-use combination from `{2, 3, 6, 7}` sums to exactly 7. The condition `nums[i] <= remaining` is what makes this efficient — it cuts off any branch where the current number alone already exceeds what is left.

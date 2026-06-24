@@ -63,19 +63,38 @@ In Python and C++, strings come with built-in methods — but the core idea is t
 
 ## 3. Declaring Strings
 
+#### Python
+
 ```python
 # Python
 name = "Alice"
 greeting = 'Hello, World!'   # single or double quotes both work
 ```
 
-```cpp
-// C++
-#include <string>
+#### C++ (simple):
 
-std::string name = "Alice";
-std::string greeting = "Hello, World!";
+```cpp
+#include <string>
+using namespace std;
+
+// Plain variable declarations — string type works the same as Python strings
+string name = "Alice";
+string greeting = "Hello, World!";
 // Note: single quotes '' are for single characters (char), not strings
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string buildGreeting(string name) {
+        return "Hello, " + name + "!";  // concatenate parts to build a greeting string
+    }
+};
 ```
 
 ---
@@ -84,6 +103,8 @@ std::string greeting = "Hello, World!";
 
 The length tells you how many characters are in the string — one of the most-used operations.
 
+#### Python
+
 ```python
 # Python
 s = "Hello"
@@ -91,14 +112,30 @@ print(len(s))   # Output: 5
 # "Hello" has 5 characters: H, e, l, l, o
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++
 #include <iostream>
 #include <string>
+using namespace std;
 
-std::string s = "Hello";
-std::cout << s.length() << std::endl;  // Output: 5
+string s = "Hello";
+cout << s.length() << endl;  // Output: 5
 // .length() and .size() both work in C++
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    int getLength(string s) {
+        return s.length();  // returns number of characters — O(1)
+    }
+};
 ```
 
 > **Time complexity:** O(1) — length is stored internally, not counted each time.
@@ -108,6 +145,8 @@ std::cout << s.length() << std::endl;  // Output: 5
 ## 5. Accessing Characters by Index
 
 Since strings are indexed like arrays, you can grab any character by its position.
+
+#### Python
 
 ```python
 # Python
@@ -119,12 +158,31 @@ print(s[-1])  # Output: o   (negative index = count from end)
 print(s[-2])  # Output: l
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++
-std::string s = "Hello";
-std::cout << s[0] << std::endl;     // Output: H
-std::cout << s[4] << std::endl;     // Output: o
-std::cout << s.at(1) << std::endl;  // Output: e  (.at() does bounds checking)
+#include <string>
+#include <iostream>
+using namespace std;
+
+string s = "Hello";
+cout << s[0] << endl;     // Output: H  (direct index access)
+cout << s[4] << endl;     // Output: o
+cout << s.at(1) << endl;  // Output: e  (.at() does bounds checking unlike s[i])
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    char getCharAt(string s, int i) {
+        return s[i];  // direct index access — O(1), same as an array lookup
+    }
+};
 ```
 
 **Index reference for `"Hello"`:**
@@ -144,6 +202,8 @@ Concatenation means joining two strings together end-to-end.
 
 > **Analogy:** Like linking two chains — the second chain gets attached to the tail of the first.
 
+#### Python
+
 ```python
 # Python
 first = "Hello"
@@ -161,16 +221,35 @@ for char in ["a", "b", "c"]:
 s = "".join(["a", "b", "c"])   # builds once at the end → O(n)
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++
-std::string first = "Hello";
-std::string second = "World";
-std::string result = first + " " + second;
-std::cout << result << std::endl;   // Output: Hello World
+#include <iostream>
+#include <string>
+using namespace std;
+
+string first = "Hello";
+string second = "World";
+string result = first + " " + second;
+cout << result << endl;   // Output: Hello World
 
 // C++ strings are mutable, so += is efficient
-std::string s = "";
+string s = "";
 s += "Hello";   // modifies in place — no copy penalty like Python
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string concatStrings(string a, string b) {
+        return a + " " + b;  // + operator joins strings — O(n) per call
+    }
+};
 ```
 
 > **Time complexity:** O(n) per concatenation — a new string of combined length is created.
@@ -180,6 +259,8 @@ s += "Hello";   // modifies in place — no copy penalty like Python
 ## 7. Slicing and Substring
 
 Slicing lets you extract a portion of a string — like cutting a specific piece from a ribbon.
+
+#### Python
 
 ```python
 # Python — s[start:end]  (end index is exclusive)
@@ -192,14 +273,31 @@ print(s[:5])    # Output: Hello  (from start to index 4)
 print(s[::-1])  # Output: dlroW olleH  (reverse the whole string)
 ```
 
-```cpp
-// C++ — s.substr(start, length)
-#include <string>
+#### C++ (simple):
 
-std::string s = "Hello World";
-std::cout << s.substr(0, 5) << std::endl;   // Output: Hello  (start=0, take 5 chars)
-std::cout << s.substr(6, 5) << std::endl;   // Output: World  (start=6, take 5 chars)
-std::cout << s.substr(6) << std::endl;      // Output: World  (start=6 to end)
+```cpp
+#include <string>
+#include <iostream>
+using namespace std;
+
+string s = "Hello World";
+cout << s.substr(0, 5) << endl;   // Output: Hello  (start=0, take 5 chars)
+cout << s.substr(6, 5) << endl;   // Output: World  (start=6, take 5 chars)
+cout << s.substr(6) << endl;      // Output: World  (start=6 to end)
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string getSubstring(string s, int start, int len) {
+        return s.substr(start, len);  // extracts len characters starting at index start
+    }
+};
 ```
 
 > **Time complexity:** O(n) — creates a new string of length n.
@@ -211,6 +309,8 @@ std::cout << s.substr(6) << std::endl;      // Output: World  (start=6 to end)
 Changing all characters to uppercase or lowercase. Useful when you need **case-insensitive comparisons**.
 
 > **Analogy:** Sorting a contact list — convert everything to lowercase first so "Alice" and "alice" are treated as the same name.
+
+#### Python
 
 ```python
 # Python
@@ -225,22 +325,41 @@ def same_word(a, b):
 print(same_word("Alice", "ALICE"))   # Output: True
 ```
 
-```cpp
-// C++
-#include <algorithm>  // for transform
-#include <string>
+#### C++ (simple):
 
-std::string s = "Hello World";
+```cpp
+#include <algorithm>
+#include <string>
+#include <iostream>
+using namespace std;
+
+string s = "Hello World";
 
 // Convert to uppercase
-std::string upper = s;
-std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
-std::cout << upper << std::endl;   // Output: HELLO WORLD
+string upper = s;
+transform(upper.begin(), upper.end(), upper.begin(), ::toupper);  // in-place transform
+cout << upper << endl;   // Output: HELLO WORLD
 
 // Convert to lowercase
-std::string lower = s;
-std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
-std::cout << lower << std::endl;   // Output: hello world
+string lower = s;
+transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+cout << lower << endl;   // Output: hello world
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    string toLowerCase(string s) {
+        transform(s.begin(), s.end(), s.begin(), ::tolower);  // convert every char to lowercase
+        return s;
+    }
+};
 ```
 
 > **Time complexity:** O(n) — visits every character once.
@@ -250,6 +369,8 @@ std::cout << lower << std::endl;   // Output: hello world
 ## 9. Checking if a String Contains a Substring
 
 Check whether one string exists inside another — like checking if an email has an "@" symbol.
+
+#### Python
 
 ```python
 # Python
@@ -268,19 +389,36 @@ print(s.startswith("Hello"))  # Output: True
 print(s.endswith("World"))    # Output: True
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++
 #include <string>
+#include <iostream>
+using namespace std;
 
-std::string s = "Hello World";
+string s = "Hello World";
 
-// find() returns the index, or string::npos if not found
+// find() returns the start index, or string::npos if not found
 size_t pos = s.find("World");
-if (pos != std::string::npos) {
-    std::cout << "Found at index: " << pos << std::endl;  // Output: Found at index: 6
+if (pos != string::npos) {
+    cout << "Found at index: " << pos << endl;  // Output: Found at index: 6
 } else {
-    std::cout << "Not found" << std::endl;
+    cout << "Not found" << endl;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool containsSubstring(string s, string sub) {
+        return s.find(sub) != string::npos;  // npos means sub was not found
+    }
+};
 ```
 
 > **Time complexity:** O(n × m) for naive search, where n = string length and m = pattern length.
@@ -292,6 +430,8 @@ if (pos != std::string::npos) {
 **Split** breaks a string into a list of parts. **Join** does the opposite — glues parts back together.
 
 > **Analogy:** Splitting a sentence into words is like cutting a ribbon at every space. Joining is gluing the pieces back in order with a different separator.
+
+#### Python
 
 ```python
 # Python — split
@@ -313,29 +453,52 @@ chars = ["H", "e", "l", "l", "o"]
 print("".join(chars))   # Output: Hello
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — no built-in split; use stringstream
 #include <sstream>
 #include <vector>
 #include <string>
+#include <iostream>
+using namespace std;
 
-std::string sentence = "apple banana cherry";
-std::istringstream stream(sentence);
-std::string word;
-std::vector<std::string> words;
+string sentence = "apple banana cherry";
+istringstream stream(sentence);  // wrap sentence in a stream to read word by word
+string word;
+vector<string> words;
 
 while (stream >> word) {
-    words.push_back(word);   // reads word by word, splitting on whitespace
+    words.push_back(word);   // reads each space-delimited word
 }
 // words = {"apple", "banana", "cherry"}
 
 // Join using a loop
-std::string result = "";
-for (int i = 0; i < words.size(); i++) {
+string result = "";
+for (int i = 0; i < (int)words.size(); i++) {
     if (i > 0) result += ", ";   // add separator before every item except first
     result += words[i];
 }
 // result = "apple, banana, cherry"
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string joinWords(vector<string>& words, string sep) {
+        string result;
+        for (int i = 0; i < (int)words.size(); i++) {
+            if (i > 0) result += sep;  // prepend separator between items
+            result += words[i];         // append the word
+        }
+        return result;
+    }
+};
 ```
 
 > **Time complexity:** O(n) for both split and join.
@@ -345,6 +508,8 @@ for (int i = 0; i < words.size(); i++) {
 ## 11. Trimming Whitespace
 
 Extra spaces at the start or end of a string can cause silent bugs — especially with user input.
+
+#### Python
 
 ```python
 # Python
@@ -358,20 +523,42 @@ user_input = "   Alice   "
 name = user_input.strip()   # "Alice" — safe to compare now
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — no built-in trim; remove leading and trailing spaces manually
 #include <algorithm>
 #include <string>
+#include <iostream>
+using namespace std;
 
-std::string s = "   Hello World   ";
+string s = "   Hello World   ";
 
-// Remove leading spaces
-s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](char c){ return !isspace(c); }));
+// Remove leading whitespace
+s.erase(s.begin(), find_if(s.begin(), s.end(), [](char c){ return !isspace(c); }));
 
-// Remove trailing spaces
-s.erase(std::find_if(s.rbegin(), s.rend(), [](char c){ return !isspace(c); }).base(), s.end());
+// Remove trailing whitespace
+s.erase(find_if(s.rbegin(), s.rend(), [](char c){ return !isspace(c); }).base(), s.end());
 
-std::cout << s << std::endl;   // Output: Hello World
+cout << s << endl;   // Output: Hello World
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    string trimString(string s) {
+        // Remove leading whitespace
+        s.erase(s.begin(), find_if(s.begin(), s.end(), [](char c){ return !isspace(c); }));
+        // Remove trailing whitespace
+        s.erase(find_if(s.rbegin(), s.rend(), [](char c){ return !isspace(c); }).base(), s.end());
+        return s;
+    }
+};
 ```
 
 ---
@@ -379,6 +566,8 @@ std::cout << s << std::endl;   // Output: Hello World
 ## 12. Replacing Characters or Substrings
 
 Replace one piece of a string with something else — like find-and-replace in a text editor.
+
+#### Python
 
 ```python
 # Python — replace(old, new) replaces ALL occurrences by default
@@ -392,20 +581,42 @@ s2 = s2.replace("l", "r")   # replaces all 'l' → Output: herro
 print(s2)
 ```
 
-```cpp
-// C++ — no built-in replace-all; use a loop or regex
-#include <string>
+#### C++ (simple):
 
-std::string s = "I love cats. Cats are great.";
-std::string from = "cats";
-std::string to = "dogs";
+```cpp
+#include <string>
+#include <iostream>
+using namespace std;
+
+string s = "I love cats. Cats are great.";
+string from = "cats";
+string to = "dogs";
 
 size_t pos = 0;
-while ((pos = s.find(from, pos)) != std::string::npos) {
-    s.replace(pos, from.length(), to);   // replace at found position
-    pos += to.length();                  // move past the replacement
+while ((pos = s.find(from, pos)) != string::npos) {
+    s.replace(pos, from.length(), to);   // replace occurrence at position pos
+    pos += to.length();                  // advance past the replacement to avoid loops
 }
-std::cout << s << std::endl;   // Output: I love dogs. Cats are great.
+cout << s << endl;   // Output: I love dogs. Cats are great.
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string replaceAll(string s, string from, string to) {
+        size_t pos = 0;
+        while ((pos = s.find(from, pos)) != string::npos) {
+            s.replace(pos, from.length(), to);   // replace this occurrence
+            pos += to.length();                  // skip past the replacement
+        }
+        return s;
+    }
+};
 ```
 
 > **Time complexity:** O(n) — scans the entire string.
@@ -418,6 +629,8 @@ In Python (and Java), **strings are immutable** — once created, you cannot cha
 In **C++, strings are mutable** — you can change individual characters directly.
 
 > **Analogy:** A string is like a printed book page. You can't change one letter on it. To make a change, you must print an entirely new page.
+
+#### Python
 
 ```python
 # Python
@@ -435,11 +648,31 @@ s = "".join(chars)      # join back into a string
 print(s)                # Output: hello
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — strings ARE mutable
-std::string s = "Hello";
-s[0] = 'h';               // works fine in C++
-std::cout << s << std::endl;   // Output: hello
+#include <string>
+#include <iostream>
+using namespace std;
+
+string s = "Hello";
+s[0] = 'h';           // C++ strings are mutable — direct character assignment works
+cout << s << endl;    // Output: hello
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string modifyFirstChar(string s, char newChar) {
+        if (!s.empty()) s[0] = newChar;  // direct mutation — valid in C++ unlike Python
+        return s;
+    }
+};
 ```
 
 **Immutability impact on complexity:**
@@ -455,6 +688,8 @@ std::cout << s << std::endl;   // Output: hello
 ## 14. Iterating Over a String
 
 Loop through each character — fundamental to most string problems.
+
+#### Python
 
 ```python
 # Python — iterate directly
@@ -485,22 +720,53 @@ def count_vowels(s):
 print(count_vowels("Hello World"))   # Output: 3 (e, o, o)
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++
 #include <string>
 #include <iostream>
+using namespace std;
 
-std::string s = "Hello";
+string s = "Hello";
 
-// Range-based for loop
+// Range-based for loop — clean and idiomatic
 for (char c : s) {
-    std::cout << c << std::endl;
+    cout << c << endl;
 }
 
-// Index-based for loop
-for (int i = 0; i < s.length(); i++) {
-    std::cout << "s[" << i << "] = " << s[i] << std::endl;
+// Index-based for loop — use when you need the index
+for (int i = 0; i < (int)s.length(); i++) {
+    cout << "s[" << i << "] = " << s[i] << endl;
 }
+
+// Practical: count vowels
+int countVowels(const string& s) {
+    string vowels = "aeiouAEIOU";
+    int count = 0;
+    for (char c : s) {
+        if (vowels.find(c) != string::npos) count++;  // check membership
+    }
+    return count;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    int countVowels(string s) {
+        string vowels = "aeiouAEIOU";
+        int count = 0;
+        for (char c : s) {
+            if (vowels.find(c) != string::npos) count++;  // O(1) lookup per char
+        }
+        return count;
+    }
+};
 ```
 
 > **Time complexity:** O(n) — visits every character once.
@@ -510,6 +776,8 @@ for (int i = 0; i < s.length(); i++) {
 ## 15. String Comparison
 
 Strings are compared **lexicographically** — character by character based on ASCII values. This is exactly how a dictionary orders words.
+
+#### Python
 
 ```python
 # Python
@@ -523,22 +791,42 @@ print("abc" < "abd")        # Output: True   (first 2 chars equal, 'c' < 'd')
 print("Apple".lower() == "apple".lower())   # Output: True
 ```
 
-```cpp
-// C++
-#include <string>
+#### C++ (simple):
 
-std::string a = "apple";
-std::string b = "banana";
+```cpp
+#include <string>
+#include <iostream>
+using namespace std;
+
+string a = "apple";
+string b = "banana";
 
 // == compares for exact equality
-std::cout << (a == a) << std::endl;   // Output: 1 (true)
-std::cout << (a == b) << std::endl;   // Output: 0 (false)
+cout << (a == a) << endl;   // Output: 1 (true)
+cout << (a == b) << endl;   // Output: 0 (false)
 
-// < > compare lexicographically
-std::cout << (a < b) << std::endl;    // Output: 1 (true — 'a' < 'b')
+// < > compare lexicographically by ASCII value
+cout << (a < b) << endl;    // Output: 1 (true — 'a' < 'b')
 
 // compare() returns 0 (equal), negative (less), positive (greater)
-std::cout << a.compare(b) << std::endl;   // Output: negative number
+cout << a.compare(b) << endl;   // Output: negative number
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    bool isSameWordIgnoreCase(string a, string b) {
+        transform(a.begin(), a.end(), a.begin(), ::tolower);  // normalise a
+        transform(b.begin(), b.end(), b.begin(), ::tolower);  // normalise b
+        return a == b;  // compare after case normalisation
+    }
+};
 ```
 
 **ASCII values you should know:**
@@ -574,6 +862,8 @@ std::cout << a.compare(b) << std::endl;   // Output: negative number
 ## 17. Practical Example — Reversing a String
 
 Reversing a string combines several concepts above and is a classic beginner problem.
+
+#### Python
 
 ```python
 # Python — Method 1: Slicing (simplest, one line)
@@ -611,26 +901,51 @@ print("".join(chars))   # Output: olleH
 | 2     | 2    | 2     | `['o','l','l','e','H']` | left == right, stop |
 | Done  | —    | —     | `['o','l','l','e','H']` | `"olleH"`           |
 
+#### C++ (simple):
+
 ```cpp
-// C++ — Method 1: built-in reverse
 #include <algorithm>
 #include <string>
+#include <iostream>
+using namespace std;
 
-std::string s = "Hello";
-std::reverse(s.begin(), s.end());   // modifies in place — strings are mutable in C++
-std::cout << s << std::endl;        // Output: olleH
+// Method 1: built-in reverse — modifies the string in place
+string s = "Hello";
+reverse(s.begin(), s.end());  // reverses characters in-place (mutable in C++)
+cout << s << endl;             // Output: olleH
 
-// C++ — Method 2: Two-pointer (same logic as Python above)
-std::string s2 = "Hello";
+// Method 2: Two-pointer (mirrors the Python logic)
+string s2 = "Hello";
 int left = 0;
-int right = s2.length() - 1;
+int right = (int)s2.length() - 1;
 
 while (left < right) {
-    std::swap(s2[left], s2[right]);  // swap characters
-    left++;
-    right--;
+    swap(s2[left], s2[right]);  // swap the two boundary characters
+    left++;                      // move left pointer inward
+    right--;                     // move right pointer inward
 }
-std::cout << s2 << std::endl;   // Output: olleH
+cout << s2 << endl;   // Output: olleH
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string reverseString(string s) {
+        int left = 0;
+        int right = (int)s.length() - 1;
+        while (left < right) {
+            swap(s[left], s[right]);  // two-pointer in-place swap
+            left++;
+            right--;
+        }
+        return s;
+    }
+};
 ```
 
 > **Time complexity:** O(n) — visits each character once.  

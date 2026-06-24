@@ -45,6 +45,7 @@ Different characters → NOT an anagram ✗
 ## 2. A Real-Life Analogy
 
 > Imagine two bags of colored marbles.
+>
 > - Bag A: 3 red, 2 blue, 1 green
 > - Bag B: 3 red, 2 blue, 1 green
 >
@@ -71,11 +72,12 @@ Frequency counting means keeping track of **how many times each character appear
 **Example — `"aab"`:**
 
 | Character | Count |
-|---|---|
-| `'a'` | 2 |
-| `'b'` | 1 |
+| --------- | ----- |
+| `'a'`     | 2     |
+| `'b'`     | 1     |
 
 We can store this as:
+
 - A **count array** of size 26 (one slot per letter `'a'` to `'z'`)
 - A **hashmap** mapping each character to its count
 
@@ -87,11 +89,11 @@ The naive way to check anagrams is to **sort both strings** and compare. That wo
 
 Frequency counting does the same job in **O(n)** — a significant improvement for large strings.
 
-| Method | Time Complexity | Space |
-|---|---|---|
-| Sort + compare | O(n log n) | O(1) or O(n) |
-| Frequency count (array) | O(n) | O(1) — fixed 26 slots |
-| Frequency count (hashmap) | O(n) | O(k) — k unique chars |
+| Method                    | Time Complexity | Space                 |
+| ------------------------- | --------------- | --------------------- |
+| Sort + compare            | O(n log n)      | O(1) or O(n)          |
+| Frequency count (array)   | O(n)            | O(1) — fixed 26 slots |
+| Frequency count (hashmap) | O(n)            | O(k) — k unique chars |
 
 This makes frequency counting the **go-to pattern** whenever you need to compare character distributions between strings.
 
@@ -102,18 +104,21 @@ This makes frequency counting the **go-to pattern** whenever you need to compare
 Since we deal with lowercase English letters, we use an array of size 26. Each index represents a letter from `'a'` to `'z'`.
 
 **The idea:**
+
 - Increment count for each character in string 1
 - Decrement count for each character in string 2
 - If all counts are zero at the end → anagram
 
 **Step-by-step for `"listen"` and `"silent"`:**
 
-| Step | Action | Count array change |
-|---|---|---|
-| 1 | Check lengths: 6 == 6 | pass |
-| 2 | Loop `"listen"`: increment each | `l:+1 i:+1 s:+1 t:+1 e:+1 n:+1` |
-| 3 | Loop `"silent"`: decrement each | `s:-1 i:-1 l:-1 e:-1 n:-1 t:-1` |
-| 4 | All counts == 0? | Yes → **anagram** |
+| Step | Action                          | Count array change              |
+| ---- | ------------------------------- | ------------------------------- |
+| 1    | Check lengths: 6 == 6           | pass                            |
+| 2    | Loop `"listen"`: increment each | `l:+1 i:+1 s:+1 t:+1 e:+1 n:+1` |
+| 3    | Loop `"silent"`: decrement each | `s:-1 i:-1 l:-1 e:-1 n:-1 t:-1` |
+| 4    | All counts == 0?                | Yes → **anagram**               |
+
+#### Python
 
 ```python
 # Python — Count Array approach
@@ -139,36 +144,62 @@ print(is_anagram("listen", "silent"))   # Output: True
 print(is_anagram("hello", "world"))     # Output: False
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — Count Array approach
 #include <iostream>
 #include <string>
 #include <vector>
+using namespace std;
 
-bool is_anagram(const std::string& s, const std::string& t) {
-    // Step 1: lengths must match
-    if (s.length() != t.length()) return false;
+// Plain function — check if s and t are anagrams using a count array
+bool is_anagram(const string& s, const string& t) {
+    if (s.length() != t.length()) return false;  // different lengths — can't be anagrams
 
-    // Step 2: count array for 26 lowercase letters
-    std::vector<int> count(26, 0);
+    vector<int> count(26, 0);  // one slot per letter 'a' to 'z'
 
-    // Step 3: increment for s, decrement for t
-    for (int i = 0; i < s.length(); i++) {
-        count[s[i] - 'a']++;
-        count[t[i] - 'a']--;
+    for (int i = 0; i < (int)s.length(); i++) {
+        count[s[i] - 'a']++;   // increment for character in s
+        count[t[i] - 'a']--;   // decrement for character in t
     }
 
-    // Step 4: all counts must be zero
     for (int val : count) {
-        if (val != 0) return false;
+        if (val != 0) return false;  // unequal frequency found
     }
     return true;
 }
 
 int main() {
-    std::cout << is_anagram("listen", "silent") << std::endl;   // Output: 1 (true)
-    std::cout << is_anagram("hello", "world") << std::endl;     // Output: 0 (false)
+    cout << is_anagram("listen", "silent") << endl;   // Output: 1 (true)
+    cout << is_anagram("hello", "world") << endl;     // Output: 0 (false)
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.length() != t.length()) return false;  // quick length check first
+
+        vector<int> count(26, 0);  // fixed-size array for 26 lowercase letters
+
+        for (int i = 0; i < (int)s.length(); i++) {
+            count[s[i] - 'a']++;   // increment for s
+            count[t[i] - 'a']--;   // decrement for t
+        }
+
+        for (int val : count) {
+            if (val != 0) return false;  // any non-zero means frequencies differ
+        }
+        return true;  // all counts balanced — anagram confirmed
+    }
+};
 ```
 
 **Why `ord(s[i]) - ord('a')` in Python / `s[i] - 'a'` in C++?**
@@ -191,6 +222,8 @@ Characters are stored as ASCII numbers internally. `'a'` = 97, `'b'` = 98, ..., 
 When strings contain characters beyond lowercase letters (digits, spaces, Unicode), a **hashmap** is more flexible.
 
 The logic is the same — count characters in string 1, then subtract for string 2. If any count goes negative or a key is missing, not an anagram.
+
+#### Python
 
 ```python
 # Python — HashMap approach
@@ -220,36 +253,66 @@ print(is_anagram_map("anagram", "nagaram"))   # Output: True
 print(is_anagram_map("rat", "car"))           # Output: False
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — HashMap approach
 #include <iostream>
 #include <string>
 #include <unordered_map>
+using namespace std;
 
-bool is_anagram_map(const std::string& s, const std::string& t) {
-    if (s.length() != t.length()) return false;
+// Plain function — check anagram using an unordered_map for any character set
+bool is_anagram_map(const string& s, const string& t) {
+    if (s.length() != t.length()) return false;  // lengths must match
 
-    std::unordered_map<char, int> count;
+    unordered_map<char, int> count;  // maps each character to its frequency
 
-    // Count characters in s
     for (char c : s) {
-        count[c]++;
+        count[c]++;   // build frequency map from s
     }
 
-    // Subtract counts using t
     for (char c : t) {
-        if (count.find(c) == count.end()) return false;   // char not in s
-        count[c]--;
-        if (count[c] < 0) return false;                   // t has more of this char
+        if (count.find(c) == count.end()) return false;  // char in t but not in s
+        count[c]--;                                       // subtract for t
+        if (count[c] < 0) return false;                  // t has more of this char
     }
 
     return true;
 }
 
 int main() {
-    std::cout << is_anagram_map("anagram", "nagaram") << std::endl;   // Output: 1 (true)
-    std::cout << is_anagram_map("rat", "car") << std::endl;           // Output: 0 (false)
+    cout << is_anagram_map("anagram", "nagaram") << endl;   // Output: 1 (true)
+    cout << is_anagram_map("rat", "car") << endl;           // Output: 0 (false)
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.length() != t.length()) return false;  // quick length check
+
+        unordered_map<char, int> count;  // maps char to its net frequency
+
+        for (char c : s) {
+            count[c]++;   // increment for each char in s
+        }
+
+        for (char c : t) {
+            if (count.find(c) == count.end()) return false;  // char not seen in s
+            count[c]--;                                       // reduce the count
+            if (count[c] < 0) return false;                  // t uses this char more than s
+        }
+
+        return true;  // all characters balanced
+    }
+};
 ```
 
 > **Time complexity:** O(n) — one pass through each string.  
@@ -272,13 +335,13 @@ print(is_anagram_counter("listen", "silent"))   # Output: True
 
 ## 7. Approach Comparison
 
-| Feature | Count Array | HashMap |
-|---|---|---|
-| Time Complexity | O(n) | O(n) |
-| Space Complexity | O(1) — fixed 26 slots | O(k) — k unique chars |
-| Works with Unicode | No | Yes |
-| Simpler Code | Yes | Slightly more complex |
-| Best For | Lowercase letters only | Any character set |
+| Feature            | Count Array            | HashMap               |
+| ------------------ | ---------------------- | --------------------- |
+| Time Complexity    | O(n)                   | O(n)                  |
+| Space Complexity   | O(1) — fixed 26 slots  | O(k) — k unique chars |
+| Works with Unicode | No                     | Yes                   |
+| Simpler Code       | Yes                    | Slightly more complex |
+| Best For           | Lowercase letters only | Any character set     |
 
 > **Interview rule of thumb:** Use the count array for lowercase-only problems. It is simpler, has no hash collision risk, and uses constant space. Use a hashmap when the problem allows any characters.
 
@@ -289,6 +352,7 @@ print(is_anagram_counter("listen", "silent"))   # Output: True
 A classic follow-up: given a list of words, group all anagrams together.
 
 **Example:**
+
 ```
 Input:  ["eat", "tea", "tan", "ate", "nat", "bat"]
 Output: [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
@@ -306,6 +370,8 @@ Output: [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
 
 "bat" → sorted → "abt"   ← unique group
 ```
+
+#### Python
 
 ```python
 # Python — Group Anagrams
@@ -328,29 +394,60 @@ print(group_anagrams(words))
 # Output: [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — Group Anagrams
-#include <iostream>
 #include <vector>
 #include <string>
 #include <unordered_map>
 #include <algorithm>
+using namespace std;
 
-std::vector<std::vector<std::string>> group_anagrams(std::vector<std::string>& words) {
-    std::unordered_map<std::string, std::vector<std::string>> groups;
+// Plain function — group words that are anagrams of each other
+vector<vector<string>> group_anagrams(vector<string>& words) {
+    unordered_map<string, vector<string>> groups;  // key: sorted word, value: anagram group
 
-    for (const std::string& word : words) {
-        std::string key = word;
-        std::sort(key.begin(), key.end());   // sort characters to make the key
-        groups[key].push_back(word);
+    for (const string& word : words) {
+        string key = word;
+        sort(key.begin(), key.end());   // sorting chars makes anagrams share the same key
+        groups[key].push_back(word);    // add word to its group
     }
 
-    std::vector<std::vector<std::string>> result;
+    vector<vector<string>> result;
     for (auto& pair : groups) {
-        result.push_back(pair.second);
+        result.push_back(pair.second);  // collect each anagram group
     }
     return result;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> groups;  // sorted key → list of anagrams
+
+        for (const string& word : strs) {
+            string key = word;
+            sort(key.begin(), key.end());   // all anagrams produce the same sorted key
+            groups[key].push_back(word);    // bucket the word under its key
+        }
+
+        vector<vector<string>> result;
+        for (auto& pair : groups) {
+            result.push_back(pair.second);  // each map entry is one anagram group
+        }
+        return result;
+    }
+};
 ```
 
 > **Time complexity:** O(n × k log k) — n words, each sorted in O(k log k) where k is the max word length.  
@@ -362,13 +459,13 @@ std::vector<std::vector<std::string>> group_anagrams(std::vector<std::string>& w
 
 Frequency counting is not just for anagram checks — it is a general pattern for any problem involving **character distribution**. Common uses:
 
-| Problem | How Frequency Counting Helps |
-|---|---|
-| First non-repeating character | Find the first char with count == 1 |
-| All unique characters | Check if any count > 1 |
-| Characters appearing more than once | Collect all chars with count > 1 |
-| Sliding window with constraints | Track character counts in the current window |
-| Minimum window substring | Compare two frequency maps |
+| Problem                             | How Frequency Counting Helps                 |
+| ----------------------------------- | -------------------------------------------- |
+| First non-repeating character       | Find the first char with count == 1          |
+| All unique characters               | Check if any count > 1                       |
+| Characters appearing more than once | Collect all chars with count > 1             |
+| Sliding window with constraints     | Track character counts in the current window |
+| Minimum window substring            | Compare two frequency maps                   |
 
 Once you get comfortable with frequency counting, you will recognise it appearing as a building block in many harder problems.
 

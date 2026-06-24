@@ -195,6 +195,106 @@ for sol in results:
     print()
 ```
 
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — N-Queens Problem using Backtracking
+#include <vector>
+#include <string>
+using namespace std;
+
+// Check if placing a queen at (row, col) is safe
+bool isSafe(vector<string>& board, int row, int col, int n) {
+    // Check the entire column above
+    for (int i = 0; i < row; i++)
+        if (board[i][col] == 'Q') return false;
+
+    // Check upper-left diagonal
+    for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)
+        if (board[i][j] == 'Q') return false;
+
+    // Check upper-right diagonal
+    for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++)
+        if (board[i][j] == 'Q') return false;
+
+    return true;   // no conflict found
+}
+
+// Try placing a queen in each column of the current row
+void solve(vector<string>& board, int row, int n, vector<vector<string>>& solutions) {
+    // Base case: all N queens placed successfully
+    if (row == n) {
+        solutions.push_back(board);   // record this valid board arrangement
+        return;
+    }
+
+    for (int col = 0; col < n; col++) {
+        if (isSafe(board, row, col, n)) {
+            board[row][col] = 'Q';                // place the queen
+            solve(board, row + 1, n, solutions);  // recurse to next row
+            board[row][col] = '.';                // backtrack: remove queen
+        }
+    }
+}
+
+vector<vector<string>> nQueens(int n) {
+    vector<string> board(n, string(n, '.'));   // initialize empty N×N board
+    vector<vector<string>> solutions;
+    solve(board, 0, n, solutions);
+    return solutions;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — N-Queens Problem
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> result;            // stores all valid boards
+        vector<string> board(n, string(n, '.'));  // initialize empty N×N board
+        backtrack(board, 0, n, result);
+        return result;
+    }
+
+private:
+    // Check if placing a queen at (row, col) is safe
+    bool isSafe(vector<string>& board, int row, int col, int n) {
+        // Check the entire column above
+        for (int i = 0; i < row; i++)
+            if (board[i][col] == 'Q') return false;
+
+        // Check upper-left diagonal
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)
+            if (board[i][j] == 'Q') return false;
+
+        // Check upper-right diagonal
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++)
+            if (board[i][j] == 'Q') return false;
+
+        return true;
+    }
+
+    void backtrack(vector<string>& board, int row, int n,
+                   vector<vector<string>>& result) {
+        // Base case: all N queens placed successfully
+        if (row == n) {
+            result.push_back(board);   // record this valid arrangement
+            return;
+        }
+
+        for (int col = 0; col < n; col++) {
+            if (isSafe(board, row, col, n)) {
+                board[row][col] = 'Q';             // place the queen
+                backtrack(board, row + 1, n, result);  // recurse to next row
+                board[row][col] = '.';             // backtrack: remove queen
+            }
+        }
+    }
+};
+```
+
 ---
 
 ## 7. Output for N = 4
@@ -349,6 +449,117 @@ def n_queens_optimized(n):
 results = n_queens_optimized(5)
 print(f"Solutions for N=5: {len(results)}")
 # Output: Solutions for N=5: 10
+```
+
+**C++ (simple):**
+
+```cpp
+// C++ (simple) — Optimized N-Queens using sets
+#include <vector>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+void backtrack(int row, int n, vector<int>& placement,
+               unordered_set<int>& cols,
+               unordered_set<int>& diag1,
+               unordered_set<int>& diag2,
+               vector<vector<string>>& solutions) {
+    if (row == n) {
+        // Build board from placement array and record it
+        vector<string> board;
+        for (int r = 0; r < n; r++) {
+            string line(n, '.');
+            line[placement[r]] = 'Q';   // mark queen position in this row
+            board.push_back(line);
+        }
+        solutions.push_back(board);
+        return;
+    }
+
+    for (int col = 0; col < n; col++) {
+        // O(1) safety check using sets
+        if (cols.count(col) || diag1.count(row - col) || diag2.count(row + col))
+            continue;   // prune: column or diagonal already occupied
+
+        // Place the queen
+        cols.insert(col);
+        diag1.insert(row - col);   // key for left diagonal
+        diag2.insert(row + col);   // key for right diagonal
+        placement[row] = col;
+
+        backtrack(row + 1, n, placement, cols, diag1, diag2, solutions);
+
+        // Backtrack: remove the queen
+        cols.erase(col);
+        diag1.erase(row - col);
+        diag2.erase(row + col);
+        placement[row] = -1;
+    }
+}
+
+vector<vector<string>> nQueensOptimized(int n) {
+    vector<vector<string>> solutions;
+    vector<int> placement(n, -1);   // placement[row] = column of queen in that row
+    unordered_set<int> cols, diag1, diag2;
+    backtrack(0, n, placement, cols, diag1, diag2, solutions);
+    return solutions;
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Optimized N-Queens using sets
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> result;   // stores all valid boards
+        vector<int> placement(n, -1);    // placement[row] = column of queen
+        backtrack(0, n, placement, result);
+        return result;
+    }
+
+private:
+    unordered_set<int> cols;    // occupied columns
+    unordered_set<int> diag1;   // occupied (row - col) left diagonals
+    unordered_set<int> diag2;   // occupied (row + col) right diagonals
+
+    void backtrack(int row, int n, vector<int>& placement,
+                   vector<vector<string>>& result) {
+        if (row == n) {
+            // Build board from placement array and record it
+            vector<string> board;
+            for (int r = 0; r < n; r++) {
+                string line(n, '.');
+                line[placement[r]] = 'Q';   // mark queen position in this row
+                board.push_back(line);
+            }
+            result.push_back(board);
+            return;
+        }
+
+        for (int col = 0; col < n; col++) {
+            // O(1) safety check using sets
+            if (cols.count(col) || diag1.count(row - col) || diag2.count(row + col))
+                continue;   // prune: column or diagonal already occupied
+
+            // Place the queen
+            cols.insert(col);
+            diag1.insert(row - col);   // unique key for left diagonal
+            diag2.insert(row + col);   // unique key for right diagonal
+            placement[row] = col;
+
+            backtrack(row + 1, n, placement, result);   // recurse to next row
+
+            // Backtrack: undo the placement
+            cols.erase(col);
+            diag1.erase(row - col);
+            diag2.erase(row + col);
+            placement[row] = -1;
+        }
+    }
+};
 ```
 
 **Why this works:**

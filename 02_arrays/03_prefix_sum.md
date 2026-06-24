@@ -146,28 +146,30 @@ print(range_sum(prefix, 0, 4))   # Output: 14
 print(range_sum(prefix, 5, 7))   # Output: 17
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
 #include <iostream>
 #include <vector>
 using namespace std;
 
+// Builds prefix sum array: prefix[i] = sum of arr[0..i]
 vector<int> buildPrefix(vector<int> arr) {
     int n = arr.size();
     vector<int> prefix(n);
-    prefix[0] = arr[0];
+    prefix[0] = arr[0];   // base case: first element
 
     for (int i = 1; i < n; i++) {
-        prefix[i] = prefix[i - 1] + arr[i];
+        prefix[i] = prefix[i - 1] + arr[i];   // add current to running total
     }
 
     return prefix;
 }
 
+// Returns sum of arr[l..r] in O(1) using precomputed prefix array
 int rangeSum(vector<int> prefix, int l, int r) {
-    if (l == 0) return prefix[r];
-    return prefix[r] - prefix[l - 1];
+    if (l == 0) return prefix[r];             // no subtraction needed for l=0
+    return prefix[r] - prefix[l - 1];        // subtract everything before index l
 }
 
 int main() {
@@ -180,6 +182,34 @@ int main() {
 
     return 0;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Builds prefix sum array in O(n); answers each range query in O(1)
+    vector<int> buildPrefix(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> prefix(n);
+        prefix[0] = arr[0];   // first prefix equals first element
+
+        for (int i = 1; i < n; i++) {
+            prefix[i] = prefix[i - 1] + arr[i];   // cumulative sum up to index i
+        }
+        return prefix;
+    }
+
+    // Sum of arr[l..r] using prefix array — O(1)
+    int rangeSum(vector<int>& prefix, int l, int r) {
+        if (l == 0) return prefix[r];         // no subtraction when l is 0
+        return prefix[r] - prefix[l - 1];    // cancel out prefix before l
+    }
+};
 ```
 
 Build once in O(n), answer each query in O(1).
@@ -215,23 +245,53 @@ print(range_sum_clean(prefix, 2, 5))   # Output: 19
 print(range_sum_clean(prefix, 0, 4))   # Output: 14
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
+#include <vector>
+using namespace std;
+
+// Cleaner version: prefix[0] = 0, so no special case needed for l=0
 vector<int> buildPrefixClean(vector<int> arr) {
     int n = arr.size();
-    vector<int> prefix(n + 1, 0);   // size n+1, all zeros
+    vector<int> prefix(n + 1, 0);   // size n+1; prefix[0] = 0 always
 
     for (int i = 0; i < n; i++) {
-        prefix[i + 1] = prefix[i] + arr[i];
+        prefix[i + 1] = prefix[i] + arr[i];   // shift by one compared to the basic version
     }
-
     return prefix;
 }
 
+// No edge case needed — prefix[0] = 0 handles l=0 naturally
 int rangeSumClean(vector<int> prefix, int l, int r) {
-    return prefix[r + 1] - prefix[l];   // no edge case needed
+    return prefix[r + 1] - prefix[l];   // consistent formula for all l values
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // n+1 size prefix array — eliminates special-case handling for l=0
+    vector<int> buildPrefixClean(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> prefix(n + 1, 0);   // extra slot at front; prefix[0] is sentinel 0
+
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + arr[i];   // accumulate running total
+        }
+        return prefix;
+    }
+
+    // Uniform formula — works for any l without branching
+    int rangeSumClean(vector<int>& prefix, int l, int r) {
+        return prefix[r + 1] - prefix[l];   // prefix[0]=0 makes l=0 work naturally
+    }
+};
 ```
 
 > Both versions work. The n+1 version is cleaner for contests. Pick one style and stay consistent.
@@ -287,28 +347,63 @@ print(subarray_sum([1, 1, 1], 2))        # Output: 2  ([1,1] at pos 0 and pos 1)
 print(subarray_sum([1, 2, 3, -2, 5], 5)) # Output: 2  ([2,3] and [5])
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
+#include <vector>
 #include <unordered_map>
+using namespace std;
 
+// Counts subarrays whose elements sum exactly to k — O(n) time, O(n) space
 int subarraySum(vector<int> arr, int k) {
     int count = 0;
     int currentSum = 0;
     unordered_map<int, int> freq;
-    freq[0] = 1;   // base case
+    freq[0] = 1;   // base case: empty prefix has sum 0, seen once
 
     for (int num : arr) {
         currentSum += num;
 
+        // if (currentSum - k) was seen before, a subarray ending here sums to k
         if (freq.count(currentSum - k))
-            count += freq[currentSum - k];
+            count += freq[currentSum - k];   // add all such subarrays
 
-        freq[currentSum]++;
+        freq[currentSum]++;   // record this prefix sum
     }
 
     return count;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    // LeetCode 560: Subarray Sum Equals K — O(n) time, O(n) space
+    int subarraySum(vector<int>& nums, int k) {
+        int count = 0;
+        int currentSum = 0;
+        unordered_map<int, int> freq;
+        freq[0] = 1;   // prefix sum of 0 has appeared once (empty prefix)
+
+        for (int num : nums) {
+            currentSum += num;   // running prefix sum
+
+            // check if a previous prefix sum makes current subarray sum = k
+            if (freq.count(currentSum - k))
+                count += freq[currentSum - k];
+
+            freq[currentSum]++;   // store this prefix sum for future lookups
+        }
+
+        return count;
+    }
+};
 ```
 
 ---
@@ -340,22 +435,52 @@ print(find_equilibrium(arr))   # Output: 3
 # At index 3 (value 6): left = 1+7+3 = 11, right = 5+6 = 11 ✓
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
+#include <vector>
+using namespace std;
+
+// Returns the index where left sum equals right sum, or -1 if none
 int findEquilibrium(vector<int> arr) {
     int total = 0;
-    for (int x : arr) total += x;
+    for (int x : arr) total += x;   // compute total sum in one pass
 
     int leftSum = 0;
-    for (int i = 0; i < arr.size(); i++) {
-        int rightSum = total - leftSum - arr[i];
-        if (leftSum == rightSum) return i;
-        leftSum += arr[i];
+    for (int i = 0; i < (int)arr.size(); i++) {
+        int rightSum = total - leftSum - arr[i];   // right = everything not on left and not arr[i]
+        if (leftSum == rightSum) return i;         // found equilibrium index
+        leftSum += arr[i];                         // include arr[i] in left sum for next iteration
     }
 
-    return -1;
+    return -1;   // no equilibrium exists
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Returns equilibrium index where leftSum == rightSum — O(n) time, O(1) space
+    int findEquilibrium(vector<int>& arr) {
+        int total = 0;
+        for (int x : arr) total += x;   // first pass: get total sum
+
+        int leftSum = 0;
+        for (int i = 0; i < (int)arr.size(); i++) {
+            // right sum = total minus left part minus current element
+            int rightSum = total - leftSum - arr[i];
+            if (leftSum == rightSum) return i;   // pivot found
+            leftSum += arr[i];   // grow left sum by including current element
+        }
+
+        return -1;
+    }
+};
 ```
 
 ---
@@ -387,6 +512,64 @@ print(count_even_in_range(prefix, 1, 5))   # Output: 3  (4, 8, 10)
 ```
 
 > **Key insight:** Prefix sum is really a **prefix aggregate** pattern. It works for sums, counts, and more — any operation that can be "undone" by subtraction.
+
+#### C++ (simple):
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Builds a prefix count of even numbers: prefix[i] = # of evens in arr[0..i-1]
+vector<int> buildEvenPrefix(vector<int> arr) {
+    int n = arr.size();
+    vector<int> prefix(n + 1, 0);   // n+1 size for clean range queries
+
+    for (int i = 0; i < n; i++) {
+        // Add 1 if current element is even, else carry forward the previous count
+        prefix[i + 1] = prefix[i] + (arr[i] % 2 == 0 ? 1 : 0);
+    }
+    return prefix;
+}
+
+// Returns count of even numbers in arr[l..r] — O(1)
+int countEvenInRange(vector<int> prefix, int l, int r) {
+    return prefix[r + 1] - prefix[l];   // same formula as range sum
+}
+
+int main() {
+    vector<int> arr = {2, 3, 4, 7, 8, 10, 1};
+    vector<int> prefix = buildEvenPrefix(arr);
+    cout << countEvenInRange(prefix, 1, 5) << endl;   // Output: 3  (4, 8, 10)
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Builds prefix count of even numbers — O(n) build, O(1) per query
+    vector<int> buildEvenPrefix(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> prefix(n + 1, 0);
+
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + (arr[i] % 2 == 0 ? 1 : 0);   // count evens
+        }
+        return prefix;
+    }
+
+    // Count of even numbers in arr[l..r] — O(1)
+    int countEvenInRange(vector<int>& prefix, int l, int r) {
+        return prefix[r + 1] - prefix[l];   // prefix aggregate subtraction
+    }
+};
+```
 
 ---
 

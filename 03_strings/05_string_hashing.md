@@ -126,6 +126,8 @@ $$\text{hash} = 1 \cdot 31^0 + 2 \cdot 31^1 + 3 \cdot 31^2 = 1 + 62 + 961 = 1024
 | `'c'`     | 3     | 31² = 961 | 2883         |
 | **Total** |       |           | **2946**     |
 
+#### Python
+
 ```python
 # Python — Simple hash computation
 def compute_hash(s):
@@ -145,28 +147,55 @@ print(compute_hash("abc"))   # Output: 2946
 print(compute_hash("bca"))   # Output: different value
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — Simple hash computation
 #include <iostream>
 #include <string>
+using namespace std;
 
-long long compute_hash(const std::string& s) {
-    const long long p = 31;
-    const long long M = 1e9 + 9;
+// Plain function — compute polynomial rolling hash of a string
+long long compute_hash(const string& s) {
+    const long long p = 31;      // prime base fitting 26 lowercase letters
+    const long long M = 1e9 + 9; // large prime modulus to prevent overflow
     long long h = 0;
-    long long p_power = 1;   // p^0 = 1
+    long long p_power = 1;   // starts at p^0 = 1
 
     for (char ch : s) {
-        h = (h + (ch - 'a' + 1) * p_power) % M;
-        p_power = (p_power * p) % M;
+        h = (h + (ch - 'a' + 1) * p_power) % M;  // add weighted char contribution
+        p_power = (p_power * p) % M;               // move to next power of p
     }
     return h;
 }
 
 int main() {
-    std::cout << compute_hash("abc") << std::endl;   // Output: 2946
-    std::cout << compute_hash("bca") << std::endl;   // Different value
+    cout << compute_hash("abc") << endl;   // Output: 2946
+    cout << compute_hash("bca") << endl;   // Different value
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    // Compute a polynomial rolling hash for the given string
+    long long computeHash(string s) {
+        const long long p = 31;       // prime base for 26 lowercase letters
+        const long long M = 1e9 + 9;  // large prime modulus
+        long long h = 0;
+        long long p_power = 1;  // represents p^i at each step
+
+        for (char ch : s) {
+            h = (h + (ch - 'a' + 1) * p_power) % M;  // accumulate hash
+            p_power = (p_power * p) % M;               // increment power
+        }
+        return h;
+    }
+};
 ```
 
 > Notice `"abc"` and `"bca"` produce **different hashes** even though they contain the same characters. Position matters in the formula — this distinguishes hashing from frequency counting.
@@ -192,6 +221,8 @@ prefix_hash[4] = hash("abcd")
 prefix_hash[5] = hash("abcde")
 ```
 
+#### Python
+
 ```python
 # Python — Build prefix hash array
 def build_prefix_hash(s):
@@ -214,27 +245,58 @@ prefix_hash, p_power = build_prefix_hash(s)
 print(prefix_hash)   # [0, 1, 63, 2946, ...]
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — Build prefix hash array
 #include <vector>
 #include <string>
+using namespace std;
 
-std::pair<std::vector<long long>, std::vector<long long>>
-build_prefix_hash(const std::string& s) {
+// Plain function — build cumulative hash array so any substring hash is O(1)
+pair<vector<long long>, vector<long long>>
+build_prefix_hash(const string& s) {
     const long long p = 31;
     const long long M = 1e9 + 9;
     int n = s.length();
 
-    std::vector<long long> prefix_hash(n + 1, 0);
-    std::vector<long long> p_power(n + 1, 1);
+    vector<long long> prefix_hash(n + 1, 0);  // prefix_hash[0] = 0
+    vector<long long> p_power(n + 1, 1);       // p_power[i] = p^i % M
 
     for (int i = 1; i <= n; i++) {
         prefix_hash[i] = (prefix_hash[i - 1] + (s[i - 1] - 'a' + 1) * p_power[i - 1]) % M;
-        p_power[i] = (p_power[i - 1] * p) % M;
+        p_power[i] = (p_power[i - 1] * p) % M;  // precompute next power
     }
 
     return {prefix_hash, p_power};
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    // Precompute prefix hashes and powers for O(1) substring hash queries
+    void buildPrefixHash(const string& s,
+                         vector<long long>& prefix_hash,
+                         vector<long long>& p_power) {
+        const long long p = 31;
+        const long long M = 1e9 + 9;
+        int n = s.length();
+
+        prefix_hash.assign(n + 1, 0);  // index 0 is sentinel with value 0
+        p_power.assign(n + 1, 1);       // p_power[i] = p^i mod M
+
+        for (int i = 1; i <= n; i++) {
+            prefix_hash[i] = (prefix_hash[i - 1] + (s[i - 1] - 'a' + 1) * p_power[i - 1]) % M;
+            p_power[i] = (p_power[i - 1] * p) % M;  // build power table alongside
+        }
+    }
+};
 ```
 
 ---
@@ -246,6 +308,8 @@ To compare two substrings `s[l1..r1]` and `s[l2..r2]`, extract their hashes and 
 **The comparison formula:**
 
 $$\text{hash}(s[l..r]) \cdot p^{l_2} \equiv \text{hash}(s[l_2..r_2]) \cdot p^{l_1} \pmod{M}$$
+
+#### Python
 
 ```python
 # Python — Compare two substrings in O(1)
@@ -269,6 +333,71 @@ print(are_substrings_equal(s, 0, 2, 3, 5))   # Output: True  ("abc" == "abc")
 print(are_substrings_equal(s, 0, 1, 2, 3))   # Output: False ("ab"  != "ca")
 ```
 
+#### C++ (simple):
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+
+// Plain function — compare two substrings of s in O(1) using prefix hashes
+bool areSubstringsEqual(const string& s,
+                        const vector<long long>& prefix_hash,
+                        const vector<long long>& p_power,
+                        int l1, int r1, int l2, int r2) {
+    const long long M = 1e9 + 9;
+
+    // Extract raw hash for each substring (+ M to avoid negative values from subtraction)
+    long long hash1 = (prefix_hash[r1 + 1] - prefix_hash[l1] + M) % M;
+    long long hash2 = (prefix_hash[r2 + 1] - prefix_hash[l2] + M) % M;
+
+    // Cross-multiply to account for different starting positions
+    long long lhs = (hash1 * p_power[l2]) % M;
+    long long rhs = (hash2 * p_power[l1]) % M;
+
+    return lhs == rhs;  // equal hashes — substrings match
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    // Check if two substrings of s are equal in O(1) using prefix hashes
+    bool areSubstringsEqual(string s, int l1, int r1, int l2, int r2) {
+        const long long p = 31, M = 1e9 + 9;
+        vector<long long> ph, pw;
+        buildPrefixHash(s, ph, pw);  // O(n) setup
+
+        // Raw hash for each substring; + M prevents negative after subtraction
+        long long hash1 = (ph[r1 + 1] - ph[l1] + M) % M;
+        long long hash2 = (ph[r2 + 1] - ph[l2] + M) % M;
+
+        // Normalise positions before comparing
+        return (hash1 * pw[l2]) % M == (hash2 * pw[l1]) % M;
+    }
+
+private:
+    void buildPrefixHash(const string& s,
+                         vector<long long>& ph,
+                         vector<long long>& pw) {
+        const long long p = 31, M = 1e9 + 9;
+        int n = s.length();
+        ph.assign(n + 1, 0);
+        pw.assign(n + 1, 1);
+        for (int i = 1; i <= n; i++) {
+            ph[i] = (ph[i - 1] + (s[i - 1] - 'a' + 1) * pw[i - 1]) % M;  // accumulate hash
+            pw[i] = (pw[i - 1] * p) % M;                                   // next power
+        }
+    }
+};
+```
+
 **Why `+ M` before `% M`?** The subtraction `prefix_hash[r+1] - prefix_hash[l]` can go negative due to modular arithmetic. Adding `M` before taking mod ensures the result stays positive.
 
 ---
@@ -281,6 +410,8 @@ A **collision** happens when two different strings produce the same hash value. 
 
 Compute **two independent hashes** with different bases and moduli. Two strings are considered equal only if **both** hashes match. This reduces collision probability to practically zero.
 
+#### Python
+
 ```python
 # Python — Double hashing
 def compute_double_hash(s):
@@ -292,8 +423,8 @@ def compute_double_hash(s):
 
     for ch in s:
         val = ord(ch) - ord('a') + 1
-        h1 = (h1 + val * pow1) % M1
-        h2 = (h2 + val * pow2) % M2
+        h1 = (h1 + val * pow1) % M1   # first hash using base p1
+        h2 = (h2 + val * pow2) % M2   # second hash using base p2
         pow1 = (pow1 * p1) % M1
         pow2 = (pow2 * p2) % M2
 
@@ -305,28 +436,60 @@ print(compute_double_hash("abc"))   # Same pair — strings are equal
 print(compute_double_hash("bca"))   # Different pair
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — Double hashing
 #include <string>
 #include <utility>
+using namespace std;
 
-std::pair<long long, long long> compute_double_hash(const std::string& s) {
-    const long long p1 = 31, M1 = 1e9 + 9;
-    const long long p2 = 37, M2 = 1e9 + 7;
+// Plain function — compute two independent hashes to reduce collision risk
+pair<long long, long long> compute_double_hash(const string& s) {
+    const long long p1 = 31, M1 = 1e9 + 9;  // first hash parameters
+    const long long p2 = 37, M2 = 1e9 + 7;  // second hash parameters
 
     long long h1 = 0, h2 = 0;
     long long pow1 = 1, pow2 = 1;
 
     for (char ch : s) {
-        int val = ch - 'a' + 1;
-        h1 = (h1 + val * pow1) % M1;
-        h2 = (h2 + val * pow2) % M2;
-        pow1 = (pow1 * p1) % M1;
-        pow2 = (pow2 * p2) % M2;
+        int val = ch - 'a' + 1;             // map 'a'→1, ..., 'z'→26
+        h1 = (h1 + val * pow1) % M1;        // accumulate first hash
+        h2 = (h2 + val * pow2) % M2;        // accumulate second hash
+        pow1 = (pow1 * p1) % M1;            // advance first power
+        pow2 = (pow2 * p2) % M2;            // advance second power
     }
 
-    return {h1, h2};
+    return {h1, h2};  // both must agree for strings to be equal
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+#include <utility>
+using namespace std;
+
+class Solution {
+public:
+    // Compute two independent hashes; both must match for string equality
+    pair<long long, long long> computeDoubleHash(string s) {
+        const long long p1 = 31, M1 = 1e9 + 9;  // first base and modulus
+        const long long p2 = 37, M2 = 1e9 + 7;  // second base and modulus
+
+        long long h1 = 0, h2 = 0;
+        long long pow1 = 1, pow2 = 1;
+
+        for (char ch : s) {
+            int val = ch - 'a' + 1;          // char value starting from 1
+            h1 = (h1 + val * pow1) % M1;     // update hash 1
+            h2 = (h2 + val * pow2) % M2;     // update hash 2
+            pow1 = (pow1 * p1) % M1;         // next power for hash 1
+            pow2 = (pow2 * p2) % M2;         // next power for hash 2
+        }
+        return {h1, h2};  // pair — equality requires both components to match
+    }
+};
 ```
 
 > **Rule of thumb:** Use single hashing for learning and most competitive programming. Use double hashing when correctness is critical or the problem has anti-hash tests.

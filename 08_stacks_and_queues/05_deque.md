@@ -131,7 +131,7 @@ print(dq[-1])       # Output: 20  (back)
 print(dq)           # Output: deque([10, 20])
 ```
 
-### C++ — `std::deque`
+**C++ (simple):**
 
 C++ provides `std::deque` in the `<deque>` header. It supports $O(1)$ amortised push/pop at both ends.
 
@@ -163,6 +163,32 @@ int main() {
 
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — deque operations using std::deque<int>
+#include <iostream>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+    void demonstrateDeque() {
+        deque<int> dq;             // declare a double-ended queue
+
+        dq.push_back(10);          // add 10 to the rear → [10]
+        dq.push_back(20);          // add 20 to the rear → [10, 20]
+        dq.push_back(30);          // add 30 to the rear → [10, 20, 30]
+        dq.push_front(5);          // add 5 to the front → [5, 10, 20, 30]
+        dq.pop_back();             // remove from rear (30) → [5, 10, 20]
+        dq.pop_front();            // remove from front (5) → [10, 20]
+
+        cout << dq.front() << "\n"; // peek front: Output 10
+        cout << dq.back()  << "\n"; // peek rear:  Output 20
+    }
+};
 ```
 
 ---
@@ -218,7 +244,7 @@ print(sliding_window_max(arr, 3))
 # Output: [3, 3, 5, 5, 6, 7]
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -256,6 +282,41 @@ int main() {
 }
 ```
 
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — LeetCode #239: Sliding Window Maximum
+#include <vector>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        deque<int> dq;             // stores indices in decreasing order of values
+        vector<int> result;
+
+        for (int i = 0; i < (int)nums.size(); i++) {
+            // Remove index that has fallen outside the current window
+            if (!dq.empty() && dq.front() < i - k + 1)
+                dq.pop_front();
+
+            // Remove indices from back whose values are ≤ current
+            // (they can never be the window maximum for any future window)
+            while (!dq.empty() && nums[dq.back()] < nums[i])
+                dq.pop_back();
+
+            dq.push_back(i);       // push current index to the back
+
+            // Record max once the first full window is formed
+            if (i >= k - 1)
+                result.push_back(nums[dq.front()]); // front = index of current max
+        }
+        return result;
+    }
+};
+```
+
 Each index is pushed and popped **at most once**, giving $O(n)$ total — compared to $O(nk)$ brute force.
 
 ---
@@ -281,7 +342,7 @@ print(is_palindrome("racecar"))  # Output: True
 print(is_palindrome("hello"))    # Output: False
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -305,6 +366,30 @@ int main() {
     cout << isPalindrome("hello")   << "\n";  // 0 (false)
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — palindrome check using std::deque<char>
+#include <deque>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        deque<char> dq(s.begin(), s.end()); // load all characters into deque
+
+        while (dq.size() > 1) {
+            if (dq.front() != dq.back())
+                return false;       // mismatch at outer ends — not a palindrome
+            dq.pop_front();         // remove front character
+            dq.pop_back();          // remove back character
+        }
+        return true;                // all pairs matched
+    }
+};
 ```
 
 Runs in $O(n)$ time with $O(n)$ space. Clean, readable, and mirrors the definition of a palindrome directly.
@@ -346,11 +431,87 @@ redo()
 print(list(actions))     # ['type A', 'type B', 'type C']
 ```
 
+**C++ (simple):**
+
+```cpp
+// C++ — Undo and redo using two deques
+#include <iostream>
+#include <deque>
+#include <string>
+using namespace std;
+
+deque<string> actions;       // history of performed actions
+deque<string> redo_stack;    // actions that were undone
+
+void do_action(const string& action) {
+    actions.push_back(action);   // add new action to history
+    redo_stack.clear();          // new action clears the redo stack
+}
+
+void undo() {
+    if (!actions.empty()) {
+        redo_stack.push_back(actions.back()); // save to redo stack
+        actions.pop_back();                    // remove last action
+    }
+}
+
+void redo_action() {
+    if (!redo_stack.empty()) {
+        actions.push_back(redo_stack.back()); // restore last undone action
+        redo_stack.pop_back();
+    }
+}
+
+int main() {
+    do_action("type A");
+    do_action("type B");
+    do_action("type C");
+    undo();         // actions: ["type A", "type B"]
+    redo_action();  // actions: ["type A", "type B", "type C"]
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — undo/redo using std::deque<string>
+#include <deque>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    deque<string> actions;        // history of performed actions
+    deque<string> redoStack;      // actions that were undone
+
+    void doAction(const string& action) {
+        actions.push_back(action); // push new action to the back of history
+        redoStack.clear();         // any new action clears the redo stack
+    }
+
+    void undo() {
+        if (!actions.empty()) {
+            redoStack.push_back(actions.back()); // move last action to redo
+            actions.pop_back();                   // remove from history
+        }
+    }
+
+    void redo() {
+        if (!redoStack.empty()) {
+            actions.push_back(redoStack.back()); // restore last undone action
+            redoStack.pop_back();                 // remove from redo stack
+        }
+    }
+};
+```
+
 ---
 
 ### Using Deque as Stack and Queue
 
 **As a Stack (LIFO)** — only use `append` and `pop` (same end):
+
+**Python:**
 
 ```python
 from collections import deque
@@ -361,6 +522,8 @@ stack.append(2)
 stack.append(3)
 print(stack.pop())    # Output: 3  (last in, first out)
 ```
+
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -377,7 +540,29 @@ int main() {
 }
 ```
 
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — deque used as a stack (LIFO)
+#include <iostream>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+    void dequeAsStack() {
+        deque<int> stk;            // use deque restricting to rear end only
+        stk.push_back(1);          // push: add to rear
+        stk.push_back(2);          // push: add to rear
+        stk.push_back(3);          // push: add to rear
+        cout << stk.back() << "\n"; stk.pop_back(); // pop: Output 3 (LIFO)
+    }
+};
+```
+
 **As a Queue (FIFO)** — `append` to rear, `popleft` from front:
+
+**Python:**
 
 ```python
 from collections import deque
@@ -388,6 +573,8 @@ queue.append(2)
 queue.append(3)
 print(queue.popleft())   # Output: 1  (first in, first out)
 ```
+
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -402,6 +589,26 @@ int main() {
     cout << queue.front() << "\n"; queue.pop_front();  // Output: 1
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — deque used as a queue (FIFO)
+#include <iostream>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+    void dequeAsQueue() {
+        deque<int> q;              // use deque restricting to push_back/pop_front
+        q.push_back(1);            // enqueue: add to rear
+        q.push_back(2);            // enqueue: add to rear
+        q.push_back(3);            // enqueue: add to rear
+        cout << q.front() << "\n"; q.pop_front(); // dequeue: Output 1 (FIFO)
+    }
+};
 ```
 
 ---

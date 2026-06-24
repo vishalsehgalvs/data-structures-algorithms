@@ -64,6 +64,60 @@ print(max_sum_brute([2, 1, 5, 1, 3, 2], 3))   # Output: 9
 # Time: O(n × k)  — too slow for large inputs
 ```
 
+#### C++ (simple):
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Brute force: check every window of size k — O(n×k), too slow
+int maxSumBrute(vector<int> arr, int k) {
+    int n = arr.size();
+    int maxSum = 0;
+
+    for (int i = 0; i <= n - k; i++) {          // start of each window: O(n)
+        int windowSum = 0;
+        for (int j = i; j < i + k; j++) {       // sum k elements: O(k)
+            windowSum += arr[j];
+        }
+        maxSum = max(maxSum, windowSum);
+    }
+    return maxSum;
+}
+
+int main() {
+    vector<int> arr = {2, 1, 5, 1, 3, 2};
+    cout << maxSumBrute(arr, 3) << endl;   // Output: 9
+    return 0;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // Brute force: O(n×k) — illustrates why sliding window is needed
+    int maxSumBrute(vector<int>& arr, int k) {
+        int n = arr.size();
+        int maxSum = 0;
+
+        for (int i = 0; i <= n - k; i++) {      // outer loop: each window start
+            int windowSum = 0;
+            for (int j = i; j < i + k; j++) {   // inner loop: sum k elements
+                windowSum += arr[j];
+            }
+            maxSum = max(maxSum, windowSum);     // track global maximum
+        }
+        return maxSum;
+    }
+};
+```
+
 For n = 100,000 and k = 1,000: that's 100 million operations. The sliding window does the same in 100,000.
 
 ---
@@ -136,11 +190,12 @@ arr = [2, 1, 5, 1, 3, 2]
 print(max_sum_fixed_window(arr, 3))   # Output: 9
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 int maxSumFixedWindow(vector<int> arr, int k) {
@@ -149,15 +204,14 @@ int maxSumFixedWindow(vector<int> arr, int k) {
     // Step 1: compute sum of the first window
     int windowSum = 0;
     for (int i = 0; i < k; i++)
-        windowSum += arr[i];
+        windowSum += arr[i];   // sum the first k elements
 
-    int maxSum = windowSum;
+    int maxSum = windowSum;   // first window is our starting best
 
-    // Step 2: slide the window
+    // Step 2: slide the window one position at a time
     for (int i = k; i < n; i++) {
-        // add new element on right, remove element on left
-        windowSum += arr[i] - arr[i - k];
-        maxSum = max(maxSum, windowSum);
+        windowSum += arr[i] - arr[i - k];   // add right element, remove left element
+        maxSum = max(maxSum, windowSum);    // update best if current window is bigger
     }
 
     return maxSum;
@@ -168,6 +222,37 @@ int main() {
     cout << maxSumFixedWindow(arr, 3) << endl;   // Output: 9
     return 0;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    // Maximum sum of any k consecutive elements — O(n) time, O(1) space
+    int maxSumFixedWindow(vector<int>& arr, int k) {
+        int n = arr.size();
+
+        // Build the first window sum
+        int windowSum = 0;
+        for (int i = 0; i < k; i++)
+            windowSum += arr[i];   // sum first k elements
+
+        int maxSum = windowSum;   // best so far
+
+        // Slide: add incoming element on right, drop outgoing element on left
+        for (int i = k; i < n; i++) {
+            windowSum += arr[i] - arr[i - k];   // O(1) adjustment
+            maxSum = max(maxSum, windowSum);
+        }
+
+        return maxSum;
+    }
+};
 ```
 
 We never re-added all three numbers from scratch — just adjusted the running sum. That's the power of sliding window.
@@ -202,24 +287,31 @@ arr = [1, 3, 2, 6, 4, 2]
 print(max_average(arr, 4))   # Output: 3.75
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
 double maxAverage(vector<int> arr, int k) {
     int n = arr.size();
 
+    // Build the first window sum
     int windowSum = 0;
     for (int i = 0; i < k; i++)
-        windowSum += arr[i];
+        windowSum += arr[i];   // sum the first k elements
 
-    int maxSum = windowSum;
+    int maxSum = windowSum;   // track max sum (divide by k at the end)
 
+    // Slide: adjust by adding the new element and dropping the old one
     for (int i = k; i < n; i++) {
-        windowSum += arr[i] - arr[i - k];
+        windowSum += arr[i] - arr[i - k];   // one subtraction + one addition
         maxSum = max(maxSum, windowSum);
     }
 
-    return (double)maxSum / k;
+    return (double)maxSum / k;   // convert sum to average
 }
 
 int main() {
@@ -227,6 +319,35 @@ int main() {
     cout << maxAverage(arr, 4) << endl;   // Output: 3.75
     return 0;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    // Maximum average of any k consecutive elements — O(n) time, O(1) space
+    double findMaxAverage(vector<int>& arr, int k) {
+        int n = arr.size();
+
+        int windowSum = 0;
+        for (int i = 0; i < k; i++)
+            windowSum += arr[i];   // build first window
+
+        int maxSum = windowSum;
+
+        for (int i = k; i < n; i++) {
+            windowSum += arr[i] - arr[i - k];   // slide: add right, remove left
+            maxSum = max(maxSum, windowSum);     // keep track of best sum
+        }
+
+        return (double)maxSum / k;   // divide once at the end
+    }
+};
 ```
 
 ---
@@ -285,29 +406,33 @@ print(smallest_subarray_with_sum(arr, 7))   # Output: 2  ([4, 3])
 print(smallest_subarray_with_sum([1, 1, 1], 10))   # Output: -1 (not possible)
 ```
 
-#### C++
+#### C++ (simple):
 
 ```cpp
+#include <iostream>
+#include <vector>
 #include <climits>
+#include <algorithm>
+using namespace std;
 
 int smallestSubarrayWithSum(vector<int> arr, int target) {
     int n = arr.size();
     int left = 0;
     int currentSum = 0;
-    int minLength = INT_MAX;   // start with max possible value
+    int minLength = INT_MAX;   // start with the largest possible int
 
     for (int right = 0; right < n; right++) {
-        currentSum += arr[right];   // expand window on the right
+        currentSum += arr[right];   // expand window: add element on the right
 
-        // shrink from left while condition is still satisfied
+        // shrink from left while the window sum meets the target
         while (currentSum >= target) {
-            minLength = min(minLength, right - left + 1);
+            minLength = min(minLength, right - left + 1);   // window length = right - left + 1
             currentSum -= arr[left];   // remove leftmost element
-            left++;
+            left++;                    // move left boundary forward
         }
     }
 
-    return minLength == INT_MAX ? -1 : minLength;
+    return minLength == INT_MAX ? -1 : minLength;   // -1 means no valid window found
 }
 
 int main() {
@@ -315,6 +440,39 @@ int main() {
     cout << smallestSubarrayWithSum(arr, 7) << endl;   // Output: 2
     return 0;
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <vector>
+#include <climits>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    // Smallest subarray with sum ≥ target — O(n) time, O(1) space
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        int left = 0;
+        int currentSum = 0;
+        int minLength = INT_MAX;   // initialize to infinity equivalent
+
+        for (int right = 0; right < n; right++) {
+            currentSum += nums[right];   // extend window on the right
+
+            // while current window satisfies condition, try to shrink it
+            while (currentSum >= target) {
+                minLength = min(minLength, right - left + 1);   // record window size
+                currentSum -= nums[left];   // drop leftmost element
+                left++;                     // shrink from the left
+            }
+        }
+
+        return minLength == INT_MAX ? 0 : minLength;   // LeetCode returns 0 for no answer
+    }
+};
 ```
 
 Both `left` and `right` only move **forward** — so total operations are at most 2n → **O(n)**.

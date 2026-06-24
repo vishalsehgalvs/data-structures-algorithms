@@ -108,31 +108,60 @@ print(result)
 # Output: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Generate all subsets using backtracking
-#include <iostream>
+// C++ (simple) — Generate all subsets using backtracking
 #include <vector>
+using namespace std;
 
-void backtrack(const std::vector<int>& nums, int start,
-               std::vector<int>& current,
-               std::vector<std::vector<int>>& result) {
-
-    result.push_back(current);   // Every state is a valid subset
+void backtrack(const vector<int>& nums, int start,
+               vector<int>& current,
+               vector<vector<int>>& result) {
+    result.push_back(current);   // every state is a valid subset — record it
 
     for (int i = start; i < (int)nums.size(); i++) {
-        current.push_back(nums[i]);              // Step 1: Choose
-        backtrack(nums, i + 1, current, result); // Step 2: Explore
-        current.pop_back();                      // Step 3: Unchoose
+        current.push_back(nums[i]);              // Step 1: Choose nums[i]
+        backtrack(nums, i + 1, current, result); // Step 2: Explore with next index
+        current.pop_back();                      // Step 3: Unchoose (backtrack)
     }
 }
 
 int main() {
-    std::vector<int> nums = {1, 2, 3};
-    std::vector<std::vector<int>> result;
-    std::vector<int> current;
+    vector<int> nums = {1, 2, 3};
+    vector<vector<int>> result;
+    vector<int> current;
     backtrack(nums, 0, current, result);
     // Output: [], [1], [1,2], [1,2,3], [1,3], [2], [2,3], [3]
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Generate all subsets using backtracking
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> result;   // stores all subsets
+        vector<int> current;          // current subset being built
+        backtrack(nums, 0, current, result);
+        return result;
+    }
+
+private:
+    void backtrack(vector<int>& nums, int start,
+                   vector<int>& current,
+                   vector<vector<int>>& result) {
+        result.push_back(current);   // every state is a valid subset — record it
+
+        for (int i = start; i < (int)nums.size(); i++) {
+            current.push_back(nums[i]);              // Step 1: Choose nums[i]
+            backtrack(nums, i + 1, current, result); // Step 2: Explore with next index
+            current.pop_back();                      // Step 3: Unchoose (backtrack)
+        }
+    }
+};
 ```
 
 The `start` index ensures we never pick the same element twice and always move forward in the array, which prevents duplicate subsets.
@@ -237,40 +266,77 @@ print(result)
 # Output: [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Generate all permutations using backtracking
-#include <iostream>
+// C++ (simple) — Generate all permutations using backtracking
 #include <vector>
+using namespace std;
 
-void backtrack(const std::vector<int>& nums,
-               std::vector<bool>& used,
-               std::vector<int>& current,
-               std::vector<std::vector<int>>& result) {
-
+void backtrack(const vector<int>& nums,
+               vector<bool>& used,
+               vector<int>& current,
+               vector<vector<int>>& result) {
+    // Base case: all elements have been placed
     if (current.size() == nums.size()) {
-        result.push_back(current);
+        result.push_back(current);   // record complete permutation
         return;
     }
 
     for (int i = 0; i < (int)nums.size(); i++) {
-        if (used[i]) continue;
-
+        if (used[i]) continue;           // skip elements already in current path
         used[i] = true;
         current.push_back(nums[i]);              // Step 1: Choose
         backtrack(nums, used, current, result);  // Step 2: Explore
         current.pop_back();                      // Step 3: Unchoose
-        used[i] = false;
+        used[i] = false;                         // restore used flag
     }
 }
 
 int main() {
-    std::vector<int> nums = {1, 2, 3};
-    std::vector<std::vector<int>> result;
-    std::vector<int> current;
-    std::vector<bool> used(nums.size(), false);
+    vector<int> nums = {1, 2, 3};
+    vector<vector<int>> result;
+    vector<int> current;
+    vector<bool> used(nums.size(), false);
     backtrack(nums, used, current, result);
     // Output: [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Generate all permutations using backtracking
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> result;             // stores all permutations
+        vector<int> current;                    // current permutation being built
+        vector<bool> used(nums.size(), false);  // tracks which elements are placed
+        backtrack(nums, used, current, result);
+        return result;
+    }
+
+private:
+    void backtrack(vector<int>& nums, vector<bool>& used,
+                   vector<int>& current,
+                   vector<vector<int>>& result) {
+        // Base case: all elements have been placed
+        if (current.size() == nums.size()) {
+            result.push_back(current);   // record complete permutation
+            return;
+        }
+
+        for (int i = 0; i < (int)nums.size(); i++) {
+            if (used[i]) continue;       // skip elements already in current path
+            used[i] = true;
+            current.push_back(nums[i]);              // Step 1: Choose
+            backtrack(nums, used, current, result);  // Step 2: Explore
+            current.pop_back();                      // Step 3: Unchoose
+            used[i] = false;                         // restore used flag
+        }
+    }
+};
 ```
 
 The `used` array prevents placing the same number twice in one arrangement. Every time we return from a recursive call, we unmark the element so it can be used again in a different branch.

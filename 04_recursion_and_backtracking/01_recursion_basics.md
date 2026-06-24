@@ -46,6 +46,7 @@ flowchart TD
 > Imagine you are standing in a queue and you want to know what position you are at. You do not know the total count, so you ask the person in front of you their position. That person asks the person in front of them, and so on. The person at the very front says "I am at position 1." Everyone then adds 1 to that answer and passes it back. You finally get your position.
 
 That chain of asking and answering **is** recursion:
+
 - Each person = a function call
 - The person at the front = the **base case** (the chain stops and returns an answer)
 - Passing the answer back = the **return values unwinding** up the call stack
@@ -102,22 +103,40 @@ countdown(5)
 # 0
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Recursive countdown
+// C++ (simple) — Recursive countdown
 #include <iostream>
 
 void countdown(int n) {
-    // Base case
+    // Base case: stop when n goes below 0
     if (n < 0) return;
 
     std::cout << n << std::endl;   // print current number
-    countdown(n - 1);              // recursive case
+    countdown(n - 1);              // recursive case: call with n-1
 }
 
 int main() {
     countdown(5);
     // Output: 5 4 3 2 1 0  (each on a new line)
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Recursive countdown
+class Solution {
+public:
+    void countdown(int n) {
+        // Base case: stop when n goes below 0
+        if (n < 0) return;
+
+        std::cout << n << std::endl;   // print current number
+        countdown(n - 1);              // recursive case: call with n-1
+    }
+};
 ```
 
 Each call reduces `n` by 1. When `n` becomes `-1`, the base case triggers and the function stops.
@@ -151,15 +170,17 @@ print(factorial(5))   # Output: 120
 print(factorial(3))   # Output: 6
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Recursive factorial
+// C++ (simple) — Recursive factorial
 #include <iostream>
 
 int factorial(int n) {
-    // Base case
+    // Base case: factorial of 0 or 1 is 1
     if (n <= 1) return 1;
 
-    // Recursive case
+    // Recursive case: n × factorial(n-1)
     return n * factorial(n - 1);
 }
 
@@ -167,6 +188,22 @@ int main() {
     std::cout << factorial(5) << std::endl;   // Output: 120
     std::cout << factorial(3) << std::endl;   // Output: 6
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Recursive factorial
+class Solution {
+public:
+    int factorial(int n) {
+        // Base case: factorial of 0 or 1 is 1
+        if (n <= 1) return 1;
+
+        // Recursive case: n × factorial(n-1)
+        return n * factorial(n - 1);
+    }
+};
 ```
 
 **Execution trace for `factorial(5)`:**
@@ -194,11 +231,11 @@ Every function call is added to the **call stack**. Think of it like a pile of p
 
 **Call stack for `factorial(3)`:**
 
-| Stack (top to bottom) | State |
-|---|---|
-| `factorial(1)` | Returns 1 — base case, plate removed |
-| `factorial(2)` | Waiting for `factorial(1)` → gets 1, returns 2×1=2 |
-| `factorial(3)` | Waiting for `factorial(2)` → gets 2, returns 3×2=6 |
+| Stack (top to bottom) | State                                              |
+| --------------------- | -------------------------------------------------- |
+| `factorial(1)`        | Returns 1 — base case, plate removed               |
+| `factorial(2)`        | Waiting for `factorial(1)` → gets 1, returns 2×1=2 |
+| `factorial(3)`        | Waiting for `factorial(2)` → gets 2, returns 3×2=6 |
 
 ```
 factorial(3)  → waits for factorial(2)
@@ -238,23 +275,42 @@ numbers = [1, 2, 3, 4, 5]
 print(sum_array(numbers, 0))   # Output: 15
 ```
 
+**C++ (simple):**
+
 ```cpp
-// C++ — Recursive array sum
+// C++ (simple) — Recursive array sum
 #include <iostream>
 #include <vector>
+using namespace std;
 
-int sum_array(const std::vector<int>& arr, int index) {
-    // Base case
-    if (index == arr.size()) return 0;
+int sum_array(const vector<int>& arr, int index) {
+    // Base case: reached the end of the array
+    if (index == (int)arr.size()) return 0;
 
-    // Recursive case
+    // Recursive case: current element + sum of the rest
     return arr[index] + sum_array(arr, index + 1);
 }
 
 int main() {
-    std::vector<int> numbers = {1, 2, 3, 4, 5};
-    std::cout << sum_array(numbers, 0) << std::endl;   // Output: 15
+    vector<int> numbers = {1, 2, 3, 4, 5};
+    cout << sum_array(numbers, 0) << endl;   // Output: 15
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — Recursive array sum
+class Solution {
+public:
+    int sumArray(vector<int>& arr, int index) {
+        // Base case: reached the end of the array
+        if (index == (int)arr.size()) return 0;
+
+        // Recursive case: current element + sum of the rest
+        return arr[index] + sumArray(arr, index + 1);
+    }
+};
 ```
 
 **Execution trace for `[1, 2, 3, 4, 5]`:**
@@ -280,13 +336,13 @@ sum_array([1,2,3,4,5], 0)
 
 Both approaches can solve the same problems. Here is when to choose each:
 
-| Feature | Recursion | Iteration (Loops) |
-|---|---|---|
-| Code readability | Cleaner for trees, backtracking, divide & conquer | Easier to read for simple repetition |
-| Memory usage | Uses call stack for each call | Generally uses less memory |
-| Performance | Slight overhead from function calls | Usually faster for simple loops |
-| Termination | Needs a base case | Loop condition handles it |
-| Best for | Trees, graphs, backtracking, subsets, permutations | Counting, array traversal |
+| Feature          | Recursion                                          | Iteration (Loops)                    |
+| ---------------- | -------------------------------------------------- | ------------------------------------ |
+| Code readability | Cleaner for trees, backtracking, divide & conquer  | Easier to read for simple repetition |
+| Memory usage     | Uses call stack for each call                      | Generally uses less memory           |
+| Performance      | Slight overhead from function calls                | Usually faster for simple loops      |
+| Termination      | Needs a base case                                  | Loop condition handles it            |
+| Best for         | Trees, graphs, backtracking, subsets, permutations | Counting, array traversal            |
 
 > As you progress into backtracking, tree traversal, and merge sort in this series, recursion will feel more natural and produce cleaner code than writing equivalent loops.
 
@@ -346,8 +402,8 @@ def factorial(n):
 
 ## 10. Tips for Thinking Recursively
 
-1. **Find the base case first** — ask: *what is the smallest version of this problem I can solve directly?*
-2. **Find the recursive case** — ask: *if I already had the answer to a smaller version, how would I build the full answer?*
+1. **Find the base case first** — ask: _what is the smallest version of this problem I can solve directly?_
+2. **Find the recursive case** — ask: _if I already had the answer to a smaller version, how would I build the full answer?_
 3. **Trace 2–3 small examples by hand** before writing code.
 4. **Draw the call stack on paper** — visualising the chain of calls makes the pattern obvious.
 5. **Trust the recursion** — do not try to trace the full depth in your head. Verify the base case works, verify the recursive step is correct, then trust the pattern.

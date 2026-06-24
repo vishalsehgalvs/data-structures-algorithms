@@ -116,7 +116,7 @@ print(s.peek())   # Output: 20
 print(s.size())   # Output: 2
 ```
 
-### C++
+**C++ (simple):**
 
 ```cpp
 // C++ — Stack using a vector (array-based)
@@ -167,6 +167,31 @@ int main() {
     std::cout << s.peek() << "\n";   // Output: 20
     std::cout << s.size() << "\n";   // Output: 2
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — stack operations using std::stack<int>
+#include <iostream>
+#include <stack>
+using namespace std;
+
+class Solution {
+public:
+    void demonstrateStack() {
+        stack<int> s;              // declare a stack of integers from <stack>
+
+        s.push(10);                // push 10 onto the top
+        s.push(20);                // push 20 onto the top
+        s.push(30);                // push 30 onto the top
+
+        cout << s.top()  << "\n";  // peek top without removing: Output 30
+        s.pop();                   // remove the top element (30)
+        cout << s.top()  << "\n";  // new top after pop: Output 20
+        cout << s.size() << "\n";  // number of elements remaining: Output 2
+    }
+};
 ```
 
 > **Note:** C++ also has `std::stack` in `<stack>` for direct use: `std::stack<int> s; s.push(10); s.top(); s.pop();`
@@ -222,7 +247,7 @@ print(ls.pop())   # Output: 25
 print(ls.peek())  # Output: 15
 ```
 
-### C++
+**C++ (simple):**
 
 ```cpp
 // C++ — Stack using a Linked List
@@ -289,6 +314,30 @@ int main() {
 }
 ```
 
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — linked-list-backed stack via std::stack<int>
+#include <iostream>
+#include <stack>
+using namespace std;
+
+class Solution {
+public:
+    void demonstrateLinkedStack() {
+        stack<int> s;              // std::stack uses a deque (linked-list-like) internally
+
+        s.push(5);                 // push 5 onto the top
+        s.push(15);                // push 15 onto the top
+        s.push(25);                // push 25 onto the top
+
+        cout << s.top() << "\n";   // peek top without removing: Output 25
+        s.pop();                   // remove top (25)
+        cout << s.top() << "\n";   // new top: Output 15
+    }
+};
+```
+
 ---
 
 ## 6. Array vs Linked List Stack
@@ -352,7 +401,7 @@ print(is_balanced("({[}])"))   # Output: False
 print(is_balanced("((("))      # Output: False
 ```
 
-#### C++
+**C++ (simple):**
 
 ```cpp
 // C++ — Balanced brackets checker
@@ -382,6 +431,37 @@ int main() {
     std::cout << isBalanced("({[}]})") << "\n";  // Output: 0 (false)
     std::cout << isBalanced("(((")    << "\n";   // Output: 0 (false)
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — LeetCode #20: Valid Parentheses
+#include <stack>
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> st;                                    // tracks unmatched opening brackets
+        unordered_map<char, char> match = {
+            {')', '('}, {']', '['}, {'}', '{'}
+        };
+
+        for (char c : s) {
+            if (c == '(' || c == '[' || c == '{') {
+                st.push(c);                                // push opening bracket
+            } else if (match.count(c)) {
+                if (st.empty() || st.top() != match[c])
+                    return false;                          // unmatched closing bracket
+                st.pop();                                  // matched pair — remove opening
+            }
+        }
+        return st.empty();                                 // true only if all brackets matched
+    }
+};
 ```
 
 ---
@@ -419,7 +499,7 @@ editor.undo()   # After undo: Hello
 editor.undo()   # After undo: (empty)
 ```
 
-#### C++
+**C++ (simple):**
 
 ```cpp
 // C++ — Undo functionality with a stack
@@ -454,6 +534,35 @@ int main() {
 }
 ```
 
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — undo/redo using std::stack<string>
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string text = "";
+    stack<string> history;         // stores previous text states for undo
+
+    void type(const string& new_text) {
+        history.push(text);        // save current state before modifying
+        text += new_text;
+        cout << "Text: " << text << "\n";
+    }
+
+    void undo() {
+        if (history.empty()) { cout << "Nothing to undo\n"; return; }
+        text = history.top();      // restore the last saved state
+        history.pop();             // remove it from the history stack
+        cout << "After undo: " << text << "\n";
+    }
+};
+```
+
 ---
 
 ### Reversing a Sequence
@@ -476,7 +585,7 @@ print(reverse_string("hello"))    # Output: olleh
 print(reverse_string("Python"))   # Output: nohtyP
 ```
 
-#### C++
+**C++ (simple):**
 
 ```cpp
 // C++ — Reverse a string using a stack
@@ -500,6 +609,31 @@ int main() {
     std::cout << reverseString("hello")  << "\n";  // Output: olleh
     std::cout << reverseString("Python") << "\n";  // Output: nohtyP
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — reverse a string using a stack
+#include <stack>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string reverseString(string s) {
+        stack<char> st;            // push all characters onto the stack
+        for (char c : s)
+            st.push(c);            // each char pushed in arrival order
+
+        string result;
+        while (!st.empty()) {
+            result += st.top();    // LIFO: last pushed = first out = reversed
+            st.pop();
+        }
+        return result;             // reversed string
+    }
+};
 ```
 
 ---

@@ -65,11 +65,13 @@ There are two main approaches to check if a string is a palindrome:
 
 Create a reversed copy of the string and check if it equals the original.
 
+#### Python
+
 ```python
 # Python — Reverse and Compare
 def is_palindrome(s):
-    reversed_s = s[::-1]   # reverse the string
-    return s == reversed_s
+    reversed_s = s[::-1]   # reverse the entire string in one step
+    return s == reversed_s  # compare original with its reverse
 
 
 # Example usage
@@ -78,22 +80,42 @@ print(is_palindrome("hello"))     # Output: False
 print(is_palindrome("madam"))     # Output: True
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — Reverse and Compare
 #include <iostream>
 #include <string>
 #include <algorithm>
+using namespace std;
 
-bool is_palindrome(const std::string& s) {
-    std::string reversed = s;
-    std::reverse(reversed.begin(), reversed.end());
-    return s == reversed;
+// Plain function — reverse a copy and compare with the original
+bool is_palindrome(const string& s) {
+    string reversed = s;                            // make a copy to reverse
+    reverse(reversed.begin(), reversed.end());      // reverse the copy in place
+    return s == reversed;                           // equal — palindrome
 }
 
 int main() {
-    std::cout << is_palindrome("racecar") << std::endl;   // Output: 1 (true)
-    std::cout << is_palindrome("hello") << std::endl;     // Output: 0 (false)
+    cout << is_palindrome("racecar") << endl;   // Output: 1 (true)
+    cout << is_palindrome("hello") << endl;     // Output: 0 (false)
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        string reversed = s;                        // copy to avoid modifying original
+        reverse(reversed.begin(), reversed.end());  // reverse the copy
+        return s == reversed;                       // true if they match
+    }
+};
 ```
 
 > **Time complexity:** O(n) — reversing and comparing each visit every character once.  
@@ -115,19 +137,21 @@ left=2  right=2  →  left >= right → stop
 All pairs matched → PALINDROME ✓
 ```
 
+#### Python
+
 ```python
 # Python — Two Pointer
 def is_palindrome_two_pointer(s):
     left = 0
-    right = len(s) - 1
+    right = len(s) - 1  # start pointers at both ends
 
     while left < right:
         if s[left] != s[right]:
             return False    # mismatch found — not a palindrome
-        left += 1
-        right -= 1
+        left += 1           # move inward from the left
+        right -= 1          # move inward from the right
 
-    return True
+    return True  # all pairs matched
 
 
 # Example usage
@@ -135,29 +159,54 @@ print(is_palindrome_two_pointer("level"))    # Output: True
 print(is_palindrome_two_pointer("python"))   # Output: False
 ```
 
+#### C++ (simple):
+
 ```cpp
-// C++ — Two Pointer
 #include <iostream>
 #include <string>
+using namespace std;
 
-bool is_palindrome_two_pointer(const std::string& s) {
+// Plain function — two-pointer palindrome check in O(1) space
+bool is_palindrome_two_pointer(const string& s) {
     int left = 0;
-    int right = s.length() - 1;
+    int right = s.length() - 1;  // pointers start at both ends
 
     while (left < right) {
         if (s[left] != s[right]) {
             return false;   // mismatch — not a palindrome
         }
-        left++;
+        left++;   // move both pointers inward
         right--;
     }
-    return true;
+    return true;  // all pairs matched
 }
 
 int main() {
-    std::cout << is_palindrome_two_pointer("level") << std::endl;    // Output: 1 (true)
-    std::cout << is_palindrome_two_pointer("python") << std::endl;   // Output: 0 (false)
+    cout << is_palindrome_two_pointer("level") << endl;    // Output: 1 (true)
+    cout << is_palindrome_two_pointer("python") << endl;   // Output: 0 (false)
 }
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        int left = 0;
+        int right = s.length() - 1;  // start pointers at both ends
+
+        while (left < right) {
+            if (s[left] != s[right]) return false;  // mismatch — not a palindrome
+            left++;   // move inward
+            right--;  // move inward
+        }
+        return true;  // all pairs matched — palindrome confirmed
+    }
+};
 ```
 
 > **Time complexity:** O(n) — at most n/2 comparisons.  
@@ -191,10 +240,12 @@ print(is_palindrome_two_pointer("a"))   # Output: True
 
 `"Racecar"` should still be a palindrome if the problem ignores case. Convert to lowercase before checking.
 
+#### Python
+
 ```python
 # Python — Case-insensitive palindrome
 def is_palindrome_ignore_case(s):
-    s = s.lower()   # normalise to lowercase
+    s = s.lower()   # normalise to lowercase so 'A' == 'a'
     left, right = 0, len(s) - 1
     while left < right:
         if s[left] != s[right]:
@@ -208,9 +259,53 @@ print(is_palindrome_ignore_case("Racecar"))   # Output: True
 print(is_palindrome_ignore_case("Level"))     # Output: True
 ```
 
+#### C++ (simple):
+
+```cpp
+#include <string>
+#include <algorithm>
+using namespace std;
+
+// Plain function — palindrome check ignoring letter case
+bool isPalindromeIgnoreCase(string s) {
+    transform(s.begin(), s.end(), s.begin(), ::tolower);  // convert all chars to lowercase
+    int left = 0, right = s.length() - 1;
+    while (left < right) {
+        if (s[left] != s[right]) return false;  // mismatch after normalisation
+        left++;
+        right--;
+    }
+    return true;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        transform(s.begin(), s.end(), s.begin(), ::tolower);  // normalise case first
+        int left = 0, right = s.length() - 1;
+        while (left < right) {
+            if (s[left] != s[right]) return false;  // mismatch found
+            left++;   // move inward
+            right--;
+        }
+        return true;
+    }
+};
+```
+
 ### Alphanumeric-only check
 
 Some problems ask you to ignore spaces and special characters. `"A man, a plan, a canal: Panama"` is a classic example.
+
+#### Python
 
 ```python
 # Python — Alphanumeric-only palindrome
@@ -228,6 +323,54 @@ def is_palindrome_alphanumeric(s):
 
 print(is_palindrome_alphanumeric("A man, a plan, a canal: Panama"))   # Output: True
 print(is_palindrome_alphanumeric("race a car"))                        # Output: False
+```
+
+#### C++ (simple):
+
+```cpp
+#include <string>
+#include <cctype>
+using namespace std;
+
+// Plain function — ignore spaces and punctuation, compare letters/digits only
+bool isPalindromeAlphanumeric(const string& s) {
+    string cleaned;
+    for (char c : s) {
+        if (isalnum(c)) cleaned += tolower(c);  // keep only alphanumeric, lowercase
+    }
+    int left = 0, right = cleaned.length() - 1;
+    while (left < right) {
+        if (cleaned[left] != cleaned[right]) return false;  // mismatch
+        left++;
+        right--;
+    }
+    return true;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+#include <cctype>
+using namespace std;
+
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        string cleaned;
+        for (char c : s) {
+            if (isalnum(c)) cleaned += tolower(c);  // strip non-alphanumeric, normalise case
+        }
+        int left = 0, right = cleaned.length() - 1;
+        while (left < right) {
+            if (cleaned[left] != cleaned[right]) return false;  // mismatch found
+            left++;   // move both pointers inward
+            right--;
+        }
+        return true;
+    }
+};
 ```
 
 > **Interview tip:** Always clarify the constraints — does the problem ignore case? spaces? special characters? These details completely change your approach.
@@ -268,6 +411,8 @@ Even:    0  1  2  3
                 center between 1 and 2 (b,b) expands to full string
 ```
 
+#### Python
+
 ```python
 # Python — Longest Palindromic Substring
 def expand_around_center(s, left, right):
@@ -302,6 +447,67 @@ print(longest_palindromic_substring("cbbd"))      # Output: bb
 print(longest_palindromic_substring("racecar"))   # Output: racecar
 ```
 
+#### C++ (simple):
+
+```cpp
+#include <string>
+using namespace std;
+
+// Helper: expand from center outward and return the palindrome found
+string expandAroundCenter(const string& s, int left, int right) {
+    while (left >= 0 && right < (int)s.length() && s[left] == s[right]) {
+        left--;   // move left pointer out
+        right++;  // move right pointer out
+    }
+    return s.substr(left + 1, right - left - 1);  // extract the palindrome
+}
+
+string longestPalindromicSubstring(const string& s) {
+    if (s.empty()) return "";
+    string longest = "";
+
+    for (int i = 0; i < (int)s.length(); i++) {
+        string odd  = expandAroundCenter(s, i, i);      // center is a single char
+        string even = expandAroundCenter(s, i, i + 1);  // center is between two chars
+        if (odd.length()  > longest.length()) longest = odd;   // update if longer
+        if (even.length() > longest.length()) longest = even;
+    }
+    return longest;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if (s.empty()) return "";
+        string longest = "";
+
+        for (int i = 0; i < (int)s.length(); i++) {
+            string odd  = expand(s, i, i);      // odd-length: single char center
+            string even = expand(s, i, i + 1);  // even-length: gap between two chars
+            if (odd.length()  > longest.length()) longest = odd;
+            if (even.length() > longest.length()) longest = even;
+        }
+        return longest;
+    }
+
+private:
+    string expand(const string& s, int left, int right) {
+        while (left >= 0 && right < (int)s.length() && s[left] == s[right]) {
+            left--;   // expand outward while characters match
+            right++;
+        }
+        return s.substr(left + 1, right - left - 1);  // slice out the palindrome
+    }
+};
+```
+
 > **Time complexity:** O(n²) — n centers, each expands up to O(n).  
 > **Space complexity:** O(1) — no extra data structures.
 
@@ -316,6 +522,8 @@ Count how many palindromic substrings exist in the string. Every single characte
 "aaa"  → "a"×3, "aa"×2, "aaa"×1    → 6
 "abba" → "a"×2, "b"×2, "bb", "abba" → 6
 ```
+
+#### Python
 
 ```python
 # Python — Count all palindromic substrings
@@ -341,6 +549,63 @@ print(count_palindromic_substrings("aaa"))    # Output: 6
 print(count_palindromic_substrings("abba"))   # Output: 6
 ```
 
+#### C++ (simple):
+
+```cpp
+#include <string>
+using namespace std;
+
+// Helper: expand from center and count palindromic substrings found
+int expandAndCount(const string& s, int left, int right) {
+    int count = 0;
+    while (left >= 0 && right < (int)s.length() && s[left] == s[right]) {
+        count++;   // each valid expansion is one distinct palindromic substring
+        left--;
+        right++;
+    }
+    return count;
+}
+
+int countPalindromicSubstrings(const string& s) {
+    int total = 0;
+    for (int i = 0; i < (int)s.length(); i++) {
+        total += expandAndCount(s, i, i);      // odd-length palindromes
+        total += expandAndCount(s, i, i + 1);  // even-length palindromes
+    }
+    return total;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int total = 0;
+        for (int i = 0; i < (int)s.length(); i++) {
+            total += expand(s, i, i);      // count odd-length palindromes centered at i
+            total += expand(s, i, i + 1);  // count even-length palindromes
+        }
+        return total;
+    }
+
+private:
+    int expand(const string& s, int left, int right) {
+        int count = 0;
+        while (left >= 0 && right < (int)s.length() && s[left] == s[right]) {
+            count++;   // this expansion forms a valid palindrome
+            left--;
+            right++;
+        }
+        return count;
+    }
+};
+```
+
 > **Time complexity:** O(n²).  
 > **Space complexity:** O(1).
 
@@ -361,6 +626,8 @@ Check if a string can become a palindrome by removing **at most one** character.
 - Skip the **right** character and check if the rest is a palindrome
 
 If either works, return `True`.
+
+#### Python
 
 ```python
 # Python — Valid Palindrome with at most one deletion
@@ -393,6 +660,71 @@ print(valid_palindrome_one_delete("racecar"))  # Output: True   (already palindr
 print(valid_palindrome_one_delete("abcde"))    # Output: False
 ```
 
+#### C++ (simple):
+
+```cpp
+#include <string>
+using namespace std;
+
+// Helper: check if s[left..right] is a palindrome
+bool isPalindromeRange(const string& s, int left, int right) {
+    while (left < right) {
+        if (s[left] != s[right]) return false;  // mismatch in this range
+        left++;
+        right--;
+    }
+    return true;
+}
+
+bool validPalindromeOneDelete(const string& s) {
+    int left = 0, right = s.length() - 1;
+    while (left < right) {
+        if (s[left] != s[right]) {
+            // try removing the left char OR the right char
+            return isPalindromeRange(s, left + 1, right) ||
+                   isPalindromeRange(s, left, right - 1);
+        }
+        left++;
+        right--;
+    }
+    return true;  // already a palindrome
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool validPalindrome(string s) {
+        int left = 0, right = s.length() - 1;
+        while (left < right) {
+            if (s[left] != s[right]) {
+                // mismatch: one deletion allowed — try both options
+                return isPalindromeRange(s, left + 1, right) ||
+                       isPalindromeRange(s, left, right - 1);
+            }
+            left++;   // no mismatch yet — move inward
+            right--;
+        }
+        return true;  // no mismatch found — already a palindrome
+    }
+
+private:
+    bool isPalindromeRange(const string& s, int left, int right) {
+        while (left < right) {
+            if (s[left] != s[right]) return false;  // mismatch in the subrange
+            left++;
+            right--;
+        }
+        return true;
+    }
+};
+```
+
 > **Time complexity:** O(n) — two pointer scan plus at most one extra O(n) check.  
 > **Space complexity:** O(1).
 
@@ -407,6 +739,8 @@ Numbers can be palindromes too — `121` is, `123` is not. Convert the number to
 -121 → negative → always False (minus sign breaks symmetry)
 1221 → "1221" → palindrome ✓
 ```
+
+#### Python
 
 ```python
 # Python — Number palindrome check
@@ -430,6 +764,48 @@ print(is_number_palindrome(121))    # Output: True
 print(is_number_palindrome(-121))   # Output: False
 print(is_number_palindrome(1221))   # Output: True
 print(is_number_palindrome(123))    # Output: False
+```
+
+#### C++ (simple):
+
+```cpp
+#include <string>
+using namespace std;
+
+// Plain function — check if an integer reads the same forwards and backwards
+bool isNumberPalindrome(int n) {
+    if (n < 0) return false;           // negative numbers are never palindromes
+    string s = to_string(n);           // convert int to string for easy comparison
+    int left = 0, right = s.length() - 1;
+    while (left < right) {
+        if (s[left] != s[right]) return false;  // digit mismatch
+        left++;
+        right--;
+    }
+    return true;
+}
+```
+
+#### C++ (LeetCode class style):
+
+```cpp
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if (x < 0) return false;          // negative numbers are always false
+        string s = to_string(x);          // convert to string for two-pointer check
+        int left = 0, right = s.length() - 1;
+        while (left < right) {
+            if (s[left] != s[right]) return false;  // digit mismatch
+            left++;   // move inward
+            right--;
+        }
+        return true;
+    }
+};
 ```
 
 ---

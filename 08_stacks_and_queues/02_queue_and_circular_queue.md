@@ -113,6 +113,75 @@ print("Front:", peek(queue))     # 20
 
 > **Note:** `list.pop(0)` is $O(n)$ because it shifts all elements. Use `collections.deque` for production code (see Section 9).
 
+**C++ (simple):**
+
+```cpp
+// C++ — Basic queue operations using standalone functions and std::queue
+#include <iostream>
+#include <queue>
+using namespace std;
+
+const int MAX_SIZE = 5;
+
+void enqueue(queue<int>& q, int item) {
+    if ((int)q.size() == MAX_SIZE) {        // check if queue is full
+        cout << "Queue is full. Cannot enqueue.\n";
+        return;
+    }
+    q.push(item);                           // add item to the rear — O(1)
+    cout << "Enqueued: " << item << "\n";
+}
+
+int dequeue(queue<int>& q) {
+    if (q.empty()) {                        // check if queue is empty
+        cout << "Queue is empty. Cannot dequeue.\n";
+        return -1;
+    }
+    int item = q.front();                   // read the front element
+    q.pop();                                // remove from the front — O(1)
+    return item;
+}
+
+int peek(queue<int>& q) {
+    if (q.empty()) { cout << "Queue is empty.\n"; return -1; }
+    return q.front();                       // view front without removing
+}
+
+int main() {
+    queue<int> q;
+    enqueue(q, 10); enqueue(q, 20); enqueue(q, 30);
+    cout << "Queue: [10, 20, 30]\n";
+    dequeue(q);
+    cout << "After dequeue, front: " << peek(q) << "\n";  // 20
+}
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — queue operations using std::queue<int>
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+    void demonstrateQueue() {
+        queue<int> q;              // declare a FIFO queue of integers
+
+        q.push(10);                // enqueue 10 at the rear
+        q.push(20);                // enqueue 20 at the rear
+        q.push(30);                // enqueue 30 at the rear
+
+        cout << "Front: " << q.front() << "\n";        // peek front: 10
+        q.pop();                                        // dequeue from front (10)
+        cout << "After dequeue, front: " << q.front() << "\n"; // 20
+        cout << "Size: "  << q.size()  << "\n";        // 2
+        cout << "Empty: " << q.empty() << "\n";        // 0 (false)
+    }
+};
+```
+
 ---
 
 ## 4. Queue Using Array — Manual Implementation
@@ -173,7 +242,7 @@ q.dequeue()    # Dequeued: 1
 q.display()    # Queue: [2, 3]
 ```
 
-### C++
+**C++ (simple):**
 
 ```cpp
 // C++ — Queue with front/rear pointers (O(1) dequeue)
@@ -202,7 +271,7 @@ public:
         if (front_idx == rear_idx)            // Last element removed
             front_idx = rear_idx = -1;
         else
-            front_idx++;
+            front_idx++;                      // advance front pointer
         std::cout << "Dequeued: " << item << "\n";
         return item;
     }
@@ -223,6 +292,31 @@ int main() {
     q.dequeue();   // Dequeued: 1
     q.display();   // Queue: 2 3
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — queue with pointer tracking using std::queue<int>
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+    void demonstratePointerQueue() {
+        queue<int> q;              // std::queue handles front/rear tracking internally
+
+        q.push(1);                 // enqueue 1 at the rear
+        q.push(2);                 // enqueue 2 at the rear
+        q.push(3);                 // enqueue 3 at the rear
+
+        cout << "Front: " << q.front() << "\n"; // peek front without removing: 1
+        q.pop();                                 // dequeue from front (1) — O(1)
+        cout << "After dequeue: " << q.front() << "\n"; // 2
+        cout << "Size: " << q.size() << "\n";   // 2
+    }
+};
 ```
 
 ---
@@ -339,7 +433,7 @@ cq.enqueue(60)  # Reuses freed slot at index 1
 cq.display()    # 30 40 50 60
 ```
 
-### C++
+**C++ (simple):**
 
 ```cpp
 // C++ — Circular Queue using modulo
@@ -400,7 +494,47 @@ int main() {
 }
 ```
 
-Notice how after dequeuing `10` and `20`, enqueueing `50` and `60` reuses those freed positions — this is impossible with a simple linear queue.
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — LeetCode #622: Design Circular Queue
+#include <vector>
+using namespace std;
+
+class MyCircularQueue {
+    vector<int> data;
+    int front_idx, rear_idx, capacity, count;
+public:
+    MyCircularQueue(int k)
+        : data(k, 0), front_idx(0), rear_idx(-1), capacity(k), count(0) {}
+
+    bool enQueue(int value) {
+        if (isFull()) return false;                      // no space available
+        rear_idx = (rear_idx + 1) % capacity;           // advance rear with wrap
+        data[rear_idx] = value;                          // store value at new rear
+        count++;
+        return true;
+    }
+
+    bool deQueue() {
+        if (isEmpty()) return false;                     // nothing to remove
+        front_idx = (front_idx + 1) % capacity;         // advance front with wrap
+        count--;
+        return true;
+    }
+
+    int Front() {
+        return isEmpty() ? -1 : data[front_idx];        // front element or -1
+    }
+
+    int Rear() {
+        return isEmpty() ? -1 : data[rear_idx];         // rear element or -1
+    }
+
+    bool isEmpty() { return count == 0; }               // true if no elements
+    bool isFull()  { return count == capacity; }        // true if all slots used
+};
+```
 
 ---
 
@@ -445,7 +579,7 @@ print("After dequeue:", q)    # deque([2, 3])
 print("Front element:", q[0]) # 2
 ```
 
-### C++ — `std::queue`
+**C++ (simple):**
 
 ```cpp
 // C++ — Efficient queue using std::queue
@@ -456,20 +590,46 @@ int main() {
     std::queue<int> q;
 
     // Enqueue
-    q.push(1);
-    q.push(2);
-    q.push(3);
+    q.push(1);                                             // add 1 to the rear
+    q.push(2);                                             // add 2 to the rear
+    q.push(3);                                             // add 3 to the rear
 
     // Peek front
     std::cout << "Front: " << q.front() << "\n";   // 1
 
     // Dequeue
-    q.pop();
+    q.pop();                                               // remove from front
     std::cout << "After dequeue, front: " << q.front() << "\n";  // 2
 
     std::cout << "Size: " << q.size() << "\n";     // 2
     std::cout << "Empty: " << q.empty() << "\n";   // 0 (false)
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+// C++ (LeetCode class style) — std::queue<int> operations in class Solution
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+    void demonstrateBuiltinQueue() {
+        queue<int> q;              // built-in FIFO queue backed by std::deque
+
+        q.push(1);                 // enqueue at rear — O(1)
+        q.push(2);                 // enqueue at rear — O(1)
+        q.push(3);                 // enqueue at rear — O(1)
+
+        cout << "Front: " << q.front() << "\n";   // peek front: 1
+        q.pop();                                   // dequeue from front — O(1)
+        cout << "After dequeue: " << q.front() << "\n"; // 2
+        cout << "Size: "  << q.size()  << "\n";   // 2
+        cout << "Empty: " << q.empty() << "\n";   // 0 (false)
+    }
+};
 ```
 
 Use `collections.deque` / `std::queue` for all production code. Roll your own implementation only when you need to understand internals or when practising for interviews.
