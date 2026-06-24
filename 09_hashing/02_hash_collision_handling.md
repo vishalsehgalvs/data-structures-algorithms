@@ -126,7 +126,7 @@ print(ht.search(10))  # Output: banana
 print(ht.search(17))  # Output: cherry
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -137,25 +137,25 @@ using namespace std;
 
 class HashTable {
     int size;
-    vector<list<pair<int,string>>> table;
+    vector<list<pair<int,string>>> table;  // each slot holds a list of pairs
 
-    int hashFn(int key) { return key % size; }
+    int hashFn(int key) { return key % size; }  // map key to bucket index
 
 public:
     HashTable(int sz) : size(sz), table(sz) {}
 
     void insert(int key, const string& value) {
-        int idx = hashFn(key);
+        int idx = hashFn(key);               // find target bucket
         for (auto& p : table[idx]) {
-            if (p.first == key) { p.second = value; return; }
+            if (p.first == key) { p.second = value; return; }  // update if key exists
         }
-        table[idx].push_back({key, value});
+        table[idx].push_back({key, value});  // append new pair to chain
     }
 
     string search(int key) {
-        int idx = hashFn(key);
+        int idx = hashFn(key);               // find target bucket
         for (auto& p : table[idx])
-            if (p.first == key) return p.second;
+            if (p.first == key) return p.second;  // scan chain for key
         return "NOT FOUND";
     }
 };
@@ -163,14 +163,36 @@ public:
 int main() {
     HashTable ht(7);
     ht.insert(3, "apple");
-    ht.insert(10, "banana");  // 10 % 7 = 3 → collision
-    ht.insert(17, "cherry");  // 17 % 7 = 3 → collision
+    ht.insert(10, "banana");  // 10 % 7 = 3 → collision, chained at index 3
+    ht.insert(17, "cherry");  // 17 % 7 = 3 → collision, chained at index 3
 
     cout << ht.search(3)  << "\n";  // apple
     cout << ht.search(10) << "\n";  // banana
     cout << ht.search(17) << "\n";  // cherry
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    unordered_map<int, string> table;  // built-in map uses separate chaining internally
+
+    void insert(int key, const string& value) {
+        table[key] = value;            // O(1) average; collisions handled automatically
+    }
+
+    string search(int key) {
+        auto it = table.find(key);     // O(1) average lookup
+        return (it != table.end()) ? it->second : "NOT FOUND";
+    }
+};
 ```
 
 - **Average** time: $O(1)$ insert and search
@@ -236,7 +258,7 @@ print(lt.search(10))  # Output: banana
 print(lt.search(17))  # Output: cherry
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -246,28 +268,28 @@ using namespace std;
 
 class LinearProbingTable {
     int size;
-    vector<int>    keys;
+    vector<int>    keys;    // parallel arrays: keys and values
     vector<string> values;
-    const int EMPTY = -1;
+    const int EMPTY = -1;   // sentinel for empty slot
 
-    int hashFn(int key) { return key % size; }
+    int hashFn(int key) { return key % size; }  // compute initial bucket
 
 public:
     LinearProbingTable(int sz) : size(sz), keys(sz, -1), values(sz) {}
 
     void insert(int key, const string& value) {
-        int idx = hashFn(key);
+        int idx = hashFn(key);                              // start at hash index
         while (keys[idx] != EMPTY && keys[idx] != key)
-            idx = (idx + 1) % size;
-        keys[idx]   = key;
-        values[idx] = value;
+            idx = (idx + 1) % size;                        // probe +1 each time
+        keys[idx]   = key;                                  // store key
+        values[idx] = value;                                // store value
     }
 
     string search(int key) {
-        int idx = hashFn(key);
+        int idx = hashFn(key);                              // start at hash index
         while (keys[idx] != EMPTY) {
-            if (keys[idx] == key) return values[idx];
-            idx = (idx + 1) % size;
+            if (keys[idx] == key) return values[idx];       // found
+            idx = (idx + 1) % size;                        // probe next slot
         }
         return "NOT FOUND";
     }
@@ -276,13 +298,47 @@ public:
 int main() {
     LinearProbingTable lt(7);
     lt.insert(3,  "apple");
-    lt.insert(10, "banana");
-    lt.insert(17, "cherry");
+    lt.insert(10, "banana");  // collision at 3 → moves to index 4
+    lt.insert(17, "cherry");  // collision at 3, 4 → moves to index 5
 
     cout << lt.search(10) << "\n";  // banana
     cout << lt.search(17) << "\n";  // cherry
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+    vector<int>    keys;    // open-addressing key slots
+    vector<string> values;  // corresponding value slots
+    int size;
+
+public:
+    Solution(int sz) : size(sz), keys(sz, -1), values(sz) {}
+
+    void insert(int key, const string& value) {
+        int idx = key % size;                   // compute initial index
+        while (keys[idx] != -1 && keys[idx] != key)
+            idx = (idx + 1) % size;             // probe linearly for empty slot
+        keys[idx]   = key;                      // place key
+        values[idx] = value;                    // place value
+    }
+
+    string search(int key) {
+        int idx = key % size;                   // start at hash position
+        while (keys[idx] != -1) {
+            if (keys[idx] == key) return values[idx];  // key found
+            idx = (idx + 1) % size;             // continue probing
+        }
+        return "NOT FOUND";
+    }
+};
 ```
 
 **Problem — Primary Clustering:** Long consecutive runs of filled slots form, slowing future probes.
@@ -316,7 +372,7 @@ table = insert_quadratic(table, 7, 17, "cherry")  # collision at 3 → tries 4 �
 print(table)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -326,13 +382,13 @@ print(table)
 using namespace std;
 
 void insertQuadratic(vector<pair<int,string>>& table, int size, int key, const string& value) {
-    int index = key % size;
+    int index = key % size;              // start at initial hash index
     int k = 1;
     while (table[index].first != -1) {
-        index = (index + k * k) % size;
+        index = (index + k * k) % size;  // probe: i+1, i+4, i+9... (quadratic steps)
         k++;
     }
-    table[index] = {key, value};
+    table[index] = {key, value};         // place at empty slot
 }
 
 int main() {
@@ -340,14 +396,41 @@ int main() {
     vector<pair<int,string>> table(size, {-1, ""});
 
     insertQuadratic(table, size, 3,  "apple");
-    insertQuadratic(table, size, 10, "banana");
-    insertQuadratic(table, size, 17, "cherry");
+    insertQuadratic(table, size, 10, "banana");  // collision at 3 → tries 3+1=4
+    insertQuadratic(table, size, 17, "cherry");  // collision at 3 → tries 4 → tries 3+4=0
 
     for (int i = 0; i < size; i++)
         if (table[i].first != -1)
             cout << "index " << i << ": (" << table[i].first << ", " << table[i].second << ")\n";
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <vector>
+#include <string>
+#include <utility>
+using namespace std;
+
+class Solution {
+    vector<pair<int, string>> table;  // {key, value} pairs; {-1,""} = empty
+    int size;
+
+public:
+    Solution(int sz) : size(sz), table(sz, {-1, ""}) {}
+
+    void insert(int key, const string& value) {
+        int index = key % size;              // compute initial bucket
+        int k = 1;
+        while (table[index].first != -1) {
+            index = (index + k * k) % size;  // quadratic probe: spreads keys apart
+            k++;
+        }
+        table[index] = {key, value};         // store at found empty slot
+    }
+};
 ```
 
 **Remaining issue — Secondary Clustering:** Keys with the same initial hash follow the same probe sequence. Double hashing solves this.
@@ -387,7 +470,7 @@ table = insert_double_hash(table, 7, 10, "banana")
 print(table)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -396,18 +479,18 @@ print(table)
 #include <string>
 using namespace std;
 
-int h1(int key, int size) { return key % size; }
-int h2(int key, int size) { return 1 + (key % (size - 1)); }  // never 0
+int h1(int key, int size) { return key % size; }                   // primary hash
+int h2(int key, int size) { return 1 + (key % (size - 1)); }       // secondary hash — never 0
 
 void insertDoubleHash(vector<pair<int,string>>& table, int size, int key, const string& value) {
-    int index = h1(key, size);
-    int step  = h2(key, size);
+    int index = h1(key, size);           // initial position
+    int step  = h2(key, size);           // unique stride for this key
     int i = 0;
     while (table[index].first != -1) {
         i++;
-        index = (h1(key, size) + i * step) % size;
+        index = (h1(key, size) + i * step) % size;  // probe using key-specific step
     }
-    table[index] = {key, value};
+    table[index] = {key, value};         // place at empty slot
 }
 
 int main() {
@@ -422,6 +505,37 @@ int main() {
             cout << "index " << i << ": (" << table[i].first << ", " << table[i].second << ")\n";
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <vector>
+#include <string>
+#include <utility>
+using namespace std;
+
+class Solution {
+    vector<pair<int, string>> table;  // {key, value} pairs; {-1,""} = empty
+    int size;
+
+    int h1(int key) { return key % size; }                 // primary hash function
+    int h2(int key) { return 1 + (key % (size - 1)); }     // secondary hash — must never return 0
+
+public:
+    Solution(int sz) : size(sz), table(sz, {-1, ""}) {}
+
+    void insert(int key, const string& value) {
+        int index = h1(key);                               // start at primary hash
+        int step  = h2(key);                               // compute unique probe step
+        int i = 0;
+        while (table[index].first != -1) {
+            i++;
+            index = (h1(key) + i * step) % size;           // each key gets its own stride
+        }
+        table[index] = {key, value};                       // place at empty slot
+    }
+};
 ```
 
 Double hashing is the most uniform probing method — each key gets its own unique stride through the table.

@@ -85,7 +85,7 @@ print(freq)
 # One O(n) pass — no sorting needed
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -97,13 +97,30 @@ int main() {
     vector<int> nums = {3, 1, 2, 3, 1, 3};
     unordered_map<int,int> freq;
 
-    for (int n : nums) freq[n]++;
+    for (int n : nums) freq[n]++;         // single O(n) pass to count
 
     for (auto& [key, count] : freq)
         cout << key << " -> " << count << "\n";
     // Output: {1->2, 2->1, 3->3}
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    unordered_map<int, int> countFrequencies(vector<int>& nums) {
+        unordered_map<int, int> freq;     // element → count
+        for (int n : nums) freq[n]++;     // O(n) single pass
+        return freq;
+    }
+};
 ```
 
 Time: $O(n)$. Sorting would cost $O(n \log n)$ just to count.
@@ -131,7 +148,7 @@ has_duplicate([4, 7, 2, 7, 1])  # Output: Duplicate found: 7
 has_duplicate([1, 2, 3, 4])     # Output: No duplicates
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -140,13 +157,13 @@ has_duplicate([1, 2, 3, 4])     # Output: No duplicates
 using namespace std;
 
 bool hasDuplicate(vector<int>& nums) {
-    unordered_set<int> seen;
+    unordered_set<int> seen;              // track elements encountered
     for (int n : nums) {
         if (seen.count(n)) {
             cout << "Duplicate found: " << n << "\n";
-            return true;
+            return true;                  // stop as soon as duplicate found
         }
-        seen.insert(n);
+        seen.insert(n);                   // mark element as seen
     }
     cout << "No duplicates\n";
     return false;
@@ -159,6 +176,26 @@ int main() {
     hasDuplicate(b);  // No duplicates
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_set>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        unordered_set<int> seen;          // set of already-seen values
+        for (int n : nums) {
+            if (seen.count(n)) return true;  // found a value we saw before
+            seen.insert(n);               // mark this value as seen
+        }
+        return false;                     // no element appeared twice
+    }
+};
 ```
 
 $O(n)$ — far faster than sort-then-scan at $O(n \log n)$.
@@ -187,7 +224,7 @@ two_sum([2, 7, 11, 15], 9)
 # Output: Indices: 0 and 1  (2 + 7 = 9)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -196,15 +233,15 @@ two_sum([2, 7, 11, 15], 9)
 using namespace std;
 
 vector<int> twoSum(vector<int>& nums, int target) {
-    unordered_map<int,int> seen;  // value → index
+    unordered_map<int, int> seen;  // value → index
 
     for (int i = 0; i < (int)nums.size(); i++) {
-        int complement = target - nums[i];
+        int complement = target - nums[i];    // what we need to complete the pair
         if (seen.count(complement)) {
             cout << "Indices: " << seen[complement] << " and " << i << "\n";
-            return {seen[complement], i};
+            return {seen[complement], i};      // pair found
         }
-        seen[nums[i]] = i;
+        seen[nums[i]] = i;                    // record value → index
     }
     return {};
 }
@@ -215,6 +252,28 @@ int main() {
     // Output: Indices: 0 and 1
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> seen;         // value → index
+        for (int i = 0; i < (int)nums.size(); i++) {
+            int complement = target - nums[i];  // value we need to find
+            if (seen.count(complement))
+                return {seen[complement], i};   // pair found
+            seen[nums[i]] = i;                 // store current value and index
+        }
+        return {};                             // no solution found
+    }
+};
 ```
 
 ---
@@ -239,7 +298,7 @@ print(kth_smallest([7, 2, 5, 1, 9], 3))
 # Output: 5
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -248,8 +307,8 @@ print(kth_smallest([7, 2, 5, 1, 9], 3))
 using namespace std;
 
 int kthSmallest(vector<int> nums, int k) {
-    sort(nums.begin(), nums.end());  // O(n log n)
-    return nums[k - 1];
+    sort(nums.begin(), nums.end());  // O(n log n) — sort ascending
+    return nums[k - 1];              // index k-1 holds the k-th smallest
 }
 
 int main() {
@@ -258,6 +317,22 @@ int main() {
     // Sorted: [1, 2, 5, 7, 9]  → Output: 5
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    int kthSmallest(vector<int> nums, int k) {
+        sort(nums.begin(), nums.end());  // sort ascending in O(n log n)
+        return nums[k - 1];             // k-th smallest is at 0-based index k-1
+    }
+};
 ```
 
 ---
@@ -287,7 +362,7 @@ for group in group_anagrams(words):
 # ['bat']
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -298,17 +373,17 @@ for group in group_anagrams(words):
 using namespace std;
 
 vector<vector<string>> groupAnagrams(vector<string>& words) {
-    unordered_map<string, vector<string>> groups;
+    unordered_map<string, vector<string>> groups;  // sorted key → list of anagrams
 
     for (auto& word : words) {
         string key = word;
-        sort(key.begin(), key.end());   // "eat" → "aet"
-        groups[key].push_back(word);
+        sort(key.begin(), key.end());   // canonical form: "eat" → "aet"
+        groups[key].push_back(word);    // group words with the same sorted key
     }
 
     vector<vector<string>> result;
     for (auto& [_, group] : groups)
-        result.push_back(group);
+        result.push_back(group);        // collect all anagram groups
     return result;
 }
 
@@ -321,6 +396,34 @@ int main() {
     // Output: eat tea ate / tan nat / bat
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& words) {
+        unordered_map<string, vector<string>> groups;  // canonical key → anagram list
+
+        for (auto& word : words) {
+            string key = word;
+            sort(key.begin(), key.end());   // sort chars to get canonical form
+            groups[key].push_back(word);    // add word to its anagram group
+        }
+
+        vector<vector<string>> result;
+        for (auto& [_, group] : groups)
+            result.push_back(group);        // flatten map into result
+        return result;
+    }
+};
 ```
 
 Sorting creates a consistent key; hashing provides fast grouping. Neither alone is as clean.
@@ -346,7 +449,7 @@ print(unique_sorted([3, 1, 4, 1, 5, 3, 2]))
 # Output: [1, 2, 3, 4, 5]
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -355,12 +458,12 @@ print(unique_sorted([3, 1, 4, 1, 5, 3, 2]))
 using namespace std;
 
 vector<int> uniqueSorted(vector<int> nums) {
-    sort(nums.begin(), nums.end());
+    sort(nums.begin(), nums.end());       // sort so duplicates become adjacent
 
     vector<int> result;
     for (int n : nums)
         if (result.empty() || result.back() != n)
-            result.push_back(n);
+            result.push_back(n);          // skip element if same as the last added
     return result;
 }
 
@@ -370,6 +473,27 @@ int main() {
     // Output: 1 2 3 4 5
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> uniqueSorted(vector<int> nums) {
+        sort(nums.begin(), nums.end());       // sort so duplicates are adjacent
+
+        vector<int> result;
+        for (int n : nums)
+            if (result.empty() || result.back() != n)
+                result.push_back(n);          // only add if different from previous
+        return result;                        // result is sorted with no duplicates
+    }
+};
 ```
 
 Hashing could remove duplicates too, but it would not give you the results in sorted order without an extra step.
@@ -416,7 +540,7 @@ print(top_k_frequent([1, 1, 1, 2, 2, 3], 2))
 # Output: [1, 2]
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -427,18 +551,17 @@ using namespace std;
 
 vector<int> topKFrequent(vector<int>& nums, int k) {
     unordered_map<int,int> freq;
-    for (int n : nums) freq[n]++;
+    for (int n : nums) freq[n]++;           // O(n) to build frequency map
 
-    vector<pair<int,int>> entries(freq.begin(), freq.end());
+    vector<pair<int,int>> entries(freq.begin(), freq.end());  // collect {value, count} pairs
 
-    // Sort by count descending
     sort(entries.begin(), entries.end(), [](auto& a, auto& b){
-        return a.second > b.second;
+        return a.second > b.second;         // sort by count descending
     });
 
     vector<int> result;
     for (int i = 0; i < k; i++)
-        result.push_back(entries[i].first);
+        result.push_back(entries[i].first); // take the top k elements
     return result;
 }
 
@@ -448,6 +571,34 @@ int main() {
     // Output: 1 2
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> freq;       // element → count
+        for (int n : nums) freq[n]++;       // O(n) pass to count each element
+
+        vector<pair<int, int>> entries(freq.begin(), freq.end());  // {value, count} pairs
+
+        sort(entries.begin(), entries.end(), [](auto& a, auto& b) {
+            return a.second > b.second;     // sort by frequency descending
+        });
+
+        vector<int> result;
+        for (int i = 0; i < k; i++)
+            result.push_back(entries[i].first);  // collect top k most frequent
+        return result;
+    }
+};
 ```
 
 The group anagrams problem from Section 5 is another canonical example: sort each word to form the key, hash to group.

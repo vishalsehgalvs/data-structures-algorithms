@@ -88,7 +88,7 @@ print(freq)
 # Output: Counter({5: 3, 3: 2, 1: 2, 4: 1, 9: 1, 2: 1, 6: 1})
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -110,6 +110,24 @@ int main() {
 
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    unordered_map<int, int> buildFrequencyMap(vector<int>& nums) {
+        unordered_map<int, int> freq;   // element → count
+        for (int num : nums)
+            freq[num]++;                // operator[] inserts 0 if missing, then increments
+        return freq;
+    }
+};
 ```
 
 Both build the map in $O(n)$ time and $O(n)$ space.
@@ -135,7 +153,7 @@ print(has_duplicate([1, 2, 3, 4]))  # Output: False
 print(has_duplicate([1, 2, 3, 1]))  # Output: True
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -146,7 +164,7 @@ using namespace std;
 bool hasDuplicate(vector<int>& nums) {
     unordered_map<int, int> freq;
     for (int num : nums) {
-        if (++freq[num] > 1) return true;
+        if (++freq[num] > 1) return true;  // early exit on first duplicate found
     }
     return false;
 }
@@ -158,6 +176,25 @@ int main() {
     cout << hasDuplicate(b) << "\n";  // 1 (true)
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        unordered_map<int, int> freq;          // track occurrence counts
+        for (int num : nums) {
+            if (++freq[num] > 1) return true;  // count exceeded 1 → duplicate found
+        }
+        return false;                          // all counts are 1 → no duplicates
+    }
+};
 ```
 
 Early termination means we stop the moment a duplicate is found — $O(1)$ best case, $O(n)$ worst case.
@@ -185,7 +222,7 @@ print(first_unique_char("leetcode"))  # Output: 0 ('l')
 print(first_unique_char("aabb"))      # Output: -1
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -195,11 +232,11 @@ using namespace std;
 
 int firstUniqueChar(const string& s) {
     unordered_map<char, int> freq;
-    for (char c : s) freq[c]++;
+    for (char c : s) freq[c]++;              // pass 1: count every character
 
     for (int i = 0; i < (int)s.size(); i++)
-        if (freq[s[i]] == 1) return i;
-    return -1;
+        if (freq[s[i]] == 1) return i;       // pass 2: first index with count = 1
+    return -1;                               // no unique character found
 }
 
 int main() {
@@ -207,6 +244,26 @@ int main() {
     cout << firstUniqueChar("aabb")     << "\n";  // -1
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        unordered_map<char, int> freq;           // character → count
+        for (char c : s) freq[c]++;              // pass 1: count each character
+
+        for (int i = 0; i < (int)s.size(); i++)
+            if (freq[s[i]] == 1) return i;       // pass 2: return first index with count 1
+        return -1;                               // all characters repeat
+    }
+};
 ```
 
 Time: $O(n)$ — two passes. Space: $O(1)$ for lowercase-only strings (at most 26 keys).
@@ -239,7 +296,7 @@ print(is_anagram("anagram", "nagaram"))  # Output: True
 print(is_anagram("rat",     "car"))      # Output: False
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -248,14 +305,14 @@ print(is_anagram("rat",     "car"))      # Output: False
 using namespace std;
 
 bool isAnagram(const string& s, const string& t) {
-    if (s.size() != t.size()) return false;
+    if (s.size() != t.size()) return false;   // lengths must match for anagram
 
     unordered_map<char, int> freq;
-    for (char c : s) freq[c]++;
+    for (char c : s) freq[c]++;              // increment for s characters
     for (char c : t) {
-        if (--freq[c] < 0) return false;
+        if (--freq[c] < 0) return false;     // decrement; negative means t has extra char
     }
-    return true;
+    return true;                             // all counts balanced → anagram
 }
 
 int main() {
@@ -263,6 +320,28 @@ int main() {
     cout << isAnagram("rat",     "car")     << "\n";  // 0 (false)
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.size() != t.size()) return false;   // quick size check first
+
+        unordered_map<char, int> freq;
+        for (char c : s) freq[c]++;              // count characters in s
+        for (char c : t) {
+            if (--freq[c] < 0) return false;     // t has a char s doesn't have enough of
+        }
+        return true;                             // all character counts matched
+    }
+};
 ```
 
 If any count goes negative, `t` has a character `s` lacks — not an anagram.
@@ -286,7 +365,7 @@ print(most_frequent([1, 3, 2, 1, 4, 1]))  # Output: 1
 print(most_frequent([7, 7, 5, 5, 5]))     # Output: 5
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -296,11 +375,11 @@ using namespace std;
 
 int mostFrequent(vector<int>& nums) {
     unordered_map<int, int> freq;
-    for (int n : nums) freq[n]++;
+    for (int n : nums) freq[n]++;    // build frequency map in one pass
 
     int best = -1, bestCount = 0;
     for (auto& [key, count] : freq) {
-        if (count > bestCount) { bestCount = count; best = key; }
+        if (count > bestCount) { bestCount = count; best = key; }  // track maximum
     }
     return best;
 }
@@ -312,6 +391,27 @@ int main() {
     cout << mostFrequent(b) << "\n";  // 5
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int mostFrequent(vector<int>& nums) {
+        unordered_map<int, int> freq;            // element → count
+        for (int n : nums) freq[n]++;            // build frequency map
+
+        int best = -1, bestCount = 0;
+        for (auto& [key, count] : freq)          // scan all counts for the maximum
+            if (count > bestCount) { bestCount = count; best = key; }
+        return best;                             // key with highest frequency
+    }
+};
 ```
 
 ---
@@ -335,7 +435,7 @@ print(top_k_frequent([1, 1, 1, 2, 2, 3], 2))  # Output: [1, 2]
 print(top_k_frequent([4, 4, 4, 7, 7, 9], 1))  # Output: [4]
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -346,18 +446,16 @@ using namespace std;
 
 vector<int> topKFrequent(vector<int>& nums, int k) {
     unordered_map<int, int> freq;
-    for (int n : nums) freq[n]++;
+    for (int n : nums) freq[n]++;                  // build frequency map
 
-    // Collect unique keys
     vector<int> keys;
-    for (auto& [key, _] : freq) keys.push_back(key);
+    for (auto& [key, _] : freq) keys.push_back(key);  // collect unique elements
 
-    // Sort by frequency descending
     sort(keys.begin(), keys.end(), [&](int a, int b) {
-        return freq[a] > freq[b];
+        return freq[a] > freq[b];                  // sort by count descending
     });
 
-    keys.resize(k);
+    keys.resize(k);                                // keep only top k elements
     return keys;
 }
 
@@ -367,6 +465,33 @@ int main() {
     // Output: 1 2
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> freq;              // element → count
+        for (int n : nums) freq[n]++;              // build frequency map in one pass
+
+        vector<int> keys;
+        for (auto& [key, _] : freq) keys.push_back(key);  // collect distinct elements
+
+        sort(keys.begin(), keys.end(), [&](int a, int b) {
+            return freq[a] > freq[b];              // sort by descending frequency
+        });
+
+        keys.resize(k);                            // truncate to top k elements
+        return keys;
+    }
+};
 ```
 
 Time: $O(n \log n)$ due to sorting. A heap-based approach can achieve $O(n \log k)$ once you have covered heaps.
@@ -391,7 +516,7 @@ print(count_with_frequency([1,2,2,3,3,3], 2))  # Output: 1 (only 2 appears twice
 print(count_with_frequency([5,5,6,6,7,7], 2))  # Output: 3 (5, 6, 7 each appear twice)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -401,11 +526,11 @@ using namespace std;
 
 int countWithFrequency(vector<int>& nums, int k) {
     unordered_map<int, int> freq;
-    for (int n : nums) freq[n]++;
+    for (int n : nums) freq[n]++;    // build frequency map
 
     int result = 0;
     for (auto& [_, count] : freq)
-        if (count == k) result++;
+        if (count == k) result++;    // count elements whose frequency equals k
     return result;
 }
 
@@ -416,6 +541,27 @@ int main() {
     cout << countWithFrequency(b, 2) << "\n";  // 3
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int countWithFrequency(vector<int>& nums, int k) {
+        unordered_map<int, int> freq;       // element → count
+        for (int n : nums) freq[n]++;       // build frequency map
+
+        int result = 0;
+        for (auto& [_, count] : freq)
+            if (count == k) result++;       // tally elements with exactly k occurrences
+        return result;
+    }
+};
 ```
 
 ---
@@ -445,7 +591,7 @@ print(result)
 # Meaning: 2 elements appear 2 times; 1 element appears 1 time
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -455,10 +601,10 @@ using namespace std;
 
 unordered_map<int,int> freqOfFreq(vector<int>& nums) {
     unordered_map<int,int> freq;
-    for (int n : nums) freq[n]++;
+    for (int n : nums) freq[n]++;             // pass 1: element → count
 
     unordered_map<int,int> ff;
-    for (auto& [_, count] : freq) ff[count]++;
+    for (auto& [_, count] : freq) ff[count]++;  // pass 2: count → how many elements
     return ff;
 }
 
@@ -470,6 +616,26 @@ int main() {
     //         1 element(s) appear 1 time(s)
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    unordered_map<int, int> freqOfFreq(vector<int>& nums) {
+        unordered_map<int, int> freq;                    // element → count
+        for (int n : nums) freq[n]++;                    // pass 1: count each element
+
+        unordered_map<int, int> ff;                      // count → how many elements share it
+        for (auto& [_, count] : freq) ff[count]++;       // pass 2: summarise the distribution
+        return ff;
+    }
+};
 ```
 
 ---

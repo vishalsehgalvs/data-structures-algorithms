@@ -79,7 +79,7 @@ print(hash_function(43, 10))  # Output: 3  → stored at index 3
 print(hash_function(72, 10))  # Output: 2  → stored at index 2
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -96,6 +96,17 @@ int main() {
     cout << hashFunction(72, 10) << "\n";  // Output: 2
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+class Solution {
+public:
+    int hashFunction(int key, int tableSize) {
+        return key % tableSize;  // compute bucket index using modulo
+    }
+};
 ```
 
 ```
@@ -177,6 +188,8 @@ for name, score in scores.items():
 
 ### C++ — `std::unordered_map`
 
+**C++ (simple):**
+
 ```cpp
 #include <iostream>
 #include <unordered_map>
@@ -212,6 +225,36 @@ int main() {
 
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <string>
+#include <iostream>
+using namespace std;
+
+class Solution {
+public:
+    void demonstrateHashMap() {
+        unordered_map<string, int> scores;   // key: name, value: score
+
+        scores["Alice"] = 90;               // insert key-value pairs
+        scores["Bob"]   = 75;
+        scores["Carol"] = 88;
+
+        cout << scores["Alice"] << "\n";    // O(1) average access by key
+
+        if (scores.count("Bob"))            // check if key exists
+            cout << "Bob exists\n";
+
+        scores.erase("Bob");                // remove a key-value pair
+
+        for (auto& [name, score] : scores)  // iterate over all pairs
+            cout << name << " -> " << score << "\n";
+    }
+};
 ```
 
 > **Note:** `std::unordered_map` uses hashing and gives $O(1)$ average operations. `std::map` uses a balanced BST and gives $O(\log n)$ — use it when you need sorted keys.
@@ -258,7 +301,7 @@ for key, count in sorted(freq.items()):
 # 9 appears 1 time(s)
 ```
 
-**C++:**
+**C++ (simple):**
 
 ```cpp
 #include <iostream>
@@ -283,6 +326,24 @@ int main() {
 
     return 0;
 }
+```
+
+**C++ (LeetCode class style):**
+
+```cpp
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    unordered_map<int, int> countFrequencies(vector<int>& nums) {
+        unordered_map<int, int> freq;       // element → count
+        for (int num : nums)
+            freq[num]++;                    // inserts 0 if key missing, then increments
+        return freq;
+    }
+};
 ```
 
 This pattern runs in $O(n)$ time — a single pass through the array. You will use it repeatedly in problems involving anagrams, duplicates, and majority elements.
