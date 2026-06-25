@@ -11,10 +11,10 @@ Given a knapsack with capacity **W** and **n items** (each with a weight and val
 ## Why Greedy Doesn't Work Here
 
 | Item | Weight | Value |
-|------|--------|-------|
-| A | 4 kg | 5 |
-| B | 3 kg | 4 |
-| C | 2 kg | 3 |
+| ---- | ------ | ----- |
+| A    | 4 kg   | 5     |
+| B    | 3 kg   | 4     |
+| C    | 2 kg   | 3     |
 
 Capacity = 5 kg.
 
@@ -28,6 +28,7 @@ DP is required for 0/1 Knapsack.
 ## The Two Choices at Every Item
 
 For every item `i` with remaining capacity `w`:
+
 1. **Exclude it** → best value stays as `dp[i-1][w]`
 2. **Include it** (if `weight[i] <= w`) → `value[i] + dp[i-1][w - weight[i]]`
 
@@ -208,11 +209,11 @@ private:
 
 ### Dry Run (weights=[2,3], values=[3,4], W=5)
 
-| i\w | 0 | 1 | 2 | 3 | 4 | 5 |
-|-----|---|---|---|---|---|---|
-| 0 (no items) | 0 | 0 | 0 | 0 | 0 | 0 |
-| 1 (item1 w=2,v=3) | 0 | 0 | 3 | 3 | 3 | 3 |
-| 2 (item2 w=3,v=4) | 0 | 0 | 3 | 4 | 4 | 7 |
+| i\w               | 0   | 1   | 2   | 3   | 4   | 5   |
+| ----------------- | --- | --- | --- | --- | --- | --- |
+| 0 (no items)      | 0   | 0   | 0   | 0   | 0   | 0   |
+| 1 (item1 w=2,v=3) | 0   | 0   | 3   | 3   | 3   | 3   |
+| 2 (item2 w=3,v=4) | 0   | 0   | 3   | 4   | 4   | 7   |
 
 `dp[2][5] = 7` — take both items (2+3=5 kg, 3+4=7 value).
 
@@ -414,12 +415,12 @@ print("Items (1-indexed):", trace_items(dp, weights, n, W))   # [3, 2]
 
 ## Complexity Summary
 
-| Approach | Time | Space |
-|----------|------|-------|
-| Naive recursion | O(2ⁿ) | O(n) call stack |
-| Memoization | O(n × W) | O(n × W) |
-| Tabulation | O(n × W) | O(n × W) |
-| Space-optimized | O(n × W) | **O(W)** |
+| Approach        | Time     | Space           |
+| --------------- | -------- | --------------- |
+| Naive recursion | O(2ⁿ)    | O(n) call stack |
+| Memoization     | O(n × W) | O(n × W)        |
+| Tabulation      | O(n × W) | O(n × W)        |
+| Space-optimized | O(n × W) | **O(W)**        |
 
 ---
 

@@ -3,6 +3,7 @@
 ## What is Dynamic Programming?
 
 **Dynamic Programming (DP)** is a problem-solving strategy that:
+
 1. Breaks a big problem into smaller **overlapping subproblems**.
 2. Solves each subproblem **exactly once**.
 3. **Stores the result** so it is never recalculated.
@@ -14,9 +15,11 @@ DP is not a data structure — it is a technique. Without it, naive recursion re
 ## Two Key Properties of DP Problems
 
 ### 1. Overlapping Subproblems
+
 The same smaller problems appear **repeatedly** during recursion. Example: computing `fib(5)` requires `fib(3)` twice, `fib(2)` three times, etc. DP eliminates this repeated work.
 
 ### 2. Optimal Substructure
+
 The best solution to the full problem can be **built from best solutions to its subproblems**. Example: shortest path from A→C through B = shortest(A→B) + shortest(B→C).
 
 If **both properties exist**, DP is likely the right tool.
@@ -315,14 +318,14 @@ public:
 
 ## Memoization vs Tabulation
 
-| Feature | Memoization (Top-Down) | Tabulation (Bottom-Up) |
-|---------|----------------------|----------------------|
-| Approach | Recursive + cache | Iterative table |
-| Direction | Big problem → base case | Base case → big problem |
-| Ease of coding | Easier (start with recursion, add cache) | Requires clear iteration order |
-| Stack overflow risk | Yes, for very deep recursion | No — uses a loop |
-| Space | O(n) memo + call stack | O(n), or O(1) if optimizable |
-| Solves only needed subproblems? | Yes | No — solves all |
+| Feature                         | Memoization (Top-Down)                   | Tabulation (Bottom-Up)         |
+| ------------------------------- | ---------------------------------------- | ------------------------------ |
+| Approach                        | Recursive + cache                        | Iterative table                |
+| Direction                       | Big problem → base case                  | Base case → big problem        |
+| Ease of coding                  | Easier (start with recursion, add cache) | Requires clear iteration order |
+| Stack overflow risk             | Yes, for very deep recursion             | No — uses a loop               |
+| Space                           | O(n) memo + call stack                   | O(n), or O(1) if optimizable   |
+| Solves only needed subproblems? | Yes                                      | No — solves all                |
 
 For beginners: **start with memoization** (add cache to working recursive solution). Switch to tabulation once you see the pattern.
 
@@ -414,6 +417,7 @@ public:
 ## How to Identify a DP Problem
 
 Ask these questions:
+
 - Does the problem ask for **maximum, minimum, count, or true/false**?
 - Does it involve **choices at each step** that affect future choices?
 - Can you define the answer in terms of **smaller versions of the same problem**?
@@ -439,12 +443,12 @@ The hardest step is always step 1. Defining the state clearly makes everything e
 
 ## Complexity Summary
 
-| Approach | Time | Space |
-|----------|------|-------|
-| Naive recursion | O(2ⁿ) | O(n) call stack |
-| Memoization (top-down) | O(n) | O(n) |
-| Tabulation (bottom-up) | O(n) | O(n) |
-| Space-optimized tabulation | O(n) | O(1) |
+| Approach                   | Time  | Space           |
+| -------------------------- | ----- | --------------- |
+| Naive recursion            | O(2ⁿ) | O(n) call stack |
+| Memoization (top-down)     | O(n)  | O(n)            |
+| Tabulation (bottom-up)     | O(n)  | O(n)            |
+| Space-optimized tabulation | O(n)  | O(1)            |
 
 ---
 

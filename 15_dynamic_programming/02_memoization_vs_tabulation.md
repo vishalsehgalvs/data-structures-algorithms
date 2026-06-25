@@ -164,15 +164,15 @@ public:
 
 ## Side-by-Side Comparison
 
-| Feature | Memoization (Top-Down) | Tabulation (Bottom-Up) |
-|---------|----------------------|----------------------|
-| Direction | Big problem → base case | Base case → big problem |
-| Technique | Recursion + cache | Iteration + table |
-| Subproblems solved | Only the ones needed | All subproblems |
-| Stack overflow risk | Yes (deep recursion) | No (loop-based) |
-| Ease of writing | Easier — add cache to recursion | Requires clear iteration order |
-| Space | Cache + call stack | Array (often space-optimizable) |
-| Performance | Slight recursion overhead | Slightly faster in practice |
+| Feature             | Memoization (Top-Down)          | Tabulation (Bottom-Up)          |
+| ------------------- | ------------------------------- | ------------------------------- |
+| Direction           | Big problem → base case         | Base case → big problem         |
+| Technique           | Recursion + cache               | Iteration + table               |
+| Subproblems solved  | Only the ones needed            | All subproblems                 |
+| Stack overflow risk | Yes (deep recursion)            | No (loop-based)                 |
+| Ease of writing     | Easier — add cache to recursion | Requires clear iteration order  |
+| Space               | Cache + call stack              | Array (often space-optimizable) |
+| Performance         | Slight recursion overhead       | Slightly faster in practice     |
 
 ---
 
@@ -441,6 +441,7 @@ public:
 Memoization uses the call stack. Python's default recursion limit is ~1000 calls. For large `n`, deep recursion causes `RecursionError`.
 
 **Solutions:**
+
 - Convert to tabulation (no call stack, always safe).
 - Use `sys.setrecursionlimit(10000)` (temporary workaround, not recommended for production).
 
@@ -450,14 +451,14 @@ Tabulation is always safe because it uses a loop.
 
 ## When to Use Which
 
-| Situation | Use |
-|-----------|-----|
-| You have a working recursive solution and want quick optimization | Memoization |
-| Large inputs where recursion depth could overflow | Tabulation |
-| You want better performance and cleaner iteration | Tabulation |
-| Only a subset of subproblems are ever needed | Memoization |
-| Interview — showing awareness of stack issues | Tabulation |
-| Contest — speed of writing matters | Memoization first |
+| Situation                                                         | Use               |
+| ----------------------------------------------------------------- | ----------------- |
+| You have a working recursive solution and want quick optimization | Memoization       |
+| Large inputs where recursion depth could overflow                 | Tabulation        |
+| You want better performance and cleaner iteration                 | Tabulation        |
+| Only a subset of subproblems are ever needed                      | Memoization       |
+| Interview — showing awareness of stack issues                     | Tabulation        |
+| Contest — speed of writing matters                                | Memoization first |
 
 ---
 

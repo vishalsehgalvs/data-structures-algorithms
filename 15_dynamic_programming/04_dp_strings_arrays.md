@@ -5,6 +5,7 @@
 Most string DP problems involve two strings (or one string compared with itself). You create a **2D table** where rows represent characters of one string and columns represent characters of the other. Each cell stores the answer to a subproblem.
 
 **Core pattern:**
+
 - Characters **match** → build on the diagonal cell (`dp[i-1][j-1] + 1`)
 - Characters **don't match** → take the best from the cell above or to the left
 
@@ -100,6 +101,7 @@ public:
 Minimum number of operations (**insert, delete, replace**) to convert string `s1` into `s2`.
 
 **Recurrence:**
+
 - `s1[i-1] == s2[j-1]` → `dp[i][j] = dp[i-1][j-1]` (no cost)
 - Otherwise → `dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])`  
   (delete from s1 / insert into s1 / replace)
@@ -326,12 +328,12 @@ Example: `[10, 9, 2, 5, 3, 7, 101, 18]` → LIS = `[2, 3, 7, 18]` or `[2, 5, 7, 
 
 ### Dry Run on [2, 5, 3, 7]
 
-| Index | Value | dp[i] | Reason |
-|-------|-------|-------|--------|
-| 0 | 2 | 1 | No previous elements |
-| 1 | 5 | 2 | 5 > 2, extend dp[0]+1 |
-| 2 | 3 | 2 | 3 > 2, extend dp[0]+1 |
-| 3 | 7 | 3 | 7 > 5 and 7 > 3, max(dp[1]+1, dp[2]+1) = 3 |
+| Index | Value | dp[i] | Reason                                     |
+| ----- | ----- | ----- | ------------------------------------------ |
+| 0     | 2     | 1     | No previous elements                       |
+| 1     | 5     | 2     | 5 > 2, extend dp[0]+1                      |
+| 2     | 3     | 2     | 3 > 2, extend dp[0]+1                      |
+| 3     | 7     | 3     | 7 > 5 and 7 > 3, max(dp[1]+1, dp[2]+1) = 3 |
 
 Answer = max(1, 2, 2, 3) = **3** → LIS is `[2, 3, 7]` or `[2, 5, 7]`
 
@@ -408,13 +410,13 @@ public:
 
 ## Reference Table — Key DP Problems
 
-| Problem | Input | Key Idea | Time |
-|---------|-------|---------|------|
-| LCS | Two strings | Match chars → diagonal; no match → max(above, left) | O(m×n) |
-| Edit Distance | Two strings | Insert / delete / replace operations | O(m×n) |
-| LPS | One string | LCS(s, reverse(s)) | O(n²) |
-| Min Insertions Palindrome | One string | n − LPS(s) | O(n²) |
-| LIS | One array | Extend subsequences from all previous elements | O(n²) |
+| Problem                   | Input       | Key Idea                                            | Time   |
+| ------------------------- | ----------- | --------------------------------------------------- | ------ |
+| LCS                       | Two strings | Match chars → diagonal; no match → max(above, left) | O(m×n) |
+| Edit Distance             | Two strings | Insert / delete / replace operations                | O(m×n) |
+| LPS                       | One string  | LCS(s, reverse(s))                                  | O(n²)  |
+| Min Insertions Palindrome | One string  | n − LPS(s)                                          | O(n²)  |
+| LIS                       | One array   | Extend subsequences from all previous elements      | O(n²)  |
 
 ---
 
