@@ -5,6 +5,7 @@
 Given a graph with nodes and edges, find the **minimum cost or minimum number of steps** to travel from one node to another.
 
 Two main algorithms:
+
 - **BFS** — for unweighted graphs (fewest hops)
 - **Dijkstra** — for weighted graphs (minimum cost)
 
@@ -12,13 +13,13 @@ Two main algorithms:
 
 ## When to Use BFS vs Dijkstra
 
-| Feature | BFS | Dijkstra |
-|---------|-----|---------|
-| Graph type | Unweighted | Weighted (non-negative weights only) |
-| Edge weights | All equal (weight = 1) | Different weights per edge |
-| Data structure | Queue (FIFO) | Min-heap (priority queue) |
-| Time complexity | O(V + E) | O((V + E) log V) |
-| Use case | Fewest hops | Minimum cost path |
+| Feature         | BFS                    | Dijkstra                             |
+| --------------- | ---------------------- | ------------------------------------ |
+| Graph type      | Unweighted             | Weighted (non-negative weights only) |
+| Edge weights    | All equal (weight = 1) | Different weights per edge           |
+| Data structure  | Queue (FIFO)           | Min-heap (priority queue)            |
+| Time complexity | O(V + E)               | O((V + E) log V)                     |
+| Use case        | Fewest hops            | Minimum cost path                    |
 
 If every road costs the same, BFS is enough. If roads have different distances, use Dijkstra.
 
@@ -314,10 +315,10 @@ public:
 
 ## Complexity Summary
 
-| Algorithm | Time | Space | Graph Type |
-|-----------|------|-------|-----------|
-| BFS shortest path | O(V + E) | O(V) | Unweighted |
-| Dijkstra | O((V + E) log V) | O(V + E) | Weighted (non-negative) |
+| Algorithm         | Time             | Space    | Graph Type              |
+| ----------------- | ---------------- | -------- | ----------------------- |
+| BFS shortest path | O(V + E)         | O(V)     | Unweighted              |
+| Dijkstra          | O((V + E) log V) | O(V + E) | Weighted (non-negative) |
 
 ---
 

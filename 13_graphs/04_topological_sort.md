@@ -23,13 +23,13 @@ A DAG is a directed graph with **no cycles**. Key properties:
 
 ## Real-World Use Cases
 
-| Use Case | Example |
-|----------|---------|
-| Build systems | Compile files in dependency order |
-| Course prerequisites | Take Math before Physics |
-| Task scheduling | Run pipeline jobs in correct order |
-| Package managers | Install libraries in right sequence |
-| Spreadsheets | Evaluate cell formulas in dependency order |
+| Use Case             | Example                                    |
+| -------------------- | ------------------------------------------ |
+| Build systems        | Compile files in dependency order          |
+| Course prerequisites | Take Math before Physics                   |
+| Task scheduling      | Run pipeline jobs in correct order         |
+| Package managers     | Install libraries in right sequence        |
+| Spreadsheets         | Evaluate cell formulas in dependency order |
 
 ---
 
@@ -356,14 +356,14 @@ Node 0 always comes first (no dependencies). Node 3 comes last (depends on both 
 
 ## Comparison of Approaches
 
-| Feature | Kahn's Algorithm (BFS) | DFS-Based |
-|---------|----------------------|-----------|
-| Traversal type | Breadth-First | Depth-First |
-| Cycle detection | Built-in (check result length) | Needs extra state tracking |
-| Data structure | Queue + in-degree array | Recursion stack |
-| Time complexity | O(V + E) | O(V + E) |
-| Space complexity | O(V + E) | O(V + E) |
-| Beginner-friendly | Yes — intuitive | Moderate |
+| Feature           | Kahn's Algorithm (BFS)         | DFS-Based                  |
+| ----------------- | ------------------------------ | -------------------------- |
+| Traversal type    | Breadth-First                  | Depth-First                |
+| Cycle detection   | Built-in (check result length) | Needs extra state tracking |
+| Data structure    | Queue + in-degree array        | Recursion stack            |
+| Time complexity   | O(V + E)                       | O(V + E)                   |
+| Space complexity  | O(V + E)                       | O(V + E)                   |
+| Beginner-friendly | Yes — intuitive                | Moderate                   |
 
 Kahn's algorithm is often preferred in interviews because **cycle detection is a natural byproduct** of the algorithm.
 

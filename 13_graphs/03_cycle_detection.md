@@ -5,6 +5,7 @@
 A **cycle** exists when you can start at a node, follow a series of edges, and return to the same node.
 
 Real-world uses:
+
 - Detecting **deadlocks** in operating systems (resource allocation graphs)
 - Finding **circular dependencies** in build tools (Maven, npm)
 - Validating **routing** in networks (prevent infinite packet loops)
@@ -15,10 +16,10 @@ Cycle detection works **differently** for undirected and directed graphs — we 
 
 ## Types of Graphs: Quick Recap
 
-| Graph Type | Edges | Cycle Detection Method |
-|------------|-------|----------------------|
-| Undirected | Bidirectional | DFS with parent check, or Union-Find |
-| Directed | One-directional | DFS with recursion stack |
+| Graph Type | Edges           | Cycle Detection Method               |
+| ---------- | --------------- | ------------------------------------ |
+| Undirected | Bidirectional   | DFS with parent check, or Union-Find |
+| Directed   | One-directional | DFS with recursion stack             |
 
 ---
 
@@ -29,11 +30,13 @@ Cycle detection works **differently** for undirected and directed graphs — we 
 **Idea:** During DFS, if we reach a neighbor that is already visited **and it is not our parent**, we have found a cycle (we went around a loop).
 
 **Example graph (5 nodes):**
+
 ```
 0 - 1 - 2 - 3 - 4
         |       |
         +-------+   ← edge 4→1 creates a cycle
 ```
+
 Edges: `0-1, 1-2, 2-3, 3-4, 4-1`
 
 #### Python
@@ -299,6 +302,7 @@ We need to track the **current active DFS path** using a **recursion stack**.
 ### DFS with Recursion Stack
 
 **Idea:** Maintain two arrays:
+
 - `visited` — all nodes fully explored
 - `in_stack` — nodes on the **current active DFS path**
 
@@ -454,11 +458,11 @@ private:
 
 ## Comparison of Approaches
 
-| Approach | Graph Type | Time | Space | Best For |
-|----------|-----------|------|-------|---------|
-| DFS + parent check | Undirected | O(V + E) | O(V) | Simple undirected cycle check |
-| Union-Find | Undirected | O(E · α(V)) ≈ O(E) | O(V) | Edge-list input, disjoint sets |
-| DFS + recursion stack | Directed | O(V + E) | O(V) | Directed graph cycle detection |
+| Approach              | Graph Type | Time               | Space | Best For                       |
+| --------------------- | ---------- | ------------------ | ----- | ------------------------------ |
+| DFS + parent check    | Undirected | O(V + E)           | O(V)  | Simple undirected cycle check  |
+| Union-Find            | Undirected | O(E · α(V)) ≈ O(E) | O(V)  | Edge-list input, disjoint sets |
+| DFS + recursion stack | Directed   | O(V + E)           | O(V)  | Directed graph cycle detection |
 
 α(V) = inverse Ackermann function — practically constant (≤ 5 for any real input).
 

@@ -327,14 +327,14 @@ private:
 
 ## BFS vs DFS Comparison
 
-| Feature | BFS | DFS |
-|---------|-----|-----|
-| Order of visit | Level by level | Branch by branch |
-| Data structure | Queue | Stack or Recursion |
-| Memory usage | Higher (stores a full level) | Lower (stores one path) |
-| Finds shortest path | Yes, in unweighted graphs | Not guaranteed |
-| Best for | Closest node, level problems | Deep paths, subtree problems |
-| Variations | Level Order | PreOrder, InOrder, PostOrder |
+| Feature             | BFS                          | DFS                          |
+| ------------------- | ---------------------------- | ---------------------------- |
+| Order of visit      | Level by level               | Branch by branch             |
+| Data structure      | Queue                        | Stack or Recursion           |
+| Memory usage        | Higher (stores a full level) | Lower (stores one path)      |
+| Finds shortest path | Yes, in unweighted graphs    | Not guaranteed               |
+| Best for            | Closest node, level problems | Deep paths, subtree problems |
+| Variations          | Level Order                  | PreOrder, InOrder, PostOrder |
 
 ---
 
@@ -525,11 +525,11 @@ public:
 
 ## Quick Summary of DFS Orders
 
-| DFS Type | Order | Output (example tree) | Memory trick |
-|----------|-------|----------------------|-------------|
-| PreOrder | Root → Left → Right | 1 2 4 5 3 6 7 | **Pre** = root **before** children |
-| InOrder | Left → Root → Right | 4 2 5 1 6 3 7 | **In** = root **between** children |
-| PostOrder | Left → Right → Root | 4 5 2 6 7 3 1 | **Post** = root **after** children |
+| DFS Type  | Order               | Output (example tree) | Memory trick                       |
+| --------- | ------------------- | --------------------- | ---------------------------------- |
+| PreOrder  | Root → Left → Right | 1 2 4 5 3 6 7         | **Pre** = root **before** children |
+| InOrder   | Left → Root → Right | 4 2 5 1 6 3 7         | **In** = root **between** children |
+| PostOrder | Left → Right → Root | 4 5 2 6 7 3 1         | **Post** = root **after** children |
 
 ---
 

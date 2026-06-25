@@ -12,15 +12,15 @@ Graphs are everywhere: social networks, web pages linked to other pages, GPS nav
 
 ## Graph Terminology
 
-| Term | Definition |
-|------|-----------|
-| **Vertex (Node)** | A single point in the graph (e.g. a city) |
-| **Edge** | A connection between two vertices (e.g. a road) |
-| **Degree** | Number of edges connected to a vertex |
-| **Path** | A sequence of vertices connected by edges |
-| **Cycle** | A path that starts and ends at the same vertex |
-| **Connected Graph** | Every vertex can be reached from every other vertex |
-| **Disconnected Graph** | Some vertices cannot reach others |
+| Term                   | Definition                                          |
+| ---------------------- | --------------------------------------------------- |
+| **Vertex (Node)**      | A single point in the graph (e.g. a city)           |
+| **Edge**               | A connection between two vertices (e.g. a road)     |
+| **Degree**             | Number of edges connected to a vertex               |
+| **Path**               | A sequence of vertices connected by edges           |
+| **Cycle**              | A path that starts and ends at the same vertex      |
+| **Connected Graph**    | Every vertex can be reached from every other vertex |
+| **Disconnected Graph** | Some vertices cannot reach others                   |
 
 ---
 
@@ -28,11 +28,11 @@ Graphs are everywhere: social networks, web pages linked to other pages, GPS nav
 
 ### Directed vs Undirected
 
-| Feature | Undirected | Directed (Digraph) |
-|---------|-----------|-------------------|
+| Feature        | Undirected               | Directed (Digraph)      |
+| -------------- | ------------------------ | ----------------------- |
 | Edge direction | No direction (both ways) | Has direction (one way) |
-| Example | Facebook friends | Twitter followers |
-| Edge notation | (A, B) same as (B, A) | (A, B) ≠ (B, A) |
+| Example        | Facebook friends         | Twitter followers       |
+| Edge notation  | (A, B) same as (B, A)    | (A, B) ≠ (B, A)         |
 
 ### Weighted vs Unweighted
 
@@ -285,13 +285,13 @@ private:
 
 ## Adjacency Matrix vs Adjacency List
 
-| Property | Adjacency Matrix | Adjacency List |
-|----------|-----------------|---------------|
-| Space | O(V²) | O(V + E) |
-| Check edge exists | O(1) | O(degree) |
-| Add edge | O(1) | O(1) |
-| Iterate neighbors | O(V) | O(degree) |
-| Best for | Dense graphs | Sparse graphs |
+| Property          | Adjacency Matrix | Adjacency List |
+| ----------------- | ---------------- | -------------- |
+| Space             | O(V²)            | O(V + E)       |
+| Check edge exists | O(1)             | O(degree)      |
+| Add edge          | O(1)             | O(1)           |
+| Iterate neighbors | O(V)             | O(degree)      |
+| Best for          | Dense graphs     | Sparse graphs  |
 
 In most real-world problems graphs are **sparse**, so **adjacency list** is the go-to choice.
 
