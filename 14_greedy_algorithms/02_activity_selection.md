@@ -30,13 +30,13 @@ Why? Finishing early leaves the most room for future activities. A long activity
 ## Dry Run Example
 
 | Activity | Start | Finish |
-|----------|-------|--------|
-| A1 | 1 | 3 |
-| A2 | 2 | 5 |
-| A3 | 4 | 6 |
-| A4 | 6 | 8 |
-| A5 | 5 | 7 |
-| A6 | 8 | 9 |
+| -------- | ----- | ------ |
+| A1       | 1     | 3      |
+| A2       | 2     | 5      |
+| A3       | 4     | 6      |
+| A4       | 6     | 8      |
+| A5       | 5     | 7      |
+| A6       | 8     | 9      |
 
 ```
 Step 1: Sort by finish time → A1(3), A2(5), A3(6), A5(7), A4(8), A6(9)
@@ -270,12 +270,12 @@ public:
 
 ## Why Sorting by Finish Time Works
 
-| Strategy | Always optimal? | Reason |
-|----------|----------------|--------|
-| Sort by **finish time** ✓ | Yes | Finishing early leaves the most room for future activities |
-| Sort by start time | No | An activity may start early but run very long, blocking others |
-| Sort by duration | No | A short activity may still conflict with two others |
-| Sort by start time descending | No | Late starters may block earlier slots |
+| Strategy                      | Always optimal? | Reason                                                         |
+| ----------------------------- | --------------- | -------------------------------------------------------------- |
+| Sort by **finish time** ✓     | Yes             | Finishing early leaves the most room for future activities     |
+| Sort by start time            | No              | An activity may start early but run very long, blocking others |
+| Sort by duration              | No              | A short activity may still conflict with two others            |
+| Sort by start time descending | No              | Late starters may block earlier slots                          |
 
 Sorting by finish time is the **only provably optimal** strategy for this problem.
 
@@ -283,12 +283,12 @@ Sorting by finish time is the **only provably optimal** strategy for this proble
 
 ## Time and Space Complexity
 
-| Step | Complexity |
-|------|-----------|
-| Sorting | O(n log n) |
-| Selection loop | O(n) |
+| Step           | Complexity     |
+| -------------- | -------------- |
+| Sorting        | O(n log n)     |
+| Selection loop | O(n)           |
 | **Total time** | **O(n log n)** |
-| **Space** | **O(n)** |
+| **Space**      | **O(n)**       |
 
 ---
 

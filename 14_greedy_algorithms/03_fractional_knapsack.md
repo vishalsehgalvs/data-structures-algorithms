@@ -34,10 +34,10 @@ Think of it like choosing the most expensive ingredient per kilogram at a market
 **Knapsack capacity = 50 kg, 3 items:**
 
 | Item | Weight (kg) | Value (Rs) | Ratio |
-|------|------------|------------|-------|
-| A | 10 | 60 | 6.0 |
-| B | 20 | 100 | 5.0 |
-| C | 30 | 120 | 4.0 |
+| ---- | ----------- | ---------- | ----- |
+| A    | 10          | 60         | 6.0   |
+| B    | 20          | 100        | 5.0   |
+| C    | 30          | 120        | 4.0   |
 
 ```
 Sorted by ratio: A(6.0) → B(5.0) → C(4.0)
@@ -170,13 +170,13 @@ public:
 
 ## Fractional vs 0/1 Knapsack
 
-| Feature | Fractional Knapsack | 0/1 Knapsack |
-|---------|---------------------|-------------|
-| Can split items? | Yes | No |
-| Approach | Greedy | Dynamic Programming |
-| Optimal guaranteed? | Yes with greedy | Needs DP |
-| Time complexity | O(n log n) | O(n × W) |
-| Difficulty | Easier | Harder |
+| Feature             | Fractional Knapsack | 0/1 Knapsack        |
+| ------------------- | ------------------- | ------------------- |
+| Can split items?    | Yes                 | No                  |
+| Approach            | Greedy              | Dynamic Programming |
+| Optimal guaranteed? | Yes with greedy     | Needs DP            |
+| Time complexity     | O(n log n)          | O(n × W)            |
+| Difficulty          | Easier              | Harder              |
 
 **Key insight:** greedy works for fractional because the best-ratio item always leads to the best result when you can split freely. In 0/1 Knapsack, you cannot split, so a greedy pick can miss better combinations.
 
@@ -184,12 +184,12 @@ public:
 
 ## Time and Space Complexity
 
-| Step | Operation | Complexity |
-|------|-----------|-----------|
-| Sort by ratio | Sorting n items | O(n log n) |
-| Fill knapsack | Single pass | O(n) |
-| **Total time** | | **O(n log n)** |
-| **Extra space** | Sort in place + a few vars | **O(1)** |
+| Step            | Operation                  | Complexity     |
+| --------------- | -------------------------- | -------------- |
+| Sort by ratio   | Sorting n items            | O(n log n)     |
+| Fill knapsack   | Single pass                | O(n)           |
+| **Total time**  |                            | **O(n log n)** |
+| **Extra space** | Sort in place + a few vars | **O(1)**       |
 
 ---
 

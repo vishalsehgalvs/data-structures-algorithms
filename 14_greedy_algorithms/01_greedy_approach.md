@@ -21,12 +21,12 @@ This makes greedy algorithms very fast — often **O(n log n)** or even **O(n)**
 
 ## Greedy vs Other Approaches
 
-| Approach | Strategy | Looks Back? | Speed |
-|----------|----------|------------|-------|
-| **Greedy** | Pick locally best at each step | No | Very fast |
-| Backtracking | Try all options, undo bad choices | Yes | Slow |
-| Dynamic Programming | Store and reuse subproblem results | Yes | Moderate |
-| Brute Force | Try every possible combination | Yes | Slowest |
+| Approach            | Strategy                           | Looks Back? | Speed     |
+| ------------------- | ---------------------------------- | ----------- | --------- |
+| **Greedy**          | Pick locally best at each step     | No          | Very fast |
+| Backtracking        | Try all options, undo bad choices  | Yes         | Slow      |
+| Dynamic Programming | Store and reuse subproblem results | Yes         | Moderate  |
+| Brute Force         | Try every possible combination     | Yes         | Slowest   |
 
 ---
 
@@ -35,9 +35,11 @@ This makes greedy algorithms very fast — often **O(n log n)** or even **O(n)**
 Greedy is only reliable when a problem has **both** of these properties:
 
 ### Greedy Choice Property
+
 A globally optimal solution can always be built by making locally optimal choices. The best local pick never closes the door on the best global answer.
 
 ### Optimal Substructure
+
 The optimal solution to the full problem contains optimal solutions to its subproblems. (Same idea as DP, but greedy solves each subproblem once without storing results.)
 
 ---
@@ -195,6 +197,7 @@ Problems like this require **Dynamic Programming** or **recursion with memoizati
 ## How to Identify a Greedy Problem
 
 Look for these signals:
+
 - Problem asks to **maximize or minimize** something (count, cost, distance).
 - Making a local best choice does **not hurt** future choices.
 - Involves **selecting items, intervals, or tasks** one at a time.
@@ -207,13 +210,13 @@ If you find a counter-example where the greedy choice fails, switch to DP or Bac
 
 ## Greedy vs Dynamic Programming
 
-| Feature | Greedy | Dynamic Programming |
-|---------|--------|-------------------|
-| Decision style | Pick best now, no undo | Explore all, store results |
-| Memory usage | Very low | Moderate to high |
-| Speed | Very fast | Moderate |
-| Correctness | Only for specific problems | General and reliable |
-| Examples | Activity Selection, Fractional Knapsack | 0/1 Knapsack, LCS |
+| Feature        | Greedy                                  | Dynamic Programming        |
+| -------------- | --------------------------------------- | -------------------------- |
+| Decision style | Pick best now, no undo                  | Explore all, store results |
+| Memory usage   | Very low                                | Moderate to high           |
+| Speed          | Very fast                               | Moderate                   |
+| Correctness    | Only for specific problems              | General and reliable       |
+| Examples       | Activity Selection, Fractional Knapsack | 0/1 Knapsack, LCS          |
 
 **Useful rule of thumb:** if splitting an item is allowed (fractional), greedy often works. If you must take whole items (0/1), you likely need DP.
 

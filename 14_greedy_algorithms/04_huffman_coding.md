@@ -13,12 +13,15 @@ Used in: **ZIP, GZIP, JPEG, MP3** and many other real-world formats.
 ## Key Concepts
 
 ### Prefix-Free Code
+
 No code for one character is the **prefix (beginning)** of another character's code. This guarantees unambiguous decoding. Huffman codes are always prefix-free by construction.
 
 ### Binary Tree + Leaf Nodes
+
 Characters sit at **leaf nodes**. The path from root to a leaf = the binary code for that character. **Left edge = '0', Right edge = '1'**.
 
 ### Greedy Rule
+
 **Always merge the two nodes with the smallest frequencies first.** This greedy choice is provably optimal — merging the least frequent nodes deepest in the tree minimizes total weighted path length.
 
 ---
@@ -30,11 +33,11 @@ Characters sit at **leaf nodes**. The path from root to a leaf = the binary code
 **Frequency table:**
 
 | Character | Frequency |
-|-----------|-----------|
-| a | 2 |
-| b | 3 |
-| c | 2 |
-| d | 4 |
+| --------- | --------- |
+| a         | 2         |
+| b         | 3         |
+| c         | 2         |
+| d         | 4         |
 
 ```
 Step 1 — Insert all as leaf nodes into min-heap:
@@ -71,11 +74,11 @@ Step 4 — Extract d:4 and *:7, merge → root *:11
 **Assigned codes** (left=0, right=1):
 
 | Character | Frequency | Code | Bits |
-|-----------|-----------|------|------|
-| d | 4 | 0 | 1 |
-| b | 3 | 10 | 2 |
-| a | 2 | 110 | 3 |
-| c | 2 | 111 | 3 |
+| --------- | --------- | ---- | ---- |
+| d         | 4         | 0    | 1    |
+| b         | 3         | 10   | 2    |
+| a         | 2         | 110  | 3    |
+| c         | 2         | 111  | 3    |
 
 Frequent characters get shorter codes — optimal compression.
 
@@ -315,24 +318,24 @@ The proof uses an **exchange argument**: if the two least frequent characters ar
 
 ## Huffman vs Fixed-Length Coding
 
-| Feature | Fixed-Length (ASCII) | Huffman Coding |
-|---------|---------------------|----------------|
-| Bits per character | Same for all (8) | Varies by frequency |
-| Compression | None | Lossless compression |
-| Decoding | Trivial | Needs the Huffman tree |
-| Optimality | Not optimal | Optimal for prefix-free codes |
+| Feature            | Fixed-Length (ASCII) | Huffman Coding                |
+| ------------------ | -------------------- | ----------------------------- |
+| Bits per character | Same for all (8)     | Varies by frequency           |
+| Compression        | None                 | Lossless compression          |
+| Decoding           | Trivial              | Needs the Huffman tree        |
+| Optimality         | Not optimal          | Optimal for prefix-free codes |
 
 ---
 
 ## Time and Space Complexity
 
-| Step | Complexity |
-|------|-----------|
-| Count frequencies | O(n) |
-| Build tree (n-1 merges, each O(log n)) | O(n log n) |
-| Generate codes (tree traversal) | O(n) |
-| **Total time** | **O(n log n)** |
-| **Space** | **O(n)** |
+| Step                                   | Complexity     |
+| -------------------------------------- | -------------- |
+| Count frequencies                      | O(n)           |
+| Build tree (n-1 merges, each O(log n)) | O(n log n)     |
+| Generate codes (tree traversal)        | O(n)           |
+| **Total time**                         | **O(n log n)** |
+| **Space**                              | **O(n)**       |
 
 ---
 
