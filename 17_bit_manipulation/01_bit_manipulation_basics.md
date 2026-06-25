@@ -21,7 +21,7 @@ Value   8+0+2+1 = 11 (decimal)
 Common conversions:
 
 | Decimal | Binary |
-|---------|--------|
+| ------- | ------ |
 | 1       | 0001   |
 | 5       | 0101   |
 | 10      | 1010   |
@@ -39,7 +39,7 @@ print(bin(15))   # 0b1111
 ## Bitwise Operators Overview
 
 | Operator    | Symbol | Description                          |
-|-------------|--------|--------------------------------------|
+| ----------- | ------ | ------------------------------------ |
 | AND         | `&`    | 1 only if **both** bits are 1        |
 | OR          | `\|`   | 1 if **at least one** bit is 1       |
 | XOR         | `^`    | 1 only if the bits are **different** |
@@ -183,6 +183,7 @@ Result is 1 only when the two bits are **different**.
 ```
 
 **Key properties:**
+
 - `a ^ a = 0` — a number XORed with itself cancels out
 - `a ^ 0 = a` — a number XORed with 0 stays the same
 
@@ -480,18 +481,18 @@ public:
 
 ## Summary Table
 
-| Operation           | Expression          | Effect                              |
-|---------------------|---------------------|-------------------------------------|
-| Check odd/even      | `n & 1`             | 1 → odd, 0 → even                   |
-| Check bit k         | `(n >> k) & 1`      | 1 if bit k is set, else 0           |
-| Set bit k           | `n \| (1 << k)`     | Force bit k to 1                    |
-| Clear bit k         | `n & ~(1 << k)`     | Force bit k to 0                    |
-| Toggle bit k        | `n ^ (1 << k)`      | Flip bit k                          |
-| Multiply by 2^k     | `n << k`            | Left shift                          |
-| Divide by 2^k       | `n >> k`            | Right shift (integer division)      |
-| Cancel duplicates   | `a ^ a = 0`         | XOR of equal values is 0            |
-| Identity            | `a ^ 0 = a`         | XOR with 0 unchanged                |
-| NOT / complement    | `~n = -(n+1)`       | Two's complement                    |
+| Operation         | Expression      | Effect                         |
+| ----------------- | --------------- | ------------------------------ |
+| Check odd/even    | `n & 1`         | 1 → odd, 0 → even              |
+| Check bit k       | `(n >> k) & 1`  | 1 if bit k is set, else 0      |
+| Set bit k         | `n \| (1 << k)` | Force bit k to 1               |
+| Clear bit k       | `n & ~(1 << k)` | Force bit k to 0               |
+| Toggle bit k      | `n ^ (1 << k)`  | Flip bit k                     |
+| Multiply by 2^k   | `n << k`        | Left shift                     |
+| Divide by 2^k     | `n >> k`        | Right shift (integer division) |
+| Cancel duplicates | `a ^ a = 0`     | XOR of equal values is 0       |
+| Identity          | `a ^ 0 = a`     | XOR with 0 unchanged           |
+| NOT / complement  | `~n = -(n+1)`   | Two's complement               |
 
 ---
 

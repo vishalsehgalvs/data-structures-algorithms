@@ -6,14 +6,14 @@ Bitwise operators work directly on the binary (bit-level) representation of numb
 
 There are **six core operators**:
 
-| Operator    | Symbol | Key Rule                              | Common Use                 |
-|-------------|--------|---------------------------------------|----------------------------|
-| AND         | `&`    | 1 only if **both** bits are 1         | Check and mask bits        |
-| OR          | `\|`   | 1 if **either** bit is 1             | Set specific bits ON       |
-| XOR         | `^`    | 1 only if bits are **different**      | Toggle bits, swap values   |
-| NOT         | `~`    | Flips **all** bits                    | Invert a number            |
-| Left Shift  | `<<`   | Multiply by 2 per shift               | Compute powers of 2        |
-| Right Shift | `>>`   | Integer-divide by 2 per shift         | Extract bits, fast division|
+| Operator    | Symbol | Key Rule                         | Common Use                  |
+| ----------- | ------ | -------------------------------- | --------------------------- |
+| AND         | `&`    | 1 only if **both** bits are 1    | Check and mask bits         |
+| OR          | `\|`   | 1 if **either** bit is 1         | Set specific bits ON        |
+| XOR         | `^`    | 1 only if bits are **different** | Toggle bits, swap values    |
+| NOT         | `~`    | Flips **all** bits               | Invert a number             |
+| Left Shift  | `<<`   | Multiply by 2 per shift          | Compute powers of 2         |
+| Right Shift | `>>`   | Integer-divide by 2 per shift    | Extract bits, fast division |
 
 ---
 
@@ -22,7 +22,7 @@ There are **six core operators**:
 Returns 1 only when **both** corresponding bits are 1.
 
 | Bit A | Bit B | A & B |
-|-------|-------|-------|
+| ----- | ----- | ----- |
 | 0     | 0     | 0     |
 | 0     | 1     | 0     |
 | 1     | 0     | 0     |
@@ -72,7 +72,7 @@ public:
 Returns 1 if **at least one** of the two bits is 1.
 
 | Bit A | Bit B | A \| B |
-|-------|-------|--------|
+| ----- | ----- | ------ |
 | 0     | 0     | 0      |
 | 0     | 1     | 1      |
 | 1     | 0     | 1      |
@@ -119,7 +119,7 @@ public:
 Returns 1 only when the two bits are **different**.
 
 | Bit A | Bit B | A ^ B |
-|-------|-------|-------|
+| ----- | ----- | ----- |
 | 0     | 0     | 0     |
 | 0     | 1     | 1     |
 | 1     | 0     | 1     |
@@ -133,6 +133,7 @@ Returns 1 only when the two bits are **different**.
 ```
 
 Key properties:
+
 - `a ^ a = 0` — a number XORed with itself is 0
 - `a ^ 0 = a` — XOR with 0 leaves a number unchanged
 
@@ -438,21 +439,21 @@ public:
 
 ## Quick Reference Summary
 
-| Operation                   | Expression            | Result / Purpose                       |
-|-----------------------------|-----------------------|----------------------------------------|
-| AND                         | `a & b`               | 1 only where both bits are 1           |
-| OR                          | `a \| b`              | 1 where either bit is 1                |
-| XOR                         | `a ^ b`               | 1 only where bits differ               |
-| NOT                         | `~n`                  | `-(n+1)` — flips all bits              |
-| Left shift                  | `n << k`              | `n * 2^k`                              |
-| Right shift                 | `n >> k`              | `n // 2^k` (floor)                     |
-| Check even/odd              | `n & 1`               | 0 → even, 1 → odd                      |
-| Check bit i                 | `(n & (1 << i)) != 0` | True if bit i is set                   |
-| Set bit i                   | `n \| (1 << i)`       | Force bit i to 1                       |
-| Clear bit i                 | `n & ~(1 << i)`       | Force bit i to 0                       |
-| Toggle bit i                | `n ^ (1 << i)`        | Flip bit i                             |
-| Swap without temp           | XOR swap (3 steps)    | No extra variable needed               |
-| Power of two                | `1 << n`              | 2^n                                    |
+| Operation         | Expression            | Result / Purpose             |
+| ----------------- | --------------------- | ---------------------------- |
+| AND               | `a & b`               | 1 only where both bits are 1 |
+| OR                | `a \| b`              | 1 where either bit is 1      |
+| XOR               | `a ^ b`               | 1 only where bits differ     |
+| NOT               | `~n`                  | `-(n+1)` — flips all bits    |
+| Left shift        | `n << k`              | `n * 2^k`                    |
+| Right shift       | `n >> k`              | `n // 2^k` (floor)           |
+| Check even/odd    | `n & 1`               | 0 → even, 1 → odd            |
+| Check bit i       | `(n & (1 << i)) != 0` | True if bit i is set         |
+| Set bit i         | `n \| (1 << i)`       | Force bit i to 1             |
+| Clear bit i       | `n & ~(1 << i)`       | Force bit i to 0             |
+| Toggle bit i      | `n ^ (1 << i)`        | Flip bit i                   |
+| Swap without temp | XOR swap (3 steps)    | No extra variable needed     |
+| Power of two      | `1 << n`              | 2^n                          |
 
 ---
 
