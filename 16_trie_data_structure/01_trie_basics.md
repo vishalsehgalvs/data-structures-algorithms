@@ -11,6 +11,7 @@ Think of it like a folder system: each folder is a letter, and each path spells 
 ## How a Trie Works
 
 A Trie always starts with an empty **root node**. From the root, each branch represents one character. When inserting a word:
+
 - Walk down the tree one character at a time.
 - If a node for that character already exists → **reuse it**.
 - If not → **create a new node**.
@@ -41,6 +42,7 @@ Each path from root to an `(end)` node = one complete word.
 ## Trie Node Structure
 
 Each node holds:
+
 - An array (or map) of **child nodes** — one slot per character (26 for lowercase English).
 - A **boolean flag** `isEndOfWord` — marks whether a complete word ends here.
 
@@ -90,6 +92,7 @@ Three fundamental operations: **insert**, **search**, **startsWith**.
 ### Insert
 
 Walk character by character. For each character `ch`:
+
 - Index = `ch - 'a'` (maps 'a'→0, 'b'→1, ..., 'z'→25).
 - If child at that index is null → create a new node.
 - Move to that child.
@@ -427,13 +430,13 @@ public:
 
 ## Trie vs HashMap vs BST
 
-| Feature | Trie | HashSet / HashMap | BST |
-|---------|------|-------------------|-----|
-| Exact word search | O(L) | O(L) average | O(L log N) |
-| Prefix search | **O(L) — excellent** | Not supported directly | Complex |
-| Autocomplete | Yes, naturally | No | Possible but slow |
-| Sorted traversal | Yes (alphabetical) | No | Yes |
-| Space | Higher (many nodes) | Lower | Moderate |
+| Feature           | Trie                 | HashSet / HashMap      | BST               |
+| ----------------- | -------------------- | ---------------------- | ----------------- |
+| Exact word search | O(L)                 | O(L) average           | O(L log N)        |
+| Prefix search     | **O(L) — excellent** | Not supported directly | Complex           |
+| Autocomplete      | Yes, naturally       | No                     | Possible but slow |
+| Sorted traversal  | Yes (alphabetical)   | No                     | Yes               |
+| Space             | Higher (many nodes)  | Lower                  | Moderate          |
 
 Use Trie when your problem involves **prefixes, autocomplete, or dictionary lookups**. Use HashSet for simple exact-match checks.
 
@@ -441,10 +444,10 @@ Use Trie when your problem involves **prefixes, autocomplete, or dictionary look
 
 ## Time and Space Complexity
 
-| Operation | Time |
-|-----------|------|
-| insert | O(L) |
-| search | O(L) |
+| Operation  | Time |
+| ---------- | ---- |
+| insert     | O(L) |
+| search     | O(L) |
 | startsWith | O(L) |
 
 L = length of the word or prefix. **Independent of how many words are stored** — a massive advantage over linear search.
@@ -455,13 +458,13 @@ L = length of the word or prefix. **Independent of how many words are stored** �
 
 ## Real-World Applications
 
-| Application | How Trie is Used |
-|-------------|-----------------|
+| Application                       | How Trie is Used                                      |
+| --------------------------------- | ----------------------------------------------------- |
 | Autocomplete / search suggestions | Prefix lookup returns all words matching typed prefix |
-| Spell checkers | Quickly verify if a word exists; suggest alternatives |
-| IP routing (Radix Tree) | Match IP address prefixes for routing decisions |
-| Contact name search | Instant prefix filtering as you type |
-| Word games (Scrabble solvers) | Find all valid words from a set of letters |
+| Spell checkers                    | Quickly verify if a word exists; suggest alternatives |
+| IP routing (Radix Tree)           | Match IP address prefixes for routing decisions       |
+| Contact name search               | Instant prefix filtering as you type                  |
+| Word games (Scrabble solvers)     | Find all valid words from a set of letters            |
 
 ---
 

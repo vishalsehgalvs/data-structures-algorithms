@@ -328,6 +328,7 @@ Given a list of words, find the longest prefix shared by **all** words.
 **Key idea:** Insert all words into a Trie. Starting at the root, keep walking as long as the current node has **exactly one child** and does **not** mark the end of any word. The path walked is the common prefix.
 
 **Example:** `["flower", "flow", "flight"]`
+
 - Insert all three → common path starts at root
 - After `f`, `l` → next nodes branch to `o` (flower/flow) and `i` (flight) — two children, stop
 - Longest common prefix = `"fl"`
@@ -487,14 +488,14 @@ public:
 
 ## Trie vs Other Data Structures (for Prefix Tasks)
 
-| Feature              | Trie                  | Hash Map              | Sorted Array        |
-|----------------------|-----------------------|-----------------------|---------------------|
-| Exact word search    | O(L)                  | O(L)                  | O(L · log N)        |
-| Prefix search        | O(L)                  | O(N · L) worst case   | O(L · log N)        |
-| Count words by prefix| O(L) with count field | O(N · L)              | O(log N + K)        |
-| Autocomplete         | Very efficient        | Not natural           | Possible but slow   |
-| Space usage          | High (26 pointers)    | Moderate              | Low                 |
-| Best for             | Prefix queries        | Exact key lookups     | Sorted traversal    |
+| Feature               | Trie                  | Hash Map            | Sorted Array      |
+| --------------------- | --------------------- | ------------------- | ----------------- |
+| Exact word search     | O(L)                  | O(L)                | O(L · log N)      |
+| Prefix search         | O(L)                  | O(N · L) worst case | O(L · log N)      |
+| Count words by prefix | O(L) with count field | O(N · L)            | O(log N + K)      |
+| Autocomplete          | Very efficient        | Not natural         | Possible but slow |
+| Space usage           | High (26 pointers)    | Moderate            | Low               |
+| Best for              | Prefix queries        | Exact key lookups   | Sorted traversal  |
 
 > **Rule of thumb:** if the problem involves prefixes, think Trie first.
 
@@ -513,12 +514,12 @@ public:
 
 ## Complexity Summary
 
-| Operation              | Time  | Space      |
-|------------------------|-------|------------|
-| Insert word of length L| O(L)  | O(N · 26)  |
-| Search word of length L| O(L)  | O(1) extra |
-| Prefix query length L  | O(L)  | O(1) extra |
-| Count prefix (w/ count)| O(L)  | O(N · 26)  |
-| Longest common prefix  | O(N·L)| O(N · 26)  |
+| Operation               | Time   | Space      |
+| ----------------------- | ------ | ---------- |
+| Insert word of length L | O(L)   | O(N · 26)  |
+| Search word of length L | O(L)   | O(1) extra |
+| Prefix query length L   | O(L)   | O(1) extra |
+| Count prefix (w/ count) | O(L)   | O(N · 26)  |
+| Longest common prefix   | O(N·L) | O(N · 26)  |
 
 N = total nodes in the Trie; L = length of word/prefix.
