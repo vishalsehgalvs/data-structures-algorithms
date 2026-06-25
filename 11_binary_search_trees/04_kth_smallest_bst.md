@@ -94,6 +94,7 @@ private:
 ```
 
 In-order traversal of this tree gives: **1, 2, 3, 4, 5, 6**.
+
 - If K = 3 → answer is **3**
 - If K = 5 → answer is **5**
 
@@ -105,9 +106,9 @@ The simplest approach is to run in-order traversal, store all values in an array
 
 ### Complexity
 
-| | Value |
-|---|---|
-| Time | O(N) — visits every node once |
+|       | Value                             |
+| ----- | --------------------------------- |
+| Time  | O(N) — visits every node once     |
 | Space | O(N) — stores all values in array |
 
 #### Python
@@ -229,10 +230,10 @@ Think of it like counting people entering a room — you stop and note who walke
 
 ### Complexity
 
-| | Value |
-|---|---|
-| Time | O(H + K) — H is tree height, stop at Kth node |
-| Space | O(H) — only the recursion call stack |
+|       | Value                                         |
+| ----- | --------------------------------------------- |
+| Time  | O(H + K) — H is tree height, stop at Kth node |
+| Space | O(H) — only the recursion call stack          |
 
 #### Python
 
@@ -367,11 +368,11 @@ private:
   1
 ```
 
-| Step | Node visited | count after visit | count == K? |
-|------|-------------|-------------------|-------------|
-| 1    | 1           | 1                 | No          |
-| 2    | 2           | 2                 | No          |
-| 3    | 3           | 3                 | **Yes → result = 3** |
+| Step | Node visited | count after visit | count == K?          |
+| ---- | ------------ | ----------------- | -------------------- |
+| 1    | 1            | 1                 | No                   |
+| 2    | 2            | 2                 | No                   |
+| 3    | 3            | 3                 | **Yes → result = 3** |
 
 We stopped after visiting only **3 nodes** instead of all 6. For large trees where K is small, this is a major saving.
 
@@ -379,13 +380,13 @@ We stopped after visiting only **3 nodes** instead of all 6. For large trees whe
 
 ## Comparison: Approach 1 vs Approach 2
 
-| Feature | Approach 1 (Collect All) | Approach 2 (Early Stop) |
-|---------|--------------------------|------------------------|
-| Extra Space | O(N) for the array | O(H) for call stack only |
-| Time (worst case) | O(N) | O(H + K) |
-| Simplicity | Very easy to implement | Slightly more logic |
-| Best for | Small trees or learning | Large trees, optimized use |
-| Stops early | No | Yes |
+| Feature           | Approach 1 (Collect All) | Approach 2 (Early Stop)    |
+| ----------------- | ------------------------ | -------------------------- |
+| Extra Space       | O(N) for the array       | O(H) for call stack only   |
+| Time (worst case) | O(N)                     | O(H + K)                   |
+| Simplicity        | Very easy to implement   | Slightly more logic        |
+| Best for          | Small trees or learning  | Large trees, optimized use |
+| Stops early       | No                       | Yes                        |
 
 For interviews, **Approach 2** is preferred — it is more efficient and shows better problem-solving thinking.
 
@@ -393,12 +394,12 @@ For interviews, **Approach 2** is preferred — it is more efficient and shows b
 
 ## Edge Cases to Handle
 
-| Edge Case | Behaviour |
-|-----------|-----------|
-| K = 1 | Return the leftmost node (minimum value) |
-| K = N | Return the rightmost node (maximum value) |
-| Single node tree | Valid only if K = 1 |
-| K > N | Invalid input — return -1 or handle with guard check |
+| Edge Case        | Behaviour                                            |
+| ---------------- | ---------------------------------------------------- |
+| K = 1            | Return the leftmost node (minimum value)             |
+| K = N            | Return the rightmost node (maximum value)            |
+| Single node tree | Valid only if K = 1                                  |
+| K > N            | Invalid input — return -1 or handle with guard check |
 
 ---
 
