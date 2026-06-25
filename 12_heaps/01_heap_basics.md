@@ -35,6 +35,7 @@ NOT complete (gap on the left):
 The complete structure allows the heap to be stored as a **plain array** — no pointers needed. This makes heaps memory-efficient and fast to implement.
 
 For any element at index `i`:
+
 - **Left child** → index `2 * i + 1`
 - **Right child** → index `2 * i + 2`
 - **Parent** → index `(i - 1) / 2`
@@ -73,12 +74,12 @@ Min Heap example:
 
 ### Comparison Table
 
-| Feature | Max Heap | Min Heap |
-|---------|----------|----------|
-| Root contains | Largest element | Smallest element |
-| Parent vs Child | Parent ≥ children | Parent ≤ children |
-| Use case | Find maximum quickly | Find minimum quickly |
-| Priority Queue type | Highest priority first | Lowest value first |
+| Feature             | Max Heap               | Min Heap             |
+| ------------------- | ---------------------- | -------------------- |
+| Root contains       | Largest element        | Smallest element     |
+| Parent vs Child     | Parent ≥ children      | Parent ≤ children    |
+| Use case            | Find maximum quickly   | Find minimum quickly |
+| Priority Queue type | Highest priority first | Lowest value first   |
 
 ---
 
@@ -314,12 +315,12 @@ public:
 
 ## Heap vs Sorted Array
 
-| Operation | Sorted Array | Heap |
-|-----------|-------------|------|
-| Find min or max | O(1) | O(1) |
-| Insert new element | O(n) | O(log n) |
-| Delete min or max | O(n) | O(log n) |
-| Build from n elements | O(n log n) | O(n) |
+| Operation             | Sorted Array | Heap     |
+| --------------------- | ------------ | -------- |
+| Find min or max       | O(1)         | O(1)     |
+| Insert new element    | O(n)         | O(log n) |
+| Delete min or max     | O(n)         | O(log n) |
+| Build from n elements | O(n log n)   | O(n)     |
 
 A heap wins in **dynamic** scenarios where elements are being added and removed frequently. If your data is static and you only need the top element once, a sorted array might be simpler.
 
@@ -327,13 +328,13 @@ A heap wins in **dynamic** scenarios where elements are being added and removed 
 
 ## Real-World Use Cases of Heaps
 
-| Use Case | Why a Heap? |
-|----------|------------|
-| **Priority Queue** | Process tasks by priority, not arrival order |
-| **Dijkstra's Shortest Path** | Always process the nearest unvisited node first |
-| **Heap Sort** | Sorting algorithm built on heap operations — O(n log n) |
-| **Top K Elements** | Find K largest/smallest in a dataset efficiently |
-| **OS Scheduling** | Operating systems manage process scheduling with heaps |
+| Use Case                     | Why a Heap?                                             |
+| ---------------------------- | ------------------------------------------------------- |
+| **Priority Queue**           | Process tasks by priority, not arrival order            |
+| **Dijkstra's Shortest Path** | Always process the nearest unvisited node first         |
+| **Heap Sort**                | Sorting algorithm built on heap operations — O(n log n) |
+| **Top K Elements**           | Find K largest/smallest in a dataset efficiently        |
+| **OS Scheduling**            | Operating systems manage process scheduling with heaps  |
 
 Every time you see "find the K largest" or "always process the minimum next," a heap is likely the right tool.
 

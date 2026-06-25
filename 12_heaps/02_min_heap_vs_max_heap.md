@@ -58,16 +58,16 @@ Rule: every parent is LARGER than its children.
 
 ## Side-by-Side Comparison
 
-| Feature | Min Heap | Max Heap |
-|---------|----------|----------|
-| Root Element | Smallest value | Largest value |
-| Parent vs Child | Parent ≤ children | Parent ≥ children |
-| Quick Access To | Minimum element | Maximum element |
-| Common Use Case | Find smallest items quickly | Find largest items quickly |
-| Tree Type | Complete binary tree | Complete binary tree |
-| Insert Time | O(log n) | O(log n) |
-| Delete Min/Max Time | O(log n) | O(log n) |
-| Peek Min/Max Time | O(1) | O(1) |
+| Feature             | Min Heap                    | Max Heap                   |
+| ------------------- | --------------------------- | -------------------------- |
+| Root Element        | Smallest value              | Largest value              |
+| Parent vs Child     | Parent ≤ children           | Parent ≥ children          |
+| Quick Access To     | Minimum element             | Maximum element            |
+| Common Use Case     | Find smallest items quickly | Find largest items quickly |
+| Tree Type           | Complete binary tree        | Complete binary tree       |
+| Insert Time         | O(log n)                    | O(log n)                   |
+| Delete Min/Max Time | O(log n)                    | O(log n)                   |
+| Peek Min/Max Time   | O(1)                        | O(1)                       |
 
 Both heaps share the same time complexities. The difference is purely about what gets prioritized — the smallest or the largest.
 
@@ -458,15 +458,15 @@ public:
 
 ## When to Use Min Heap vs Max Heap
 
-| Situation | Use |
-|-----------|-----|
-| Find/remove smallest repeatedly | Min Heap |
-| Shortest path (Dijkstra's) | Min Heap |
-| Task scheduling by earliest deadline | Min Heap |
-| Find/remove largest repeatedly | Max Heap |
-| Track highest priority task | Max Heap |
-| Top K smallest elements | Max Heap of size K |
-| Top K largest elements | Min Heap of size K |
+| Situation                            | Use                |
+| ------------------------------------ | ------------------ |
+| Find/remove smallest repeatedly      | Min Heap           |
+| Shortest path (Dijkstra's)           | Min Heap           |
+| Task scheduling by earliest deadline | Min Heap           |
+| Find/remove largest repeatedly       | Max Heap           |
+| Track highest priority task          | Max Heap           |
+| Top K smallest elements              | Max Heap of size K |
+| Top K largest elements               | Min Heap of size K |
 
 **Min Heap trick for Top K Largest:** Keep a min heap of size K. If it grows beyond K, remove the root. At the end, all K largest elements remain in the heap.
 
@@ -476,11 +476,11 @@ public:
 
 ## Real-World Analogies
 
-| Analogy | Heap Type |
-|---------|-----------|
-| Hospital triage — most critical patient treated first | Min Heap (lowest priority number = most urgent) |
-| Hiring scoreboard — highest score candidate at top | Max Heap |
-| Task list sorted by deadline — earliest deadline first | Min Heap |
+| Analogy                                                | Heap Type                                       |
+| ------------------------------------------------------ | ----------------------------------------------- |
+| Hospital triage — most critical patient treated first  | Min Heap (lowest priority number = most urgent) |
+| Hiring scoreboard — highest score candidate at top     | Max Heap                                        |
+| Task list sorted by deadline — earliest deadline first | Min Heap                                        |
 
 ---
 

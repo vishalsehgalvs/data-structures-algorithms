@@ -8,24 +8,24 @@ Imagine you are at a buffet and you only want the top 3 dishes out of 50 options
 
 ## Quick Recap
 
-| | Heap | Sorting |
-|--|------|---------|
-| What it does | Keeps min/max at root, partial order | Arranges ALL elements in full order |
-| Best for | Dynamic data, top K, priority queues | Random access by rank, binary search |
-| Build time | O(n) | O(n log n) |
+|              | Heap                                 | Sorting                              |
+| ------------ | ------------------------------------ | ------------------------------------ |
+| What it does | Keeps min/max at root, partial order | Arranges ALL elements in full order  |
+| Best for     | Dynamic data, top K, priority queues | Random access by rank, binary search |
+| Build time   | O(n)                                 | O(n log n)                           |
 
 ---
 
 ## Time Complexity Comparison
 
-| Operation | Heap | Sorting (e.g. Merge Sort) |
-|-----------|------|--------------------------|
-| Build from n elements | O(n) | O(n log n) |
-| Get min or max | O(1) | O(1) after sorting |
-| Insert new element | O(log n) | O(n log n) to re-sort |
-| Delete min or max | O(log n) | O(1) if at the end |
-| Find Kth smallest | O(n + K log n) | O(n log n) |
-| Access any element by rank | O(n) | O(1) by index |
+| Operation                  | Heap           | Sorting (e.g. Merge Sort) |
+| -------------------------- | -------------- | ------------------------- |
+| Build from n elements      | O(n)           | O(n log n)                |
+| Get min or max             | O(1)           | O(1) after sorting        |
+| Insert new element         | O(log n)       | O(n log n) to re-sort     |
+| Delete min or max          | O(log n)       | O(1) if at the end        |
+| Find Kth smallest          | O(n + K log n) | O(n log n)                |
+| Access any element by rank | O(n)           | O(1) by index             |
 
 Heaps win for **partial access**. Sorting wins for **full random access**.
 
@@ -213,12 +213,12 @@ public:
 
 ## Space Complexity Comparison
 
-| Approach | Space | Notes |
-|----------|-------|-------|
-| Sorting (Quick Sort, in-place) | O(log n) | Recursion stack only |
-| Sorting (Merge Sort) | O(n) | Extra merge buffer |
-| Heap for Top K | O(K) | Only K elements ever in memory |
-| Heap built from all n | O(n) | Full heap in memory |
+| Approach                       | Space    | Notes                          |
+| ------------------------------ | -------- | ------------------------------ |
+| Sorting (Quick Sort, in-place) | O(log n) | Recursion stack only           |
+| Sorting (Merge Sort)           | O(n)     | Extra merge buffer             |
+| Heap for Top K                 | O(K)     | Only K elements ever in memory |
+| Heap built from all n          | O(n)     | Full heap in memory            |
 
 When K is small, the heap approach uses far less memory — critical for streaming scenarios where you cannot store all data at once.
 
@@ -242,10 +242,10 @@ Do you need ALL elements in sorted order?
 
 ## Real-World Analogy
 
-| Analogy | Tool |
-|---------|------|
+| Analogy                                                                      | Tool        |
+| ---------------------------------------------------------------------------- | ----------- |
 | Alphabetising every book in a library — slow upfront, instant lookup forever | **Sorting** |
-| Priority inbox — most urgent task always on top, fast to add/remove | **Heap** |
+| Priority inbox — most urgent task always on top, fast to add/remove          | **Heap**    |
 
 Sorting is ideal when you pay a one-time cost and benefit from many future queries. A heap is ideal when data keeps changing and you only ever need the best few items.
 

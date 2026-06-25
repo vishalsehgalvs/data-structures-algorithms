@@ -9,11 +9,11 @@ Two rules every heap must follow:
 
 ### Node Index Formulas (0-based array)
 
-| Node | Formula | Example (i = 2) |
-|------|---------|-----------------|
-| Left Child | `2*i + 1` | 5 |
-| Right Child | `2*i + 2` | 6 |
-| Parent | `(i - 1) / 2` | 0 |
+| Node        | Formula       | Example (i = 2) |
+| ----------- | ------------- | --------------- |
+| Left Child  | `2*i + 1`     | 5               |
+| Right Child | `2*i + 2`     | 6               |
+| Parent      | `(i - 1) / 2` | 0               |
 
 ---
 
@@ -39,12 +39,12 @@ Right child of index 1 = 2*1+2 = 4 → value 50
 
 ## Heap Operations Overview
 
-| Operation | Time | Description |
-|-----------|------|-------------|
-| Insert | O(log n) | Add element at end, sift up |
-| Extract Min/Max | O(log n) | Remove root, sift down |
-| Peek | O(1) | Read root without removing |
-| Build Heap (Heapify) | O(n) | Convert unsorted array to valid heap |
+| Operation            | Time     | Description                          |
+| -------------------- | -------- | ------------------------------------ |
+| Insert               | O(log n) | Add element at end, sift up          |
+| Extract Min/Max      | O(log n) | Remove root, sift down               |
+| Peek                 | O(1)     | Read root without removing           |
+| Build Heap (Heapify) | O(n)     | Convert unsorted array to valid heap |
 
 ---
 
@@ -208,6 +208,7 @@ int peek() {
 ## Delete Operation (Extract Min)
 
 Three steps:
+
 1. **Swap** root with the last element.
 2. **Remove** the last element (the old root/answer).
 3. **Sift down** the new root until the heap property is restored.
@@ -765,13 +766,13 @@ private:
 
 ## Time Complexity Summary
 
-| Operation | Time | Reason |
-|-----------|------|--------|
-| Insert | O(log n) | Sift-up traverses tree height |
-| Extract Min/Max | O(log n) | Sift-down traverses tree height |
-| Peek | O(1) | Always at index 0 |
-| Build Heap (Heapify) | O(n) | Amortized analysis of sift-downs |
-| Search | O(n) | No order guarantee for non-root elements |
+| Operation            | Time     | Reason                                   |
+| -------------------- | -------- | ---------------------------------------- |
+| Insert               | O(log n) | Sift-up traverses tree height            |
+| Extract Min/Max      | O(log n) | Sift-down traverses tree height          |
+| Peek                 | O(1)     | Always at index 0                        |
+| Build Heap (Heapify) | O(n)     | Amortized analysis of sift-downs         |
+| Search               | O(n)     | No order guarantee for non-root elements |
 
 ---
 

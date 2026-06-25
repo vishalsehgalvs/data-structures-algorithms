@@ -14,20 +14,20 @@ Sorting works but costs **O(n log n)**. Using a heap we can solve most Top K pro
 
 Think of it like this: instead of arranging all 1000 students by grade to find the top 10, you just maintain a small rolling list of the best 10 as you go.
 
-| Approach | Time | Space |
-|----------|------|-------|
-| Sort and slice | O(n log n) | O(1) or O(n) |
-| Max Heap (all elements) | O(n + k log n) | O(n) |
-| **Min Heap of size K** | **O(n log k)** | **O(k)** |
+| Approach                | Time           | Space        |
+| ----------------------- | -------------- | ------------ |
+| Sort and slice          | O(n log n)     | O(1) or O(n) |
+| Max Heap (all elements) | O(n + k log n) | O(n)         |
+| **Min Heap of size K**  | **O(n log k)** | **O(k)**     |
 
 ---
 
 ## Min Heap vs Max Heap for Top K
 
-| Goal | Heap to Use | Why |
-|------|------------|-----|
-| Top K **Largest** | **Min Heap** of size K | Root = weakest candidate; replace it when a larger value comes |
-| Top K **Smallest** | **Max Heap** of size K | Root = largest among K; replace it when a smaller value comes |
+| Goal               | Heap to Use            | Why                                                            |
+| ------------------ | ---------------------- | -------------------------------------------------------------- |
+| Top K **Largest**  | **Min Heap** of size K | Root = weakest candidate; replace it when a larger value comes |
+| Top K **Smallest** | **Max Heap** of size K | Root = largest among K; replace it when a smaller value comes  |
 
 ---
 
@@ -39,14 +39,14 @@ Maintain a **min heap of size K**. If a new element is larger than the heap's mi
 
 Find top 3 largest in `[3, 1, 5, 12, 2, 11]`:
 
-| Step | Element | Heap State (Min Heap) | Action |
-|------|---------|----------------------|--------|
-| 1 | 3 | [3] | Push (size < k) |
-| 2 | 1 | [1, 3] | Push (size < k) |
-| 3 | 5 | [1, 3, 5] | Push (size = k) |
-| 4 | 12 | [3, 12, 5] | 12 > min(1) → replace 1 |
-| 5 | 2 | [3, 12, 5] | 2 < min(3) → skip |
-| 6 | 11 | [5, 12, 11] | 11 > min(3) → replace 3 |
+| Step | Element | Heap State (Min Heap) | Action                  |
+| ---- | ------- | --------------------- | ----------------------- |
+| 1    | 3       | [3]                   | Push (size < k)         |
+| 2    | 1       | [1, 3]                | Push (size < k)         |
+| 3    | 5       | [1, 3, 5]             | Push (size = k)         |
+| 4    | 12      | [3, 12, 5]            | 12 > min(1) → replace 1 |
+| 5    | 2       | [3, 12, 5]            | 2 < min(3) → skip       |
+| 6    | 11      | [5, 12, 11]           | 11 > min(3) → replace 3 |
 
 Result: `[5, 11, 12]` — the 3 largest elements.
 
@@ -389,6 +389,7 @@ public:
 ## Top K Frequent Elements
 
 Two steps:
+
 1. Count frequency of each element using a hash map.
 2. Use a **min heap of size K** on `(frequency, element)` pairs.
 
@@ -502,14 +503,14 @@ public:
 
 ## Dry Run: Top 3 Largest in `[3, 1, 5, 12, 2, 11]`
 
-| Step | Element | Heap (Min Heap size ≤ 3) | Action |
-|------|---------|--------------------------|--------|
-| 1 | 3 | [3] | Push (size < 3) |
-| 2 | 1 | [1, 3] | Push (size < 3) |
-| 3 | 5 | [1, 3, 5] | Push (size = 3) |
-| 4 | 12 | [3, 5, 12] | 12 > min(1) → pop 1, push 12 |
-| 5 | 2 | [3, 5, 12] | 2 < min(3) → skip |
-| 6 | 11 | [5, 11, 12] | 11 > min(3) → pop 3, push 11 |
+| Step | Element | Heap (Min Heap size ≤ 3) | Action                       |
+| ---- | ------- | ------------------------ | ---------------------------- |
+| 1    | 3       | [3]                      | Push (size < 3)              |
+| 2    | 1       | [1, 3]                   | Push (size < 3)              |
+| 3    | 5       | [1, 3, 5]                | Push (size = 3)              |
+| 4    | 12      | [3, 5, 12]               | 12 > min(1) → pop 1, push 12 |
+| 5    | 2       | [3, 5, 12]               | 2 < min(3) → skip            |
+| 6    | 11      | [5, 11, 12]              | 11 > min(3) → pop 3, push 11 |
 
 Final heap: `[5, 11, 12]` — the 3 largest. ✓
 
@@ -517,12 +518,12 @@ Final heap: `[5, 11, 12]` — the 3 largest. ✓
 
 ## Time and Space Complexity
 
-| Problem | Time | Space |
-|---------|------|-------|
-| Top K Largest | O(n log k) | O(k) |
-| Top K Smallest | O(n log k) | O(k) |
-| Kth Largest | O(n log k) | O(k) |
-| Kth Smallest | O(n log k) | O(k) |
+| Problem        | Time       | Space    |
+| -------------- | ---------- | -------- |
+| Top K Largest  | O(n log k) | O(k)     |
+| Top K Smallest | O(n log k) | O(k)     |
+| Kth Largest    | O(n log k) | O(k)     |
+| Kth Smallest   | O(n log k) | O(k)     |
 | Top K Frequent | O(n log k) | O(n + k) |
 
 For each of n elements, we do at most one push + one pop on a heap of size k. Each heap operation costs O(log k). Total = **O(n log k)**.
@@ -531,12 +532,12 @@ For each of n elements, we do at most one push + one pop on a heap of size k. Ea
 
 ## Common Mistakes to Avoid
 
-| Mistake | Fix |
-|---------|-----|
-| Using max heap for top K largest | Use **min heap** — root is the weakest candidate |
-| Letting heap grow beyond K | Always pop when `size > k` |
-| Forgetting to negate back in Python max heap | `-max_heap[0]` to get real value |
-| Confusing Kth largest vs top K largest | Kth largest = single value at heap root; top K = all K values |
+| Mistake                                      | Fix                                                           |
+| -------------------------------------------- | ------------------------------------------------------------- |
+| Using max heap for top K largest             | Use **min heap** — root is the weakest candidate              |
+| Letting heap grow beyond K                   | Always pop when `size > k`                                    |
+| Forgetting to negate back in Python max heap | `-max_heap[0]` to get real value                              |
+| Confusing Kth largest vs top K largest       | Kth largest = single value at heap root; top K = all K values |
 
 ---
 
