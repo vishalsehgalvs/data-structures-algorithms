@@ -342,4 +342,4 @@ flowchart TD
 
 ---
 
-_Next up → [Time Complexity: Big O Notation Explained](../02_time_complexity.md)_
+_Next up → [Time Complexity: Big O Notation Explained](03_time_complexity.md)_
